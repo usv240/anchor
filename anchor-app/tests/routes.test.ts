@@ -44,7 +44,7 @@ describe("talking point tags", () => {
 
   it("never suggests identity or alcohol topics (seen in a live San Francisco run)", () => {
     const names = cleanTags(
-      ["Genderfluid", "Wine Bar", "Espresso bar", "Craft Beer", "LGBTQ+", "Happy Hour", "Steak house", "Football", "Christian", "Cigar Lounge"].map((name) => ({ name, subtype: "urn:tag:keyword:qloo" })),
+      ["Genderfluid", "Wine Bar", "Vineyard", "Espresso bar", "Craft Beer", "LGBTQ+", "Happy Hour", "Steak house", "Football", "Christian", "Cigar Lounge"].map((name) => ({ name, subtype: "urn:tag:keyword:qloo" })),
     ).map((t) => t.name);
     expect(names).toEqual(["Steak house", "Football"]);
   });

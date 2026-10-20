@@ -266,7 +266,7 @@ const KIND: Record<string, string> = { media: "Shows and media", place: "Places"
  * returned "Genderfluid" and "Wine Bar".
  */
 const SENSITIVE_TAG = /politic|religio|church|faith|christian|muslim|jewish|ethnic|race|racial|govern|military|tourist|immigra|activis|gender|sexual|lgbt|queer|\btrans|\bgay\b|lesbian|bisexual|nonbinary|non-binary/i;
-const ALCOHOL_TAG = /\bbars?\b|wine|beer|brew|cocktail|liquor|spirits|whisk|vodka|tequila|mezcal|\bsake\b|\bpubs?\b|nightlife|night ?club|happy hour|cannabis|marijuana|smok|vape|hookah|cigar/i;
+const ALCOHOL_TAG = /\bbars?\b|wine|vineyard|distill|beer|brew|cocktail|liquor|spirits|whisk|vodka|tequila|mezcal|\bsake\b|\bpubs?\b|nightlife|night ?club|happy hour|cannabis|marijuana|smok|vape|hookah|cigar/i;
 
 /** Plain kinds, no sensitive, alcohol or unhelpful topics, no duplicates, at most 12. */
 export function cleanTags(raw: RawTag[]): Flavour["tags"] {
