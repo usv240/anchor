@@ -26,7 +26,7 @@ import { PlaceAudience } from "@/components/app/PlaceAudience";
 import { PlaceFans } from "@/components/app/PlaceFans";
 import { ReadingCorner } from "@/components/app/ReadingCorner";
 import { OwnerInvite } from "@/components/app/OwnerInvite";
-import { AGE_GROUPS, DAYS, GOALS, type AgeGroup, type Day, type Goal, type Plan, type PlanEvent, type StepStatus } from "@/lib/domain/types";
+import { AGE_GROUPS, DAYS, GOALS, type AgeGroup, type Day, type Goal, type Plan, type PlanEvent, type PlanRequest, type StepStatus } from "@/lib/domain/types";
 import type { TraceRecord } from "@/lib/trace/ledger";
 
 type Health = { modes: { trust: "qloo" | "offline"; planner: "claude" | "basic" } };
@@ -160,6 +160,7 @@ export function AppClient() {
         .then((r) => (r.ok ? r.json() : Promise.reject(new Error("not found"))))
         .then((p: Plan) => {
           setPlan(p);
+          setForm((f) => withRequest(f, p.request));
           setStatus("done");
           setSelectedId(p.venues[0]?.id ?? null);
         })
@@ -167,6 +168,7 @@ export function AppClient() {
           if (settings) {
             // Saved plans live in server memory and can expire; the link carries its settings, so make it again.
             setNotice("This shared plan had expired on the server, so Anchor made it again from the same settings. Places can differ slightly if business or Qloo data changed.");
+            setForm((f) => withRequest(f, settings as Partial<PlanRequest>));
             void runBody(settings);
           } else setError("That saved plan could not be found. Plans are kept for a limited time. You can make a new one below.");
         });
@@ -981,4 +983,20 @@ function readSettings(r: string | null): object | null {
   } catch {
     return null;
   }
+}
+
+/** Show a loaded or rebuilt plan's settings in the form, so what you see matches the plan. */
+function withRequest(f: Form, r: Partial<PlanRequest>): Form {
+  return {
+    ...f,
+    goal: r.goal ?? f.goal,
+    ageGroups: r.audience?.ageGroups ?? f.ageGroups,
+    gender: r.audience?.gender ?? f.gender,
+    county: r.area?.countyFips ?? f.county,
+    zones: r.options?.zones ?? f.zones,
+    maxVenues: r.options?.maxVenues ?? f.maxVenues,
+    days: r.options?.preferredDays ?? f.days,
+    exclude: r.options?.excludeCategories ?? f.exclude,
+    prompt: r.prompt ?? "",
+  };
 }
