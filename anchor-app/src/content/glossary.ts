@@ -21,7 +21,7 @@ export const GLOSSARY: Term[] = [
   { id: "hypertension", term: "High blood pressure (hypertension)", meaning: "Blood pressure that stays too high, 130/80 or above under current US guidelines. It often has no symptoms." },
   { id: "ics", term: "ICS file", meaning: "A calendar file that adds events to Google Calendar, Outlook or Apple Calendar." },
   { id: "mcp", term: "MCP (Model Context Protocol)", meaning: "A standard way for AI assistants to use outside tools." },
-  { id: "osm", term: "OpenStreetMap", meaning: "A free, public map of the world made by volunteers. Anchor uses it to confirm places are real." },
+  { id: "osm", term: "OpenStreetMap", meaning: "A free, public map of the world made by volunteers. Anchor tested it for finding barbershops, but it listed far fewer than city records (6 against 193 in one area), so city business records are used instead." },
   { id: "outreach", term: "Outreach", meaning: "Taking health services to people, instead of waiting for them to come in." },
   { id: "qloo", term: "Qloo", meaning: "A company whose taste data shows what groups of people love across music, film, food, places and more, without personal data." },
   { id: "rct", term: "Randomised trial", meaning: "A study where people or places are put into groups by chance. It is the fairest way to test whether something works." },

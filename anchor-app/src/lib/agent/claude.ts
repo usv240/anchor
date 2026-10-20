@@ -1,3 +1,4 @@
+import { county } from "@/lib/domain/counties";
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { PlanBuilder, type BuilderDeps } from "@/lib/agent/builder";
@@ -124,7 +125,7 @@ function systemPrompt(request: PlanRequest, trustMode: "qloo" | "offline"): stri
     "- Never give medical advice.",
     "- Write for a busy health worker: plain words, short sentences, no jargon, no emojis, and no dashes used as punctuation.",
     "",
-    `Request defaults: goal "${GOALS[request.goal].label}", audience ${request.audience.gender === "any" ? "adults" : request.audience.gender === "male" ? "men" : "women"} aged ${ages}, Los Angeles County, about ${request.options.zones} zones and ${request.options.maxVenues} places, preferred days ${request.options.preferredDays.join(" and ")}.`,
+    `Request defaults: goal "${GOALS[request.goal].label}", audience ${request.audience.gender === "any" ? "adults" : request.audience.gender === "male" ? "men" : "women"} aged ${ages}, ${county(request.area.countyFips).name}, about ${request.options.zones} zones and ${request.options.maxVenues} places, preferred days ${request.options.preferredDays.join(" and ")}.`,
     `Taste data: ${trustMode === "qloo" ? "Qloo is connected." : "Qloo is not connected yet, so venues are ranked without taste data. Mention this briefly in the summary."}`,
   ].join("\n");
 }

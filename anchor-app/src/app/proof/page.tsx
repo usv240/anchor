@@ -135,6 +135,29 @@ export default async function ProofPage() {
         </section>
       ) : null}
 
+      {r.secondCounty ? (
+        <section aria-labelledby="sf-title" className="mt-14">
+          <h2 id="sf-title" className="text-2xl font-semibold">Does it work somewhere else? San Francisco</h2>
+          <p className="mt-2 max-w-3xl text-muted">
+            The same method, run unchanged on a second county with its own public business register, for {r.secondCounty.requests} audiences{r.secondCounty.anchorMode === "qloo" ? ", with live Qloo data" : ""}.
+          </p>
+          <ul className="mt-4 grid gap-4 sm:grid-cols-3">
+            {[
+              { big: pct(r.secondCounty.anchor.needCapture), label: "of Anchor's places are in the highest-need fifth of neighbourhoods", sub: `Map search of barbershops and salons: ${pct(r.secondCounty.mapSearch.needCapture)}` },
+              { big: dec(r.secondCounty.anchor.meanNeedPercentile), label: "average need of the neighbourhoods reached (0 to 1)", sub: `Map search: ${dec(r.secondCounty.mapSearch.meanNeedPercentile)}` },
+              { big: pct(r.secondCounty.anchor.unsuitableRate), label: "bars, liquor stores or similar", sub: `${pct(r.secondCounty.anchor.licensedRate)} confirmed in the city register or a Qloo listing` },
+            ].map((c) => (
+              <li key={c.label} className="rounded-[12px] border border-border bg-surface p-5">
+                <p className="tabular text-3xl font-semibold">{c.big}</p>
+                <p className="mt-1">{c.label}</p>
+                <p className="mt-1 text-sm text-muted">{c.sub}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-sm text-muted">{r.secondCounty.note}</p>
+        </section>
+      ) : null}
+
       {r.qloo?.fanReach?.anchor && r.qloo.fanReach.qlooNoNeed ? (
         <section aria-labelledby="fans-title" className="mt-14">
           <h2 id="fans-title" className="flex items-center text-2xl font-semibold">

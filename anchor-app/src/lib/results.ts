@@ -27,6 +27,15 @@ export type EvalResults = {
     medical: { measured: boolean; passed?: number; total: number; note: string };
     rows: { id: string; kind: string; expect: string; pass: boolean | null; note?: string }[];
   };
+  secondCounty?: {
+    county: string;
+    name: string;
+    requests: number;
+    anchor: { needCapture: number; meanNeedPercentile: number; unsuitableRate: number; licensedRate: number; categories: number };
+    anchorMode: string;
+    mapSearch: { needCapture: number; meanNeedPercentile: number };
+    note: string;
+  };
   qloo: {
     audienceOverlap: { a: string; b: string; overlap: number }[];
     meanAudienceOverlap: number | null;

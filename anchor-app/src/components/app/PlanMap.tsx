@@ -14,12 +14,16 @@ type Ring = number[][];
 type Geometry = { type: "Polygon"; coordinates: Ring[] } | { type: "MultiPolygon"; coordinates: Ring[][] };
 type TractFeature = { properties: { zoneId: string; need_pct: number }; geometry: Geometry };
 
-let tractsPromise: Promise<TractFeature[]> | null = null;
-function loadTracts(): Promise<TractFeature[]> {
-  tractsPromise ??= fetch("/data/need/06037/zone_tracts.geojson")
-    .then((r) => r.json())
-    .then((fc: { features: TractFeature[] }) => fc.features);
-  return tractsPromise;
+const tractsPromise = new Map<string, Promise<TractFeature[]>>();
+function loadTracts(county: string): Promise<TractFeature[]> {
+  let hit = tractsPromise.get(county);
+  if (!hit) {
+    hit = fetch(`/data/need/${county}/zone_tracts.geojson`)
+      .then((r) => r.json())
+      .then((fc: { features: TractFeature[] }) => fc.features);
+    tractsPromise.set(county, hit);
+  }
+  return hit;
 }
 
 const outerRings = (g: Geometry): Ring[] => (g.type === "Polygon" ? [g.coordinates[0]] : g.coordinates.map((p) => p[0]));
@@ -46,7 +50,7 @@ export function PlanMap({
     if (next && !cells) {
       const ages = plan.request.audience.ageGroups.join(",");
       try {
-        const r = await fetch(`/api/v1/heatmap?ages=${ages}&gender=${plan.request.audience.gender}`);
+        const r = await fetch(`/api/v1/heatmap?ages=${ages}&gender=${plan.request.audience.gender}&county=${plan.request.area.countyFips}`);
         const j = await r.json();
         if (!r.ok) throw new Error(j?.error?.message ?? "The taste map could not load.");
         setCells(j.cells);
@@ -57,11 +61,11 @@ export function PlanMap({
   };
   useEffect(() => {
     let live = true;
-    loadTracts().then((t) => live && setTracts(t));
+    loadTracts(plan.request.area.countyFips).then((t) => live && setTracts(t));
     return () => {
       live = false;
     };
-  }, []);
+  }, [plan.request.area.countyFips]);
 
   const view = useMemo(() => {
     if (!tracts) return null;

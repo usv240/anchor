@@ -109,7 +109,7 @@ const IMPACT_CHAIN: { title: string; big: string; body: string; info: InfoId }[]
   {
     title: "Anchor unlocks it",
     big: "Any county",
-    body: "Anchor finds where need is highest and which local places people there love, in minutes, for any US county and any age group.",
+    body: "Anchor finds where need is highest and which local places people there love, in minutes, for any age group. Live for Los Angeles and San Francisco; need data covers every US county.",
     info: "impact-preferences",
   },
 ];
@@ -143,7 +143,7 @@ const STEPS:{ title: string; body: string; info: InfoId; Icon: typeof Users }[] 
   },
   {
     title: "It checks and plans",
-    body: "Every place is checked on a public map, ranked by a clear formula, and turned into a visit schedule, invitations and files.",
+    body: "Every place is checked against city business records or Qloo's listings, ranked by a clear formula, and turned into a visit schedule, owner invitations and files.",
     info: "step-plan",
     Icon: CalendarCheck,
   },
@@ -178,7 +178,7 @@ const AUDIENCES = [
   },
   {
     title: "Health departments and health plans",
-    body: "See need and trust on one map. Export to spreadsheets, map tools and calendars. Bring your own data.",
+    body: "See need and trust on one map. Upload your current partners to see which ones reach high-need neighbourhoods. Export to spreadsheets, map tools and calendars.",
     href: "/app",
     cta: "Open the app",
     Icon: Building2,
@@ -203,8 +203,8 @@ const WAYS: { title: string; simple: string; technical: string; info?: InfoId }[
   { title: "Web app", simple: "Use it in your browser. No sign-up.", technical: "Next.js app, works on phones and desktops, light and dark." },
   {
     title: "Bring your own data",
-    simple: "Add your own partner places or area numbers. Files stay on your device unless you choose to use them.",
-    technical: "CSV, XLSX or GeoJSON, parsed in the browser. Personal data guard. Counts from 1 to 10 are hidden.",
+    simple: "Upload the places you already work with. Anchor checks each one against need and puts those in high-need neighbourhoods first. Files about people are refused.",
+    technical: "CSV with name, latitude, longitude and optional type (up to 200 rows), parsed in the browser, then sent as PlanRequest.partners. Columns about people are refused. No geocoding.",
     info: "use-byod",
   },
   {

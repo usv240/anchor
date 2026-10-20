@@ -41,6 +41,13 @@ describe("talking point tags", () => {
       { name: "Gospel", kind: "Music" },
     ]);
   });
+
+  it("never suggests identity or alcohol topics (seen in a live San Francisco run)", () => {
+    const names = cleanTags(
+      ["Genderfluid", "Wine Bar", "Espresso bar", "Craft Beer", "LGBTQ+", "Happy Hour", "Steak house", "Football", "Christian", "Cigar Lounge"].map((name) => ({ name, subtype: "urn:tag:keyword:qloo" })),
+    ).map((t) => t.name);
+    expect(names).toEqual(["Steak house", "Football"]);
+  });
 });
 
 describe("reading corner reasons", () => {

@@ -28,15 +28,15 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Can I use my own data?",
-    a: "Yes. You can add your own partner list, area numbers, service area or team locations. Files are checked on your device first, and files about individual people are refused.",
+    a: "Yes. Upload a list of places you already work with (name and map coordinates). Anchor shows how many are in high-need neighbourhoods and puts those first in the plan. The file is checked in your browser first, and files about individual people are refused.",
   },
   {
     q: "Which places does it cover?",
-    a: "Any US county, because CDC data covers every county. Our worked example is Los Angeles County, where the barbershop study took place.",
+    a: "Los Angeles County and San Francisco today. CDC need data covers every US county; each new county also needs an open register of local businesses, which many cities publish. San Francisco was added in one day from its public register.",
   },
   {
     q: "Can Anchor be used for other health goals?",
-    a: "Yes. The same approach can plan cancer screening, vaccine or diabetes outreach. The research for those is on the Research page.",
+    a: "Not yet. Anchor is built and tested for blood pressure only. The same steps (need data, then trusted places) could in principle plan other outreach, such as cancer screening or vaccines, but each would need its own evidence and its own testing first.",
   },
 ];
 

@@ -7,14 +7,14 @@ type Area = { lat: number; lon: number; affinity: number; highNeed: boolean };
 type Fans = { areas: Area[]; highNeedAreas: number; note: string };
 
 /** "Where its fans are": a dot strip of the place's strongest fan areas, high-need ones filled, with a plain sentence and a table twin. */
-export function PlaceFans({ qlooId }: { qlooId: string }) {
+export function PlaceFans({ qlooId, county }: { qlooId: string; county: string }) {
   const [data, setData] = useState<Fans | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // The parent remounts this component per place (key), so state starts empty for each place.
     let live = true;
-    fetch(`/api/v1/places/${encodeURIComponent(qlooId)}/fans`)
+    fetch(`/api/v1/places/${encodeURIComponent(qlooId)}/fans?county=${county}`)
       .then(async (r) => {
         const j = await r.json();
         if (!r.ok) throw new Error(j?.error?.message ?? "No fan map.");
@@ -25,7 +25,7 @@ export function PlaceFans({ qlooId }: { qlooId: string }) {
     return () => {
       live = false;
     };
-  }, [qlooId]);
+  }, [qlooId, county]);
 
   return (
     <section className="rounded-[10px] border border-border p-4" aria-labelledby={`fans-${qlooId}`}>

@@ -40,7 +40,10 @@ What Qloo cannot do here, measured: it returned 0 small barbershops or salons in
 | Tamper-evident evidence log with a verify endpoint | Built |
 | MCP server for Claude and other AI assistants (`scripts/mcp.mts`): need map, plan, get plan, fan reach, reading corner | Built, all 5 tools tested with a real MCP client |
 | Evaluation harness, AI-alone baseline and 35-case red-team set | Built and run |
-| Bring your own data uploads | Planned |
+| Bring your own data: upload a partner list, see which partners reach high-need areas, and they come first in the plan | Built |
+| Owner invitation letter for each place, from the plan's own schedule, need numbers and Qloo talking points | Built |
+| Second county: San Francisco, from its public business register (100% of places in high-need areas, against 18% for a map search) | Built |
+| Share links that rebuild the plan if the server has forgotten it; daily allowance on the shared keys | Built |
 
 ## Run it
 
@@ -56,12 +59,12 @@ Without keys the app runs in offline mode and says so on every plan.
 
 | Command | What it does |
 |---|---|
-| `npm run check` | Type check, lint and 243 tests |
+| `npm run check` | Type check, lint and 260 tests |
 | `npm run eval` | Rerun every published number (uses the private Qloo cache if present) |
 | `npx tsx scripts/baseline-ai.mts` then `scripts/baseline-ai-check.mts` | Rerun the AI-alone baseline (16 model calls, then Qloo lookups). Needs both keys |
 | `npx tsx scripts/redteam-medical.mts` | Rerun the 5 medical-advice tests through the real agent. Needs `ANTHROPIC_API_KEY` |
 | `npm run kill-test` | Day-1 test: does Qloo know South LA's licensed barbers and salons? Needs `QLOO_API_KEY` |
-| `npm run data` | Rebuild all public data from source (CDC, Census, City of LA) |
+| `npm run data` | Rebuild Los Angeles data from source (CDC, Census, City of LA). San Francisco: `bash eval/pipeline/fetch_data.sh 06075`, then `build_need.py` and `build_venues.py` with `--county 06075` |
 | `npx tsx scripts/mcp.mts` | Start the MCP server (set `ANCHOR_URL` and `ANCHOR_API_KEY`) |
 
 ## How Anchor uses Qloo
@@ -86,6 +89,7 @@ Without keys the app runs in offline mode and says so on every plan.
 | CDC PLACES 2025 release (data.cdc.gov `yjkw-uj5s`) | US government, public domain |
 | US Census cartographic boundary files, 2023 | Public domain |
 | City of Los Angeles Office of Finance, Listing of Active Businesses (`6rrh-rzua`) | CC0 1.0 |
+| City and County of San Francisco, Registered Business Locations (`g8m3-pdis`) | ODC Public Domain Dedication |
 | Qloo | Used under the hackathon terms. No Qloo responses are stored in this repository. |
 
 Private individuals are never listed: licences under a person's own name without a trading name (976), apartment addresses and mobile services (90) are removed before planning.

@@ -1,3 +1,4 @@
+import { COUNTIES, COUNTY_FIPS, DEFAULT_COUNTY } from "@/lib/domain/counties";
 import { z } from "zod";
 import { gate, problem } from "@/lib/api/http";
 import { AGE_GROUPS, type AgeGroup } from "@/lib/domain/types";
@@ -18,6 +19,7 @@ const Query = z.object({
     .transform((s) => s.split(",").filter((a): a is AgeGroup => a in AGE_GROUPS))
     .refine((a) => a.length > 0, "Choose at least one age group."),
   gender: z.enum(["any", "male", "female"]).default("any"),
+  county: z.enum(COUNTY_FIPS).default(DEFAULT_COUNTY),
 });
 
 export async function GET(req: Request) {
@@ -30,7 +32,7 @@ export async function GET(req: Request) {
 
   const params: Record<string, string | number> = {
     "filter.type": "urn:heatmap",
-    "filter.location.query": "Los Angeles",
+    "filter.location.query": COUNTIES[parsed.data.county].qlooCity,
     "signal.demographics.age": qlooAgeParam(parsed.data.ages),
   };
   if (parsed.data.gender !== "any") params["signal.demographics.gender"] = parsed.data.gender;
@@ -42,7 +44,7 @@ export async function GET(req: Request) {
       .filter((c) => c.query.affinity >= 0.5) // the upper half: where this group's tastes are stronger than the city's middle
       .map((c) => ({ lat: Math.round(c.location.latitude * 1e5) / 1e5, lon: Math.round(c.location.longitude * 1e5) / 1e5, geohash: c.location.geohash, affinity: Math.round(c.query.affinity * 100) / 100 }));
     return Response.json(
-      { cells, source: "Qloo heatmap insights (aggregate taste data, no personal data)", note: "Upper half of affinity only. Affinity is ranked within Los Angeles, 0 to 1." },
+      { cells, source: "Qloo heatmap insights (aggregate taste data, no personal data)", note: `Upper half of affinity only. Affinity is ranked within ${COUNTIES[parsed.data.county].qlooCity}, 0 to 1.` },
       { headers: g.headers },
     );
   } catch (err) {

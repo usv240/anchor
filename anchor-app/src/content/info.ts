@@ -71,7 +71,7 @@ export const INFO = {
   "impact-untreated-la": {
     title: "684,000 adults in one county",
     what: "The estimated number of adults in Los Angeles County with high blood pressure who are not taking medicine for it.",
-    why: "It shows how many people one county could reach, and Anchor computes it for every county.",
+    why: "It shows how many people one county could reach. The same calculation works for any county from public CDC data.",
     source: "Anchor's calculation from CDC PLACES 2025 estimates for all 2,474 census tracts in the county.",
     learnMoreHref: "/how-it-works#need",
     technical: "Sum over tracts of adults x bphigh x (1 - bpmed). Model-based estimates, not patient counts.",
@@ -121,9 +121,9 @@ export const INFO = {
   },
   "step-plan": {
     title: "Checking and planning",
-    what: "Every place is checked on a public map, ranked by a clear formula, and turned into a schedule and files.",
+    what: "Every place is checked against city business records or Qloo's listings, ranked by a clear formula, and turned into a schedule, owner invitations and files.",
     why: "It turns data into a plan a health worker can carry out this week.",
-    source: "OpenStreetMap and Anchor's published scoring formula.",
+    source: "City business registers, Qloo place data and Anchor's published scoring formula.",
     learnMoreHref: "/how-it-works#plan",
   },
   "zones": {
@@ -179,9 +179,9 @@ export const INFO = {
   },
   "use-byod": {
     title: "Bring your own data",
-    what: "Add your own list of partner places, your own area numbers, your service area or your team locations.",
-    why: "You already know things about your community. Anchor should use them.",
-    source: "Your file, checked on your own device first. Files about individual people are refused.",
+    what: "Upload the places your team already works with. Anchor checks each one against need, shows which are in high-need neighbourhoods, and puts those first in the plan.",
+    why: "You already know things about your community. Anchor should use them, and tell you whether your current partners reach the people with the most need.",
+    source: "Your file, checked in your own browser first. Files with columns about people (names, birth dates, phone numbers, diagnoses) are refused.",
     learnMoreHref: "/developers#byod",
   },
   "use-byok": {
@@ -226,9 +226,9 @@ export const INFO = {
   },
   "input-county": {
     title: "County",
-    what: "The area to plan for. Los Angeles County is ready now.",
-    why: "CDC estimates exist for every US county, so more counties can be added quickly.",
-    source: "CDC PLACES and US Census neighbourhood shapes.",
+    what: "The area to plan for. Los Angeles County and San Francisco are ready now.",
+    why: "CDC estimates exist for every US county. The other half of each plan needs an open register of local businesses, which many cities publish. San Francisco was added in one day from its public register.",
+    source: "CDC PLACES and US Census neighbourhood shapes; city business registers (Los Angeles: CC0; San Francisco: public domain).",
   },
   "opt-zones": {
     title: "How many zones",
@@ -340,6 +340,34 @@ export const INFO = {
     why: "A place whose fans live in high-need neighbourhoods brings in the people the checks are for, not just people passing through.",
     source: "Qloo heatmap with this place as the signal (aggregate taste data), matched to CDC PLACES census tracts. If the direct call fails, Qloo's official harness answers instead.",
     technical: "GET /v2/insights?filter.type=urn:heatmap&signal.interests.entities=<place id>&filter.location.query=Los Angeles. Top 20 cells by affinity inside the county; high need = tract need percentile above 0.8. Backup: harness qloo_where_popular.",
+  },
+  "input-partners": {
+    title: "Your partner places",
+    what: "A spreadsheet of places your team already works with, such as clinics' partner shops or past event sites. Anchor checks each one against need and puts the ones in high-need neighbourhoods first.",
+    why: "Most teams already have partners. The first question is whether those partners are where the need is.",
+    source: "Your file. It is read in this browser first. Files with columns about people (names, birth dates, phone numbers, diagnoses) are refused.",
+    technical: "CSV with name, latitude, longitude and an optional type column; up to 200 rows. Sent as PlanRequest.partners. No geocoding: coordinates are required so addresses never go to a third party.",
+  },
+  "partner-check": {
+    title: "Partner places checked against need",
+    what: "For each partner place, the need score of its neighbourhood, and whether it falls inside this plan's zones.",
+    why: "It shows at a glance whether current partnerships reach the people with the most untreated high blood pressure.",
+    source: "CDC PLACES census tract estimates, the same need score used everywhere in Anchor.",
+    technical: "Need percentile of the containing census tract; high need = above 0.8 (the county's top fifth).",
+  },
+  "group-partner": {
+    title: "Your partners in high-need neighbourhoods",
+    what: "Places from your own partner list that sit inside this plan's high-need neighbourhoods.",
+    why: "A place that already works with you is the easiest place to start. They take up to a third of the plan.",
+    source: "Your file, checked against CDC PLACES need estimates.",
+    technical: "group = partner, evidence 0.9, verified 1.0; ranked with the same formula and diversity rules as other places.",
+  },
+  "owner-invite": {
+    title: "Invite this place",
+    what: "A ready-to-edit letter asking the owner to host a free blood pressure check, with the proposed time from your plan.",
+    why: "In the barbershop study, barbers were partners, not just hosts. Asking well, with a clear time and a clear reason, is the first step.",
+    source: "Built from your plan: the visit schedule, the CDC need estimate for the neighbourhood, and Qloo talking points when Qloo is on. No AI writes it, so it makes no health claims.",
+    technical: "Template in components/app/OwnerInvite.tsx (inviteText). Anchor never sends messages; you copy or print it.",
   },
   "reading-corner": {
     title: "Reading corner",

@@ -22,13 +22,14 @@ export const WEIGHTS = {
   trustMix: { affinity: 0.6, popularity: 0.2, community: 0.2 },
   feasibleMix: { established: 0.6, days: 0.4 },
   // A Qloo listing has an address, a map point and a Google place id, so the penalty is small.
-  verified: { licensed: 1, qloo_only: 0.95 },
+  // A partner the health team already works with certainly exists.
+  verified: { licensed: 1, qloo_only: 0.95, partner: 1 },
   diversity: { perZone: 3, maxCategoryShare: 0.5, minMetres: 250 },
 } as const;
 
 export type TrustSignal = { affinity: number; popularity: number; community?: number; explanation?: string };
 
-export type Group = "trial" | "community";
+export type Group = "partner" | "trial" | "community";
 
 export type Candidate = {
   venue: Venue;
@@ -36,7 +37,7 @@ export type Candidate = {
   zoneNeed: number;
   zoneRank: number;
   trust: TrustSignal | null;
-  verification: "licensed" | "qloo_only";
+  verification: "licensed" | "qloo_only" | "partner";
   openOnPreferredDays: boolean | null;
 };
 

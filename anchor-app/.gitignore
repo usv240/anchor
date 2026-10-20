@@ -62,3 +62,6 @@ __pycache__/
 
 .vercel
 .env*
+
+# San Francisco raw register includes owner names; re-download with eval/pipeline/fetch_data.sh 06075
+/data/raw/sf/

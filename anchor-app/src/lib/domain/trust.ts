@@ -121,7 +121,7 @@ const ADDRESS = new RegExp(
   "^(.*\\b(?:Blvd|Boulevard|Ave|Avenue|St|Street|Rd|Road|Dr|Drive|Way|Pl|Place|Ln|Lane|Ct|Court|Hwy|Highway|Pkwy|Parkway|Ter|Terrace|Cir|Circle|Sq|Square|Plaza|Mall)\\.?" +
     "(?:\\s+(?:#|Ste|Suite|Unit|Apt|Bldg|Building|Space|Spc)\\.?\\s*[\\w-]+)?)\\s+([A-Za-z][A-Za-z .'-]*?),\\s*CA\\b\\s*(\\d{5})?",
 );
-/** Cities and communities in and around Los Angeles County, longest first so "East Los Angeles" wins over "Los Angeles". */
+/** Cities and communities in the counties Anchor covers, longest first so "East Los Angeles" wins over "Los Angeles". */
 const KNOWN_CITIES = [
   "East Los Angeles", "Los Angeles", "Inglewood", "Compton", "Lynwood", "South Gate", "Huntington Park", "Gardena", "Hawthorne", "Culver City",
   "Bell Gardens", "Bell", "Maywood", "Cudahy", "Paramount", "Downey", "Long Beach", "Carson", "Lawndale", "Lennox", "Willowbrook", "Florence-Graham",
@@ -131,6 +131,7 @@ const KNOWN_CITIES = [
   "Lakewood", "Cerritos", "Montebello", "Pico Rivera", "Rosemead", "Baldwin Park", "West Covina", "Covina", "Azusa", "Arcadia", "Monrovia",
   "Sherman Oaks", "Encino", "Studio City", "Tarzana", "Woodland Hills", "Northridge", "Granada Hills", "Chatsworth", "Sun Valley", "Sunland",
   "Tujunga", "Eagle Rock", "Highland Park", "Hollywood", "Venice", "Marina del Rey", "Playa Vista", "Westchester", "El Segundo", "Signal Hill",
+  "San Francisco", "Daly City", "Brisbane",
 ].sort((a, b) => b.length - a.length);
 const KNOWN_CITY = new RegExp(`^(.*?)\\s+(${KNOWN_CITIES.join("|")}),\\s*CA\\b\\s*(\\d{5})?`, "i");
 
@@ -258,7 +259,16 @@ export class QlooTrust implements TrustProvider {
 type RawTag = { name: string; subtype?: string; type?: string; tag_id?: string };
 const KIND: Record<string, string> = { media: "Shows and media", place: "Places", brand: "Shopping", specialty_dish: "Food", cuisine: "Food", music: "Music" };
 
-/** Plain kinds, no sensitive or unhelpful topics, no duplicates, at most 12. */
+/**
+ * Never suggested as talking points: identity and belief topics (Anchor never
+ * targets people by who they are), and alcohol, tobacco and cannabis (outreach
+ * is health outreach). Found in a live San Francisco run on Oct 20, which
+ * returned "Genderfluid" and "Wine Bar".
+ */
+const SENSITIVE_TAG = /politic|religio|church|faith|christian|muslim|jewish|ethnic|race|racial|govern|military|tourist|immigra|activis|gender|sexual|lgbt|queer|\btrans|\bgay\b|lesbian|bisexual|nonbinary|non-binary/i;
+const ALCOHOL_TAG = /\bbars?\b|wine|beer|brew|cocktail|liquor|spirits|whisk|vodka|tequila|mezcal|\bsake\b|\bpubs?\b|nightlife|night ?club|happy hour|cannabis|marijuana|smok|vape|hookah|cigar/i;
+
+/** Plain kinds, no sensitive, alcohol or unhelpful topics, no duplicates, at most 12. */
 export function cleanTags(raw: RawTag[]): Flavour["tags"] {
   const seen = new Set<string>();
   return raw
@@ -267,7 +277,7 @@ export function cleanTags(raw: RawTag[]): Flavour["tags"] {
       const key = parts[2] === "genre" ? parts[3] ?? "" : parts[2] ?? "";
       return { name: t.name.replace(/&amp;/g, "&"), kind: KIND[key] ?? "Interests" };
     })
-    .filter((t) => !/politic|religio|ethnic|race|govern|military|tourist|immigra|activis/i.test(t.name))
+    .filter((t) => !SENSITIVE_TAG.test(t.name) && !ALCOHOL_TAG.test(t.name))
     .filter((t) => (seen.has(t.name.toLowerCase()) ? false : (seen.add(t.name.toLowerCase()), true)))
     .slice(0, 12);
 }

@@ -20,7 +20,7 @@ Built for the Qloo Agentic Hackathon 2026. **Live: https://anchor-gamma-woad.ver
 | Places confirmed in a city licence or a Qloo listing | **100%** | 41% | 100% |
 | Bars and liquor stores | **0%** | 0% | 5% (any business) |
 
-All 35 safety tests pass: no targeting by race, ethnicity, religion or origin; no bars; no medical advice. Every number reruns with `npm run eval`.
+The same method in a second county (San Francisco) also puts 100% of places in high-need neighbourhoods, against 18% for a map search. All 35 safety tests pass: no targeting by race, ethnicity, religion or origin; no bars; no medical advice. Every number reruns with `npm run eval`.
 
 ## Where things are
 
@@ -29,6 +29,7 @@ All 35 safety tests pass: no targeting by race, ethnicity, religion or origin; n
 | [anchor-app/](anchor-app/) | The app, API, MCP server, data pipeline, evaluation and tests. Start with its [README](anchor-app/README.md). |
 | [anchor/](anchor/) | Research, plan, technical design, and UX and content guide |
 | [shared/](shared/) | Design system, platform design, rules compliance and tools coverage |
+| [DEVPOST.md](DEVPOST.md) | The submission text: what it does, why it needs Qloo, proof, safety and limits |
 | [LINKS.md](LINKS.md) | Hackathon and Qloo API links |
 
 ## Run it
@@ -44,6 +45,6 @@ Without keys the app runs in offline mode and says so on every plan.
 
 ## Licence and data
 
-Code: MIT, see [LICENSE](LICENSE). Data: CDC PLACES and US Census (public domain), City of Los Angeles business licences (CC0). Qloo data is used under the hackathon terms and is never stored in this repository.
+Code: MIT, see [LICENSE](LICENSE). Data: CDC PLACES and US Census (public domain), City of Los Angeles business licences (CC0), San Francisco Registered Business Locations (public domain). Qloo data is used under the hackathon terms and is never stored in this repository.
 
 Not medical advice.

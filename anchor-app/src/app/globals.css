@@ -211,4 +211,19 @@ p {
   [data-print="reading"] .reading-corner input {
     display: none !important;
   }
+  /* Owner invitation: print only the letter text */
+  [data-print="invite"] body * {
+    visibility: hidden;
+  }
+  [data-print="invite"] .owner-invite .invite-text {
+    visibility: visible;
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: auto;
+    min-height: 90vh;
+    border: 0;
+    font-size: 12pt;
+    resize: none;
+  }
 }

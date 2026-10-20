@@ -158,3 +158,17 @@ describe("rate limit throttle", () => {
     expect(Math.max(...waits)).toBeGreaterThan(200);
   });
 });
+
+describe("daily allowance for hosted keys", () => {
+  it("allows the configured number of plans per day, then refuses until the next day", async () => {
+    const { take, remaining, resetBudget } = await import("@/lib/api/budget");
+    resetBudget();
+    process.env.ANCHOR_DAILY_CLAUDE_PLANS = "2";
+    const day1 = new Date("2026-11-03T10:00:00Z");
+    expect([take("claude", day1), take("claude", day1), take("claude", day1)]).toEqual([true, true, false]);
+    expect(remaining("claude", day1)).toBe(0);
+    expect(take("claude", new Date("2026-11-04T00:01:00Z"))).toBe(true);
+    delete process.env.ANCHOR_DAILY_CLAUDE_PLANS;
+    resetBudget();
+  });
+});

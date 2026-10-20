@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { COUNTY_FIPS, DEFAULT_COUNTY } from "@/lib/domain/counties";
 
 /**
  * The plan contract. One schema serves the web app, the REST API, the MCP
@@ -22,6 +23,16 @@ export type Goal = keyof typeof GOALS;
 export const DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
 export type Day = (typeof DAYS)[number];
 
+/** Bring your own data: a place the health team already works with (src/lib/domain/partners.ts). */
+export const PartnerPlace = z
+  .object({
+    name: z.string().min(1).max(80),
+    lat: z.number().min(-90).max(90),
+    lon: z.number().min(-180).max(180),
+    category: z.string().max(40).optional(),
+  })
+  .strict();
+
 export const PlanRequest = z
   .object({
     goal: z.enum(Object.keys(GOALS) as [Goal, ...Goal[]]).default("bp_screening"),
@@ -36,9 +47,9 @@ export const PlanRequest = z
       .strict()
       .default({ ageGroups: ["35_to_54"], gender: "any" }),
     area: z
-      .object({ countyFips: z.literal("06037").default("06037") })
+      .object({ countyFips: z.enum(COUNTY_FIPS).default(DEFAULT_COUNTY) })
       .strict()
-      .default({ countyFips: "06037" }),
+      .default({ countyFips: DEFAULT_COUNTY }),
     options: z
       .object({
         zones: z.number().int().min(1).max(30).default(8),
@@ -50,6 +61,8 @@ export const PlanRequest = z
       .default({ zones: 8, maxVenues: 12, preferredDays: ["saturday", "friday"], excludeCategories: [] }),
     /** Optional free-text request, used by the agent (Claude) mode only. */
     prompt: z.string().max(600).optional(),
+    /** Optional partner list (bring your own data). Places only, never people. */
+    partners: z.array(PartnerPlace).max(200).optional(),
   })
   .strict();
 export type PlanRequest = z.infer<typeof PlanRequest>;
@@ -74,12 +87,12 @@ export const PlanVenue = z.object({
   lon: z.number(),
   zoneId: z.string(),
   zoneRank: z.number().int(),
-  /** trial: barbershops and salons (the venue type the NEJM trial tested). community: places this group loves (Qloo) or, offline, other licensed local businesses. */
-  group: z.enum(["trial", "community"]),
+  /** partner: from the health team's own partner list (bring your own data). trial: barbershops and salons (the venue type the NEJM trial tested). community: places this group loves (Qloo) or, offline, other licensed local businesses. */
+  group: z.enum(["partner", "trial", "community"]),
   scores: Scores,
   why: z.string(),
   verification: z.object({
-    status: z.enum(["licensed", "qloo_only"]),
+    status: z.enum(["licensed", "qloo_only", "partner"]),
     source: z.string(),
   }),
   /** Present for places that came from Qloo. Only allowlisted community tags are kept. */
@@ -133,6 +146,17 @@ export const Plan = z.object({
   venues: z.array(PlanVenue),
   visits: z.array(Visit),
   removed: z.array(z.object({ name: z.string(), category: z.string(), reason: z.string() })),
+  /** Present when the request included a partner list: where those partners sit against need. */
+  partnerCheck: z
+    .object({
+      uploaded: z.number(),
+      inPlanZones: z.number(),
+      inHighNeed: z.number(),
+      inTopHalf: z.number(),
+      outsideCounty: z.number(),
+      places: z.array(z.object({ name: z.string(), needPct: z.number().nullable(), inPlan: z.boolean() })),
+    })
+    .optional(),
   counts: z.object({
     candidates: z.number(),
     unsuitableRemoved: z.number(),

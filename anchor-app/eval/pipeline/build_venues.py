@@ -1,7 +1,10 @@
 """Build Anchor's local venue list for one county from open business licences.
 
-Source: City of Los Angeles Office of Finance, Listing of Active Businesses
-(data.lacity.org 6rrh-rzua, CC0). Covers the City of Los Angeles only.
+Sources (one per county, mapped to the same row shape by SOURCES below):
+  06037 Los Angeles: City of Los Angeles Office of Finance, Listing of Active
+        Businesses (data.lacity.org 6rrh-rzua, CC0). City of Los Angeles only.
+  06075 San Francisco: Registered Business Locations (data.sf.gov g8m3-pdis,
+        ODC Public Domain Dedication). City and county are the same area.
 
 Each licensed business inside a high-need zone becomes a candidate venue with:
   category (plain words), evidence weight, suitability flag (bars, liquor
@@ -12,6 +15,7 @@ to commit; no Qloo data here).
 
 Usage:
     uv run python pipeline/build_venues.py --county 06037
+    uv run python pipeline/build_venues.py --county 06075
 """
 
 from __future__ import annotations
@@ -129,6 +133,49 @@ def clean_address(text: str) -> str:
     return re.sub(r"(\d)(St|Nd|Rd|Th)\b", lambda m: m.group(1) + m.group(2).lower(), titled)
 
 
+def sf_row(r: dict) -> dict:
+    """San Francisco registry row -> the Los Angeles row shape used below.
+    A trading name equal to the owner's name is treated as no trading name, so
+    the sole-trader rule works the same way in both cities."""
+    loc = (r.get("location") or {}).get("coordinates") or [0, 0]
+    owner = (r.get("ownership_name") or "").strip()
+    dba = (r.get("dba_name") or "").strip()
+    return {
+        "location_account": r.get("uniqueid", ""),
+        "business_name": owner,
+        "dba_name": "" if dba.lower() == owner.lower() else dba,
+        "street_address": r.get("full_business_address") or "",
+        "city": "San Francisco",
+        "zip_code": r.get("business_zip") or "",
+        "council_district": "1",
+        "naics": r.get("self_reported_naics_code") or "",
+        "location_start_date": r.get("location_start_date") or "",
+        "location_1": {"latitude": str(loc[1]), "longitude": str(loc[0])},
+    }
+
+
+SOURCES = {
+    "06037": {
+        "raw": ("lacity", "venues.json"),
+        "row": lambda r: r,
+        "prefix": "la",
+        "default_city": "Los Angeles",
+        "source": "City of Los Angeles Office of Finance, Listing of Active Businesses (data.lacity.org 6rrh-rzua), CC0 1.0",
+        "coverage": "Businesses registered with the City of Los Angeles. This covers the city fully and some businesses in neighbouring cities; most other cities in the county are not included.",
+        "verifiedBy": "an active City of Los Angeles business licence",
+    },
+    "06075": {
+        "raw": ("sf", "venues.json"),
+        "row": sf_row,
+        "prefix": "sf",
+        "default_city": "San Francisco",
+        "source": "City and County of San Francisco, Registered Business Locations (data.sf.gov g8m3-pdis), ODC Public Domain Dedication",
+        "coverage": "Businesses registered with the City and County of San Francisco, which are the same area. Industry codes are reported by the business.",
+        "verifiedBy": "an active San Francisco business registration",
+    },
+}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--county", default="06037")
@@ -141,7 +188,8 @@ def main() -> None:
     zones = [(f["properties"]["zoneId"], prep(shape(f["geometry"])), shape(f["geometry"])) for f in tracts_fc["features"]]
     tree = STRtree([z[2] for z in zones])
 
-    rows = json.loads((ROOT / "data" / "raw" / "lacity" / "venues.json").read_text(encoding="utf-8"))
+    src = SOURCES[args.county]
+    rows = [src["row"](r) for r in json.loads((ROOT / "data" / "raw" / src["raw"][0] / src["raw"][1]).read_text(encoding="utf-8"))]
     today = date(2026, 10, 17)
     venues = []
     seen: set[tuple[str, float, float]] = set()
@@ -201,7 +249,7 @@ def main() -> None:
                 years = None
 
         venues.append({
-            "id": f"la-{r.get('location_account', '')}",
+            "id": f"{src['prefix']}-{r.get('location_account', '')}",
             "name": name,
             "category": label,
             "naics": r.get("naics"),
@@ -210,7 +258,7 @@ def main() -> None:
             "suitable": suitable,
             "unsuitableReason": reason,
             "address": clean_address(r.get("street_address") or ""),
-            "city": (r.get("city") or "Los Angeles").strip().title(),
+            "city": (r.get("city") or src["default_city"]).strip().title(),
             "insideCityOfLA": r.get("council_district") not in (None, "", "0"),
             "zip": (r.get("zip_code") or "")[:5],
             "lat": round(lat, 6),
@@ -223,8 +271,9 @@ def main() -> None:
     out = ROOT / "data" / "derived" / args.county
     out.mkdir(parents=True, exist_ok=True)
     payload = {
-        "source": "City of Los Angeles Office of Finance, Listing of Active Businesses (data.lacity.org 6rrh-rzua), CC0 1.0",
-        "coverage": "Businesses registered with the City of Los Angeles. This covers the city fully and some businesses in neighbouring cities; most other cities in the county are not included.",
+        "source": src["source"],
+        "coverage": src["coverage"],
+        "verifiedBy": src["verifiedBy"],
         "excludedSoleTraders": skipped_people,
         "excludedNonStorefront": skipped_non_storefront,
         "builtFor": args.county,

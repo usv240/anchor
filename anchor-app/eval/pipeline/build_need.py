@@ -121,6 +121,8 @@ def build_zones(scored: gpd.GeoDataFrame, top_share: float) -> list[dict]:
     for piece in pieces:
         group = high[rep.within(piece)]
         for members in split_large(group):
+            if members.empty:  # a buffer piece with no tract point inside it (found on San Francisco's islands)
+                continue
             members_wgs84 = members.to_crs("EPSG:4326")
             simple = outline(members_wgs84)
             w = members["adults"]

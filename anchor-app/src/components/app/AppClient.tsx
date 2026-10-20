@@ -1,5 +1,7 @@
 "use client";
 
+import { EXAMPLE_PARTNER_CSV, parsePartnerCsv, type Partner } from "@/lib/domain/partners";
+import { COUNTIES, COUNTY_FIPS, type CountyFips } from "@/lib/domain/counties";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import {
@@ -23,6 +25,7 @@ import { PlanMap } from "@/components/app/PlanMap";
 import { PlaceAudience } from "@/components/app/PlaceAudience";
 import { PlaceFans } from "@/components/app/PlaceFans";
 import { ReadingCorner } from "@/components/app/ReadingCorner";
+import { OwnerInvite } from "@/components/app/OwnerInvite";
 import { AGE_GROUPS, DAYS, GOALS, type AgeGroup, type Day, type Goal, type Plan, type PlanEvent, type StepStatus } from "@/lib/domain/types";
 import type { TraceRecord } from "@/lib/trace/ledger";
 
@@ -32,24 +35,30 @@ type Form = {
   goal: Goal;
   ageGroups: AgeGroup[];
   gender: "any" | "male" | "female";
+  county: CountyFips;
   zones: number;
   maxVenues: number;
   days: Day[];
   exclude: string[];
   prompt: string;
   qlooKey: string;
+  partners: Partner[];
+  partnerNote: string | null;
 };
 
 const DEFAULT_FORM: Form = {
   goal: "bp_screening",
   ageGroups: ["35_to_54"],
   gender: "male",
+  county: "06037",
   zones: 8,
   maxVenues: 12,
   days: ["saturday", "friday"],
   exclude: [],
   prompt: "",
   qlooKey: "",
+  partners: [],
+  partnerNote: null,
 };
 
 const CATEGORIES = ["Barbershop", "Beauty salon", "Nail salon", "Laundromat", "Restaurant", "Quick-service restaurant", "Gym or sports centre", "Record store", "Grocery store"];
@@ -65,44 +74,21 @@ export function AppClient() {
   const [plan, setPlan] = useState<Plan | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [view, setView] = useState<"list" | "map">("list");
+  const [notice, setNotice] = useState<string | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    fetch("/api/v1/health")
-      .then((r) => r.json())
-      .then(setHealth)
-      .catch(() => setHealth(null));
-    const id = new URLSearchParams(window.location.search).get("plan");
-    if (id) {
-      fetch(`/api/v1/plans/${encodeURIComponent(id)}`)
-        .then((r) => (r.ok ? r.json() : Promise.reject(new Error("not found"))))
-        .then((p: Plan) => {
-          setPlan(p);
-          setStatus("done");
-          setSelectedId(p.venues[0]?.id ?? null);
-        })
-        .catch(() => setError("That saved plan could not be found. Plans are kept for a limited time. You can make a new one below."));
-    }
-  }, []);
 
-  const run = useCallback(async () => {
+  const runBody = useCallback(async (body: object, qlooKey = "") => {
     setStatus("running");
     setError(null);
     setSteps([]);
     setPlan(null);
     setSelectedId(null);
-    const body = {
-      goal: form.goal,
-      audience: { ageGroups: form.ageGroups, gender: form.gender },
-      area: { countyFips: "06037" },
-      options: { zones: form.zones, maxVenues: form.maxVenues, preferredDays: form.days, excludeCategories: form.exclude },
-      ...(form.prompt.trim() ? { prompt: form.prompt.trim() } : {}),
-    };
     try {
       const res = await fetch("/api/v1/plans", {
         method: "POST",
-        headers: { "content-type": "application/json", ...(form.qlooKey ? { "x-qloo-key": form.qlooKey } : {}) },
+        headers: { "content-type": "application/json", ...(qlooKey ? { "x-qloo-key": qlooKey } : {}) },
         body: JSON.stringify(body),
       });
       if (!res.ok || !res.body) {
@@ -132,7 +118,7 @@ export function AppClient() {
             setPlan(e.plan);
             setSelectedId(e.plan.venues[0]?.id ?? null);
             setStatus("done");
-            window.history.replaceState(null, "", `/app?plan=${e.plan.planId}`);
+            window.history.replaceState(null, "", shareUrl(e.plan, ""));
             requestAnimationFrame(() => resultsRef.current?.focus());
           } else if (e.type === "error") {
             throw new Error(e.message);
@@ -143,7 +129,49 @@ export function AppClient() {
       setError((err as Error).message);
       setStatus("error");
     }
-  }, [form]);
+  }, []);
+
+  const run = useCallback(
+    () =>
+      runBody(
+        {
+          goal: form.goal,
+          audience: { ageGroups: form.ageGroups, gender: form.gender },
+          area: { countyFips: form.county },
+          options: { zones: form.zones, maxVenues: form.maxVenues, preferredDays: form.days, excludeCategories: form.exclude },
+          ...(form.prompt.trim() ? { prompt: form.prompt.trim() } : {}),
+          ...(form.partners.length ? { partners: form.partners } : {}),
+        },
+        form.qlooKey,
+      ),
+    [form, runBody],
+  );
+
+  useEffect(() => {
+    fetch("/api/v1/health")
+      .then((r) => r.json())
+      .then(setHealth)
+      .catch(() => setHealth(null));
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("plan");
+    const settings = readSettings(params.get("r"));
+    if (id) {
+      fetch(`/api/v1/plans/${encodeURIComponent(id)}`)
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error("not found"))))
+        .then((p: Plan) => {
+          setPlan(p);
+          setStatus("done");
+          setSelectedId(p.venues[0]?.id ?? null);
+        })
+        .catch(() => {
+          if (settings) {
+            // Saved plans live in server memory and can expire; the link carries its settings, so make it again.
+            setNotice("This shared plan had expired on the server, so Anchor made it again from the same settings. Places can differ slightly if business or Qloo data changed.");
+            void runBody(settings);
+          } else setError("That saved plan could not be found. Plans are kept for a limited time. You can make a new one below.");
+        });
+    }
+  }, [runBody]);
 
   const selected = plan?.venues.find((v) => v.id === selectedId) ?? null;
   const select = (id: string) => {
@@ -160,6 +188,11 @@ export function AppClient() {
         </div>
         <ModeBadges health={health} plan={plan} />
       </div>
+      {notice ? (
+        <p role="status" className="mt-4 rounded-[10px] border border-border bg-surface-2 px-4 py-3 text-sm">
+          {notice}
+        </p>
+      ) : null}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[360px_1fr]">
         {/* Settings and steps */}
@@ -304,9 +337,13 @@ function Settings({
         </div>
       </Field>
 
-      <Field label="Where" info="input-county" hint="More counties can be added from the same public data.">
-        <select className={select} value="06037" disabled aria-label="County">
-          <option value="06037">Los Angeles County, CA</option>
+      <Field label="Where" info="input-county" hint="Adding a county takes one open business register; need data covers every US county.">
+        <select className={select} value={form.county} onChange={(e) => setForm({ ...form, county: e.target.value as CountyFips })} aria-label="County">
+          {COUNTY_FIPS.map((f) => (
+            <option key={f} value={f}>
+              {COUNTIES[f].name}
+            </option>
+          ))}
         </select>
       </Field>
 
@@ -337,6 +374,40 @@ function Settings({
           </span>
         </summary>
         <div className="space-y-5 border-t border-border p-3">
+          <Field label="Your partner places (optional)" info="input-partners" hint="A CSV of places you already work with: name, latitude, longitude, and type if you like. Places only, never people.">
+            <input
+              type="file"
+              accept=".csv,text/csv"
+              aria-label="Upload your partner places"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const r = parsePartnerCsv(await file.text());
+                setForm({
+                  ...form,
+                  partners: r.partners,
+                  partnerNote: r.error ?? `${r.partners.length} places loaded${r.skipped ? `, ${r.skipped} rows skipped (no name or coordinates)` : ""}. Checked in this browser.`,
+                });
+                e.target.value = "";
+              }}
+              className="block w-full text-sm file:mr-3 file:min-h-11 file:rounded-[10px] file:border file:border-border file:bg-surface file:px-3 file:text-sm file:font-medium"
+            />
+            <p className="mt-2 flex flex-wrap items-center gap-x-3 text-xs">
+              <a href={`data:text/csv;charset=utf-8,${encodeURIComponent(EXAMPLE_PARTNER_CSV)}`} download="anchor-partners-example.csv" className="inline-flex min-h-8 items-center text-accent underline underline-offset-2">
+                Download an example file
+              </a>
+              {form.partners.length ? (
+                <button type="button" onClick={() => setForm({ ...form, partners: [], partnerNote: null })} className="inline-flex min-h-8 items-center text-muted underline underline-offset-2">
+                  Remove partner places
+                </button>
+              ) : null}
+            </p>
+            {form.partnerNote ? (
+              <p role="status" className={`mt-1 text-xs ${form.partners.length ? "text-success" : "text-danger"}`}>
+                {form.partnerNote}
+              </p>
+            ) : null}
+          </Field>
           <Field label="Leave out" info="opt-exclude">
             <div className="flex flex-wrap gap-1.5" role="group" aria-label="Venue types to leave out">
               {CATEGORIES.map((c) => (
@@ -513,6 +584,40 @@ function Summary({ plan }: { plan: Plan }) {
           </div>
         ))}
       </dl>
+      {plan.partnerCheck ? (
+        <div className="mt-4 rounded-[10px] border border-border p-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold">Your partner places, checked against need</h3>
+            <Info id="partner-check" className="-my-2 -mr-3" />
+          </div>
+          <p className="mt-1 text-sm">
+            <span className="tabular font-semibold">{plan.partnerCheck.inHighNeed} of {plan.partnerCheck.uploaded}</span> are in the county&apos;s highest-need neighbourhoods
+            (by chance it would be about 1 in 5). {plan.partnerCheck.inPlanZones} are in this plan&apos;s zones and were added to it
+            {plan.partnerCheck.outsideCounty ? `; ${plan.partnerCheck.outsideCounty} are outside this county` : ""}.
+          </p>
+          <details className="mt-2 text-sm">
+            <summary className="inline-flex min-h-9 cursor-pointer items-center text-accent underline underline-offset-2">See each place</summary>
+            <table className="mt-2 w-full text-left text-xs">
+              <thead>
+                <tr className="text-muted">
+                  <th scope="col" className="py-1">Place</th>
+                  <th scope="col" className="py-1">Need (0 to 1)</th>
+                  <th scope="col" className="py-1">In this plan</th>
+                </tr>
+              </thead>
+              <tbody className="tabular divide-y divide-border">
+                {plan.partnerCheck.places.map((x, i) => (
+                  <tr key={i}>
+                    <td className="py-1 pr-2">{x.name}</td>
+                    <td className="py-1">{x.needPct === null ? "Outside county" : x.needPct.toFixed(2)}</td>
+                    <td className="py-1">{x.inPlan ? "Yes" : "No"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </details>
+        </div>
+      ) : null}
       {plan.localFlavour && plan.localFlavour.tags.length ? (
         <div className="mt-4 rounded-[10px] border border-border p-3">
           <div className="flex items-center justify-between">
@@ -545,17 +650,21 @@ function VenueList({ plan, selectedId, onSelect }: { plan: Plan; selectedId: str
           Score <Info id="score-anchor" className="-my-2 -mr-3" />
         </span>
       </div>
-      {(["trial", "community"] as const).map((group) => {
+      {(["partner", "trial", "community"] as const).map((group) => {
         const items = plan.venues.filter((v) => v.group === group);
         if (items.length === 0) return null;
         const heading =
-          group === "trial"
+          group === "partner"
+            ? "Your partners in high-need neighbourhoods"
+            : group === "trial"
             ? "Barbershops and salons"
             : plan.mode.trust === "qloo"
               ? `Places ${audienceWords(plan)} love here`
               : "Other local places";
         const sub =
-          group === "trial"
+          group === "partner"
+            ? "From the file you added. Places you already work with come first."
+            : group === "trial"
             ? "The kind of place the barbershop study tested. From city business licences."
             : plan.mode.trust === "qloo"
               ? "From Qloo taste data: each is in this group's top third by affinity in its zone."
@@ -567,7 +676,7 @@ function VenueList({ plan, selectedId, onSelect }: { plan: Plan; selectedId: str
                 <h3 className="text-sm font-semibold">{heading}</h3>
                 <p className="text-xs text-muted">{sub}</p>
               </div>
-              <Info id={group === "trial" ? "group-trial" : "group-community"} className="-my-2 -mr-3" />
+              <Info id={group === "partner" ? "group-partner" : group === "trial" ? "group-trial" : "group-community"} className="-my-2 -mr-3" />
             </div>
             <ol className="divide-y divide-border">
               {items.map((v) => {
@@ -671,7 +780,7 @@ function VenueDetail({ plan, venueId }: { plan: Plan; venueId: string }) {
         <ul className="space-y-2 text-sm">
           <li className="flex items-center gap-2">
             <ShieldCheck aria-hidden="true" size={18} className="text-success" />
-            <span>{v.verification.status === "licensed" ? "Verified: active City of Los Angeles business licence" : "From Qloo, not yet confirmed"}</span>
+            <span>{v.verification.status === "qloo_only" ? "From Qloo, not yet matched to a city record" : `Verified: ${v.verification.source.charAt(0).toLowerCase()}${v.verification.source.slice(1)}`}</span>
             <Info id="verified" className="-my-2" />
           </li>
           {v.yearsInBusiness !== null ? (
@@ -702,7 +811,7 @@ function VenueDetail({ plan, venueId }: { plan: Plan; venueId: string }) {
       {v.qloo ? (
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <PlaceAudience key={v.qloo.entityId} qlooId={v.qloo.entityId} highlight={{ ages: plan.request.audience.ageGroups.flatMap((g) => [...AGE_GROUPS[g].qloo]), gender: plan.request.audience.gender }} />
-          <PlaceFans key={`fans-${v.qloo.entityId}`} qlooId={v.qloo.entityId} />
+          <PlaceFans key={`fans-${v.qloo.entityId}`} qlooId={v.qloo.entityId} county={plan.request.area.countyFips} />
           <div className="space-y-3 rounded-[10px] border border-border p-4 text-sm">
             <h3 className="font-semibold">From Qloo</h3>
             {v.qloo.categories.length ? <p><span className="text-muted">Kind of place:</span> {v.qloo.categories.join(", ")}</p> : null}
@@ -724,6 +833,10 @@ function VenueDetail({ plan, venueId }: { plan: Plan; venueId: string }) {
           <ReadingCorner key={v.id} venueName={v.name} />
         </div>
       ) : null}
+
+      <div className="mt-4">
+        <OwnerInvite key={`inv-${v.id}`} plan={plan} venue={v} audience={audienceWords(plan)} />
+      </div>
 
       <div className="mt-4 border-t border-border pt-4">
         <div className="flex flex-wrap items-center gap-2">
@@ -787,7 +900,7 @@ function Exports({ plan }: { plan: Plan }) {
           type="button"
           className={item}
           onClick={async () => {
-            await navigator.clipboard.writeText(`${window.location.origin}/app?plan=${plan.planId}`);
+            await navigator.clipboard.writeText(shareUrl(plan, window.location.origin));
             setCopied(true);
             setTimeout(() => setCopied(false), 2500);
           }}
@@ -849,4 +962,23 @@ function audienceWords(plan: Plan): string {
   const ages = plan.request.audience.ageGroups.map((g) => AGE_GROUPS[g].label).join(" and ");
   const who = plan.request.audience.gender === "male" ? "men" : plan.request.audience.gender === "female" ? "women" : "adults";
   return `${who} aged ${ages}`;
+}
+
+/** Share link: the plan id, plus its settings so the plan can be made again if the server has forgotten it. Partner lists are never put in a link. */
+function shareUrl(plan: Plan, origin: string): string {
+  const { partners: _partners, ...settings } = plan.request;
+  void _partners;
+  const r = btoa(unescape(encodeURIComponent(JSON.stringify(settings)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return `${origin}/app?plan=${plan.planId}&r=${r}`;
+}
+
+function readSettings(r: string | null): object | null {
+  if (!r || r.length > 4000) return null;
+  try {
+    const json = decodeURIComponent(escape(atob(r.replace(/-/g, "+").replace(/_/g, "/"))));
+    const v = JSON.parse(json) as unknown;
+    return v && typeof v === "object" ? (v as object) : null;
+  } catch {
+    return null;
+  }
 }

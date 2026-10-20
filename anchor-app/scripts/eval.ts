@@ -307,6 +307,43 @@ async function main() {
     rows: policyRows,
   };
 
+  // Second county: San Francisco, same method and baselines, a smaller grid (4 audiences, one plan size).
+  const sfFc = JSON.parse(await readFile(path.join(ROOT, "public/data/need/06075/tracts.geojson"), "utf8")) as typeof tractsFc;
+  const sfTracts: Tract[] = sfFc.features.map((f) => ({ geoid: f.properties.GEOID, needPct: f.properties.need_pct, untreated: f.properties.untreated, geom: f.geometry, box: bbox(f.geometry) }));
+  type SfRaw = { self_reported_naics_code?: string; location?: { coordinates?: [number, number] } };
+  // The raw register is not in the repo (it includes owner names): bash eval/pipeline/fetch_data.sh 06075
+  const sfText = await readFile(path.join(ROOT, "data/raw/sf/venues.json"), "utf8").catch(() => "[]");
+  if (sfText === "[]") console.log("San Francisco map-search baseline skipped: run bash eval/pipeline/fetch_data.sh 06075 first");
+  const sfRaw = (JSON.parse(sfText) as SfRaw[])
+    .filter((r) => r.location?.coordinates?.[1])
+    .map((r) => ({ lat: r.location!.coordinates![1], lon: r.location!.coordinates![0], naics: r.self_reported_naics_code ?? "" }))
+    .filter((v) => tractAt(v, sfTracts));
+  const sfHair = sfRaw.filter((v) => v.naics === "812111" || v.naics === "812112").map(asVenue);
+  const sfRuns: Metrics[] = [];
+  const sfQlooRuns: Metrics[] = [];
+  const sfMap: Metrics[] = [];
+  for (const [i, audience] of audiences.entries()) {
+    const req = PlanRequest.parse({ area: { countyFips: "06075" }, audience, options: { zones: 8, maxVenues: 12, preferredDays: ["saturday"], excludeCategories: [] } });
+    const { plan } = await runBasicPlanner(req, { trust: new OfflineTrust(), now: NOW });
+    sfRuns.push(measure(toMeasured(plan.venues), sfTracts, TOP_CUT));
+    if (qlooKey) {
+      const ledger = new TraceLedger();
+      const live = await runBasicPlanner(req, { trust: new QlooTrust({ apiKey: qlooKey, ledger, cache, budget: 60 }), ledger, now: NOW });
+      sfQlooRuns.push(measure(toMeasured(live.plan.venues), sfTracts, TOP_CUT));
+    }
+    const rand = rng(9001 + i);
+    if (sfHair.length) sfMap.push(avg(Array.from({ length: 200 }, () => measure(sample(sfHair, plan.venues.length, rand), sfTracts, TOP_CUT))));
+  }
+  const secondCounty = {
+    county: "06075",
+    name: "San Francisco County, CA",
+    requests: audiences.length,
+    anchor: r3(avg(sfQlooRuns.length ? sfQlooRuns : sfRuns)),
+    anchorMode: sfQlooRuns.length ? "qloo" : "offline",
+    mapSearch: sfMap.length ? r3(avg(sfMap)) : { needCapture: NaN, meanNeedPercentile: NaN, pending: "Run bash eval/pipeline/fetch_data.sh 06075" },
+    note: "Same method and baselines as Los Angeles. Venues: San Francisco Registered Business Locations (public domain).",
+  };
+
   const results = {
     runAt: new Date().toISOString(),
     durationSeconds: Math.round((Date.now() - started) / 1000),
@@ -338,6 +375,7 @@ async function main() {
       qlooNoNeed: qlooKey ? { label: "Qloo without need data", ...r3(avg(qlooNoNeedRuns)) } : { label: "Qloo without need data", pending: "Needs QLOO_API_KEY." },
     },
     policy,
+    secondCounty,
     qloo: qlooKey
       ? {
           audienceOverlap: overlaps,

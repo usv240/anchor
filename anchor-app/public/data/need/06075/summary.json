@@ -1,0 +1,14 @@
+{
+  "countyFips": "06075",
+  "countyName": "San Francisco County",
+  "source": "CDC PLACES 2025 release (data.cdc.gov yjkw-uj5s), US Census cartographic boundary tracts 2023",
+  "method": "untreated = adults x bphigh x (1 - bpmed); need = 0.5 pct_rank(untreated) + 0.5 pct_rank(bphigh)",
+  "topShare": 0.2,
+  "tracts": 241,
+  "adults": 760738,
+  "estUntreatedAdults": 57546,
+  "zones": 9,
+  "zoneTracts": 49,
+  "zoneEstUntreatedAdults": 15793,
+  "maxZoneWktBytes": 303
+}

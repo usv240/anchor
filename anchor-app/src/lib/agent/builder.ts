@@ -1,3 +1,5 @@
+import { county } from "@/lib/domain/counties";
+import { needPercentileAt } from "@/lib/need";
 import { randomUUID } from "node:crypto";
 import { inHighNeedTract, loadNeed, type Zone } from "@/lib/need";
 import { venuesByZone, type Venue } from "@/lib/domain/venues";
@@ -28,6 +30,8 @@ export type BuilderDeps = {
 
 type ZoneState = { zone: Zone; rank: number; licensed: Venue[]; traceIds: string[] };
 
+const PARTNER_UNSUITABLE = /\b(bar|pub|tavern|lounge|liquor|brewery|cocktail|smoke|vape|dispensary|cannabis|hookah)\b/i;
+
 export class PlanBuilder {
   readonly ledger: TraceLedger;
   private readonly emit: (e: PlanEvent) => void;
@@ -45,6 +49,7 @@ export class PlanBuilder {
   private localFlavour: { zoneId: string; tags: { name: string; kind: string }[]; citations: string[] } | undefined;
   private lovedInfo = new Map<string, { categories: string[]; tags: string[]; servesAlcohol: boolean; openDays: Day[] | null; licensedMatch: boolean }>();
   private zonesAsked = 0;
+  private partnerCheck: Plan["partnerCheck"];
 
   constructor(
     readonly request: PlanRequest,
@@ -148,7 +153,7 @@ export class PlanBuilder {
     for (const z of this.zones) {
       const licRec = this.ledger.append({
         tool: "licences.zone",
-        request: { zoneId: z.zone.zoneId, source: "data.lacity.org 6rrh-rzua" },
+        request: { zoneId: z.zone.zoneId, source: county(this.request.area.countyFips).dataset },
         responseBody: JSON.stringify(z.licensed.map((v) => v.id)),
         summary: `${z.licensed.length} licensed businesses in ${z.zone.zoneId}`,
       });
@@ -190,14 +195,79 @@ export class PlanBuilder {
       }
     }
 
+    await this.addPartners();
     const trial = this.candidates.filter((c) => c.group === "trial").length;
-    const community = this.candidates.length - trial;
+    const community = this.candidates.filter((c) => c.group === "community").length;
     const detail =
       this.deps.trust.mode === "qloo"
         ? `${community} places ${audienceLabel} love (from ${this.trustReturned} Qloo places), plus ${trial} licensed barbershops and salons`
         : `${this.candidates.length} licensed businesses. Qloo taste ranking is off until a Qloo key is added.`;
     this.step("trust", label, this.deps.trust.mode === "qloo" ? "done" : "skipped", detail);
     return { zones: this.zones.length, candidates: this.candidates.length, trial, community, trustMode: this.deps.trust.mode, placesFromQloo: this.trustReturned };
+  }
+
+  /**
+   * 3b. Bring your own data: check each partner place against need, and add the
+   * ones inside this plan's high-need neighbourhoods as candidates.
+   */
+  private async addPartners(): Promise<void> {
+    const partners = this.request.partners ?? [];
+    if (partners.length === 0) return;
+    const fips = this.request.area.countyFips;
+    const places: NonNullable<Plan["partnerCheck"]>["places"] = [];
+    let inPlan = 0;
+    for (const [i, p] of partners.entries()) {
+      const needPct = await needPercentileAt(fips, p);
+      let zone: ZoneState | undefined;
+      for (const z of this.zones) if (!zone && (await inHighNeedTract(fips, z.zone.zoneId, p))) zone = z;
+      places.push({ name: p.name, needPct: needPct === null ? null : Math.round(needPct * 100) / 100, inPlan: Boolean(zone) });
+      if (!zone) continue;
+      inPlan += 1;
+      const unsuitable = PARTNER_UNSUITABLE.test(p.name) || PARTNER_UNSUITABLE.test(p.category ?? "");
+      this.candidates.push({
+        venue: {
+          id: `partner-${i + 1}`,
+          name: p.name,
+          category: p.category || "Partner place",
+          naics: "",
+          evidence: 0.9, // the team already works here: a known, willing host
+          suitable: !unsuitable,
+          unsuitableReason: unsuitable ? "Name or type suggests alcohol, tobacco or cannabis" : null,
+          address: "",
+          city: county(fips).short,
+          insideCityOfLA: false,
+          zip: "",
+          lat: p.lat,
+          lon: p.lon,
+          zoneId: zone.zone.zoneId,
+          since: null,
+          yearsInBusiness: null,
+        },
+        group: "partner",
+        zoneNeed: zone.zone.need,
+        zoneRank: zone.rank,
+        trust: null,
+        verification: "partner",
+        openOnPreferredDays: null,
+      });
+      this.candidateTrace.set(`partner-${i + 1}`, [...zone.traceIds]);
+    }
+    const highNeed = places.filter((x) => x.needPct !== null && x.needPct > 0.8).length;
+    this.partnerCheck = {
+      uploaded: partners.length,
+      inPlanZones: inPlan,
+      inHighNeed: highNeed,
+      inTopHalf: places.filter((x) => x.needPct !== null && x.needPct > 0.5).length,
+      outsideCounty: places.filter((x) => x.needPct === null).length,
+      places: [...places].sort((a, b) => (b.needPct ?? -1) - (a.needPct ?? -1)),
+    };
+    this.ledger.append({
+      tool: "partners.check",
+      request: { uploaded: partners.length, county: fips },
+      responseBody: JSON.stringify(places.map((x) => [x.needPct, x.inPlan])),
+      summary: `${highNeed} of ${partners.length} partner places are in the county's highest-need fifth; ${inPlan} are in this plan's zones`,
+    });
+    this.step("partners", "Checking your partner places against need", "done", `${highNeed} of ${partners.length} are in the highest-need neighbourhoods; ${inPlan} are in this plan's zones`);
   }
 
   /** 4. Check: remove unsuitable venues and excluded categories. */
@@ -235,16 +305,19 @@ export class PlanBuilder {
     const label = "Ranking places with Anchor's published formula";
     this.step("rank", label, "running");
     const scored = this.candidates.map(scoreCandidate);
+    const partnerPool = scored.filter((s) => s.group === "partner");
     const trialPool = scored.filter((s) => s.group === "trial");
     const communityPool = scored.filter((s) => s.group === "community");
-    const trialTarget = Math.ceil(maxVenues / 2);
-    let trial = selectDiverse(trialPool, trialTarget);
-    const community = selectDiverse(communityPool, maxVenues - trial.length, trial);
-    if (trial.length + community.length < maxVenues) {
-      trial = [...trial, ...selectDiverse(trialPool.filter((s) => !trial.includes(s)), maxVenues - trial.length - community.length, [...trial, ...community])];
+    // Partners the team already works with come first, up to a third of the plan.
+    const partners = selectDiverse(partnerPool, Math.ceil(maxVenues / 3));
+    const rest = maxVenues - partners.length;
+    let trial = selectDiverse(trialPool, Math.ceil(rest / 2), partners);
+    const community = selectDiverse(communityPool, rest - trial.length, [...partners, ...trial]);
+    if (partners.length + trial.length + community.length < maxVenues) {
+      trial = [...trial, ...selectDiverse(trialPool.filter((s) => !trial.includes(s)), maxVenues - partners.length - trial.length - community.length, [...partners, ...trial, ...community])];
     }
     const byScore = (a: Scored, b: Scored) => b.scores.anchor - a.scores.anchor;
-    this.ranked = [...trial.sort(byScore), ...community.sort(byScore)];
+    this.ranked = [...partners.sort(byScore), ...trial.sort(byScore), ...community.sort(byScore)];
     const byCategory = countBy(this.ranked.map((r) => r.venue.category));
     this.ledger.append({
       tool: "rank.formula",
@@ -252,7 +325,7 @@ export class PlanBuilder {
       responseBody: JSON.stringify(this.ranked.map((r) => [r.venue.id, r.group, r.scores.anchor])),
       summary: `${this.ranked.length} venues chosen (${trial.length} barbershops and salons, ${community.length} community places)`,
     });
-    this.step("rank", label, "done", `${trial.length} barbershops and salons, ${community.length} ${this.deps.trust.mode === "qloo" ? "loved local places" : "other local places"}, from ${scored.length} candidates`);
+    this.step("rank", label, "done", `${partners.length ? `${partners.length} of your partners, ` : ""}${trial.length} barbershops and salons, ${community.length} ${this.deps.trust.mode === "qloo" ? "loved local places" : "other local places"}, from ${scored.length} candidates`);
     return { chosen: this.ranked.length, byCategory, trial: trial.length, community: community.length };
   }
 
@@ -318,10 +391,12 @@ export class PlanBuilder {
       verification: {
         status: r.verification,
         source:
-          r.verification === "licensed"
+          r.verification === "partner"
+            ? "From your partner list (added for this plan)"
+            : r.verification === "licensed"
             ? r.venue.id.startsWith("qloo-")
-              ? "Found by Qloo and matched to a City of Los Angeles business licence"
-              : "City of Los Angeles business licence"
+              ? `Found by Qloo and matched to a ${county(this.request.area.countyFips).licence}`
+              : county(this.request.area.countyFips).licence
             : "Listed by Qloo with an address and map location (no city licence match)",
       },
       ...(this.lovedInfo.has(r.venue.id)
@@ -351,7 +426,7 @@ export class PlanBuilder {
         note:
           this.deps.trust.mode === "qloo"
             ? "Half the plan is barbershops and salons from city licence records (the venue type the trial tested). The other half is places this group loves, from Qloo taste data, re-ranked by the group's affinity. All inside high-need neighbourhoods from CDC estimates."
-            : "Offline mode: places come from City of Los Angeles business licences and are ranked by need, venue type and years in business. Qloo taste ranking turns on when a Qloo key is added.",
+            : `Offline mode: places come from ${county(this.request.area.countyFips).licenceSource.replace(/ \(.*\)$/, "")} and are ranked by need, venue type and years in business. Qloo taste ranking turns on when a Qloo key is added.`,
       },
       request: this.request,
       summary: summary ?? this.defaultSummary(venues.length, byCategory),
@@ -359,6 +434,7 @@ export class PlanBuilder {
       venues,
       visits,
       removed: this.removed,
+      ...(this.partnerCheck ? { partnerCheck: this.partnerCheck } : {}),
       counts: { candidates: this.candidates.length, unsuitableRemoved: this.removed.length, categories: byCategory },
       policy: { reframed: this.reframed, message: this.reframed ? REFRAME_MESSAGE : undefined },
       ...(this.localFlavour ? { localFlavour: this.localFlavour } : {}),
@@ -388,6 +464,7 @@ export class PlanBuilder {
     const needPart = z
       ? `In zone ${r.zoneRank}, where an estimated ${fmt.format(z.estUntreatedAdults)} adults have high blood pressure without medicine.`
       : "";
+    if (r.group === "partner") return `Already one of your partners, and inside a high-need neighbourhood. ${needPart}`.trim();
     if (r.trust) {
       const info = this.lovedInfo.get(r.venue.id);
       const kind = info?.categories[0] ? withArticle(niceCategory(info.categories[0])) : "A local place";
@@ -414,10 +491,10 @@ export class PlanBuilder {
   private limits(): string[] {
     const out = [
       "CDC PLACES figures are model-based estimates from a national survey, not counts of patients.",
-      "Business data comes from businesses registered with the City of Los Angeles (active licences), which covers the city and some neighbouring areas; some businesses may have closed.",
+      county(this.request.area.countyFips).coverageGap,
     ];
     if (this.skippedZones > 0) {
-      out.push(`${this.skippedZones} higher-need zones were skipped because we do not yet have business data there (they are outside the City of Los Angeles).`);
+      out.push(`${this.skippedZones} higher-need zones were skipped because we do not yet have business data there (${county(this.request.area.countyFips).skippedReason}).`);
     }
     out.push(
       this.deps.trust.mode === "qloo"

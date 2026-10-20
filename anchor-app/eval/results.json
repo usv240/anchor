@@ -1,6 +1,6 @@
 {
-  "runAt": "2026-10-20T04:45:19.343Z",
-  "durationSeconds": 109,
+  "runAt": "2026-10-20T14:27:27.456Z",
+  "durationSeconds": 7,
   "mode": {
     "trust": "qloo",
     "planner": "basic"
@@ -307,6 +307,27 @@
         "pass": true
       }
     ]
+  },
+  "secondCounty": {
+    "county": "06075",
+    "name": "San Francisco County, CA",
+    "requests": 4,
+    "anchor": {
+      "needCapture": 1,
+      "meanNeedPercentile": 0.885,
+      "unsuitableRate": 0,
+      "licensedRate": 1,
+      "categories": 7.5
+    },
+    "anchorMode": "qloo",
+    "mapSearch": {
+      "needCapture": 0.18,
+      "meanNeedPercentile": 0.482,
+      "unsuitableRate": 0,
+      "licensedRate": 1,
+      "categories": 1.849
+    },
+    "note": "Same method and baselines as Los Angeles. Venues: San Francisco Registered Business Locations (public domain)."
   },
   "qloo": {
     "audienceOverlap": [

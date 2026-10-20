@@ -1,3 +1,4 @@
+import { county, DEFAULT_COUNTY } from "@/lib/domain/counties";
 import { needPercentileAt } from "@/lib/need";
 import { QlooClient, QlooError, type QlooCache } from "@/lib/qloo/client";
 import { harnessCall } from "@/lib/qloo/harness";
@@ -40,26 +41,27 @@ export async function shape(placeId: string, cells: Cell[], county: string, via:
 }
 
 export async function fanReach(apiKey: string, placeId: string, opts: { cache?: QlooCache; county?: string; harness?: boolean } = {}): Promise<FanReach> {
-  const county = opts.county ?? "06037";
+  const fips = opts.county ?? DEFAULT_COUNTY;
+  const where = county(fips);
   let primaryError = "";
   try {
     const client = new QlooClient({ apiKey, cache: opts.cache, budget: 1 });
     const r = await client.insights<{ results?: { heatmap?: Cell[] } }>({
       "filter.type": "urn:heatmap",
       "signal.interests.entities": placeId,
-      "filter.location.query": "Los Angeles",
+      "filter.location.query": where.qlooCity,
     });
     const cells = r.data.results?.heatmap ?? [];
-    if (cells.length) return shape(placeId, cells, county, "rest");
+    if (cells.length) return shape(placeId, cells, fips, "rest");
     primaryError = "Qloo has no fan map for this place.";
   } catch (err) {
     primaryError = err instanceof QlooError ? err.message : (err as Error).message;
   }
   if (opts.harness !== false) {
     try {
-      const h = await harnessCall(apiKey, "qloo_where_popular", { entity: placeId, entity_type: "place", within: "Los Angeles, CA", limit: FAN_AREAS });
+      const h = await harnessCall(apiKey, "qloo_where_popular", { entity: placeId, entity_type: "place", within: where.harnessArea, limit: FAN_AREAS });
       const cells = (h.results ?? []) as Cell[];
-      if (h.status === "ok" && cells.length) return shape(placeId, cells, county, "harness");
+      if (h.status === "ok" && cells.length) return shape(placeId, cells, fips, "harness");
     } catch {
       // fall through to the primary error
     }

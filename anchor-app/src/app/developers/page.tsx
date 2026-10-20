@@ -200,8 +200,10 @@ export default function DevelopersPage() {
       <section id="byod" className="mt-12 scroll-mt-24" aria-labelledby="byod-t">
         <h2 id="byod-t" className="flex items-center text-2xl font-semibold">Bring your own data <Info id="use-byod" /></h2>
         <p className="mt-2 text-muted">
-          Coming next: upload your own partner venues, area numbers, service area or team locations. Files are checked in your browser first, and files about individual people are refused. The
-          design is published in the project&apos;s technical design document.
+          Upload a CSV of partner places in the app (under More options), or send them as <code className="font-mono text-sm">partners</code> in{" "}
+          <code className="font-mono text-sm">POST /api/v1/plans</code>: up to 200 objects with <code className="font-mono text-sm">name</code>, <code className="font-mono text-sm">lat</code>,{" "}
+          <code className="font-mono text-sm">lon</code> and an optional <code className="font-mono text-sm">category</code>. The plan then includes <code className="font-mono text-sm">partnerCheck</code>: how
+          many partners sit in high-need neighbourhoods, and each partner&apos;s need score. Places only: files with columns about people are refused, and partner lists are never put in share links.
         </p>
       </section>
     </div>

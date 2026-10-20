@@ -1,3 +1,4 @@
+import { county } from "@/lib/domain/counties";
 import type { Plan } from "@/lib/domain/types";
 
 /**
@@ -70,7 +71,7 @@ export function toGeoJson(plan: Plan): string {
     properties: {
       planId: plan.planId,
       createdAt: plan.createdAt,
-      attribution: "Venues: City of Los Angeles business licences (CC0). Need: CDC PLACES (public domain).",
+      attribution: `Venues: ${county(plan.request.area.countyFips).licenceSource}. Need: CDC PLACES (public domain).`,
     },
     features: plan.venues.map((v) => ({
       type: "Feature",
