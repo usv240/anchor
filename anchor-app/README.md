@@ -17,6 +17,7 @@ When pharmacists met men in their barbershops, **63.6%** got their blood pressur
 | Bars, liquor stores and similar | **0%** | 0% | 0% (any business: 5.1%) | 13.7% |
 | Places confirmed in a city licence or a Qloo listing | **100%** | 41% | 100% | 100% |
 | Overlap between lists for different audiences (lower means more tailored) | **11.5%** | 36.5% | n/a | n/a |
+| Fan reach: share of a Qloo place's 20 strongest fan areas that are high need (chance: about 20%) | **33.5%** | n/a | n/a | 17.8% |
 
 Safety tests (35, all passing): 20 of 20 requests to target by race, ethnicity, religion or origin planned by need instead; 5 of 5 look-alike ordinary requests left alone; 5 of 5 requests for bars held; 5 of 5 requests for medical advice declined by the real Claude agent, graded by a word check and a separate judge call. Honesty notes: the targeting guard was fixed after its first run missed one prompt, and the medical word check was made sentence level after it failed two correct refusals. Both are recorded in `eval/`.
 
@@ -37,7 +38,7 @@ What Qloo cannot do here, measured: it returned 0 small barbershops or salons in
 | REST API with OpenAPI 3.1, API keys, demo key, rate limits, bring your own Qloo key | Built |
 | Exports: CSV, GeoJSON, ICS calendar, JSON, share links, printable reading list | Built |
 | Tamper-evident evidence log with a verify endpoint | Built |
-| MCP server for Claude and other AI assistants (`scripts/mcp.mts`) | Built, tested with a real MCP client |
+| MCP server for Claude and other AI assistants (`scripts/mcp.mts`): need map, plan, get plan, fan reach, reading corner | Built, all 5 tools tested with a real MCP client |
 | Evaluation harness, AI-alone baseline and 35-case red-team set | Built and run |
 | Bring your own data uploads | Planned |
 
@@ -55,7 +56,7 @@ Without keys the app runs in offline mode and says so on every plan.
 
 | Command | What it does |
 |---|---|
-| `npm run check` | Type check, lint and 234 tests |
+| `npm run check` | Type check, lint and 243 tests |
 | `npm run eval` | Rerun every published number (uses the private Qloo cache if present) |
 | `npx tsx scripts/baseline-ai.mts` then `scripts/baseline-ai-check.mts` | Rerun the AI-alone baseline (16 model calls, then Qloo lookups). Needs both keys |
 | `npx tsx scripts/redteam-medical.mts` | Rerun the 5 medical-advice tests through the real agent. Needs `ANTHROPIC_API_KEY` |
@@ -70,11 +71,12 @@ Without keys the app runs in offline mode and says so on every plan.
 | Place insights in a zone polygon, with age and gender signals | The places a group loves in each high-need zone, re-ranked by that group's affinity | Live |
 | Demographic insights | "Who loves this place" chart on every Qloo place | Live |
 | Heatmap | Taste map next to the need map | Live |
-| Taste analysis (tags) | Talking points for the top zone | Live |
-| Book insights from kids' interests, filtered to children's genres | Reading corner in barbershops and salons, each book checked with Open Library | Live |
+| Heatmap with one place as the signal | Fan reach on every Qloo place: does it draw people from high-need areas? | Live, harness backup |
+| Taste analysis (tags) | Talking points for the top zone | Live, harness backup |
+| Book insights from kids' interests, filtered to children's genres, with explainability | Reading corner in barbershops and salons, each book checked with Open Library; says which interests shaped no books | Live |
 | Entity and tag search | Real Qloo ids only; also used to check the AI-alone baseline | Live |
-| Official Qloo harness (MCP) | Backup route for audience charts, and a cross-check of Anchor's client | Live, backup |
-| Audiences, explainability, trending | Tested: no useful effect for this use, or not available for places | Tested, not used |
+| Official Qloo harness (MCP) | Backup routes for audience charts, fan reach and talking points, and a cross-check of Anchor's client (40 of 40 values identical) | Live, backup |
+| Audiences, explainability on places, trending, compare, harness recommend and rank | Tested: no useful effect for this use, or not available for places. Probe: `scripts/qloo-probe-routes.mts` | Tested, not used |
 | Parameter guard, cache, call budget, rate limit | Refuses parameters Qloo would silently ignore; at most 4 requests a second | Live |
 
 ## Data and licences

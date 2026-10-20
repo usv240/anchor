@@ -33,7 +33,7 @@ type Plan = {
   planId: string;
   summary: string;
   mode: { trust: string; planner: string; note: string };
-  venues: { rank: number; name: string; category: string; address: string; city: string; zip: string; scores: { anchor: number }; why: string }[];
+  venues: { rank: number; name: string; category: string; address: string; city: string; zip: string; scores: { anchor: number }; why: string; qloo?: { entityId: string } }[];
   limits: string[];
   policy: { reframed: boolean; message?: string };
 };
@@ -85,7 +85,7 @@ server.registerTool(
           ...(a.request ? { prompt: a.request } : {}),
         }),
       });
-      const list = plan.venues.map((v) => `${v.rank}. ${v.name} (${v.category}), ${v.address}, ${v.city} ${v.zip}. Score ${v.scores.anchor.toFixed(2)}. ${v.why}`);
+      const list = plan.venues.map((v) => `${v.rank}. ${v.name} (${v.category}), ${v.address}, ${v.city} ${v.zip}. Score ${v.scores.anchor.toFixed(2)}. ${v.why}${v.qloo ? ` Qloo id: ${v.qloo.entityId}` : ""}`);
       return text(
         [
           plan.policy.reframed ? `Note: ${plan.policy.message}` : "",
@@ -123,6 +123,47 @@ server.registerTool(
       return text(
         `${plan.summary}\n\n${plan.venues.map((v) => `${v.rank}. ${v.name}, ${v.address}, ${v.city}`).join("\n")}\n\nDownloads: ${["csv", "ics", "geojson"].map((f) => `${BASE}/api/v1/plans/${plan_id}/export/${f}`).join(" ")}`,
       );
+    } catch (e) {
+      return fail(e);
+    }
+  },
+);
+
+server.registerTool(
+  "anchor_place_fans",
+  {
+    title: "Where a place's fans are",
+    description:
+      "For a Qloo place id (shown in plans as 'Qloo id'), how many of its 20 strongest fan areas are high-need neighbourhoods for untreated high blood pressure. Use it to check that a venue draws people from the areas the checks are for. About 1 in 5 neighbourhoods is high need, so well above 4 of 20 is a good sign.",
+    inputSchema: { place_id: z.string().regex(/^[0-9A-Fa-f-]{36}$/) },
+  },
+  async ({ place_id }) => {
+    try {
+      const r = await api<{ highNeedAreas: number; areas: unknown[]; via: string }>(`/api/v1/places/${place_id}/fans`);
+      return text(`${r.highNeedAreas} of its ${r.areas.length} strongest fan areas are high-need neighbourhoods (source: Qloo heatmap, via ${r.via}).`);
+    } catch (e) {
+      return fail(e);
+    }
+  },
+);
+
+server.registerTool(
+  "anchor_reading_corner",
+  {
+    title: "Children's books for a barbershop reading corner",
+    description:
+      "Up to 4 things the kids who visit love (games, shows, films, stars). Returns children's books Qloo links to them, each checked as a children's book. Also says which interests shaped no books.",
+    inputSchema: { interests: z.array(z.string().min(1).max(60)).min(1).max(4) },
+  },
+  async ({ interests }) => {
+    try {
+      const r = await api<{ books: { title: string; publisher: string | null; year: number | null; because: string[] }[]; unused: string[] }>("/api/v1/books", {
+        method: "POST",
+        body: JSON.stringify({ interests, take: 6 }),
+      });
+      const lines = r.books.map((b, i) => `${i + 1}. ${b.title}${b.publisher ? `, ${b.publisher}` : ""}${b.year ? ` (${b.year})` : ""}${b.because.length ? `, mostly for fans of ${b.because[0]}` : ""}`);
+      const note = r.unused.length ? `\n\nQloo found no book links for ${r.unused.join(" or ")}.` : "";
+      return text((lines.length ? lines.join("\n") : "No children's books passed the checks for these interests.") + note);
     } catch (e) {
       return fail(e);
     }

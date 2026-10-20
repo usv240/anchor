@@ -262,9 +262,10 @@ export class PlanBuilder {
     const top = this.zones[0].zone;
     this.step("flavour", "Asking Qloo what this group is into around the top zone", "running");
     try {
-      const f = await this.deps.trust.localFlavour({ zoneId: top.zoneId, wkt: top.wkt }, this.request.audience);
+      const lovedIds = this.ranked.flatMap((r) => (r.venue.zoneId === top.zoneId && r.venue.id.startsWith("qloo-") ? [r.venue.id.slice(5)] : []));
+      const f = await this.deps.trust.localFlavour({ zoneId: top.zoneId, wkt: top.wkt }, this.request.audience, lovedIds);
       this.localFlavour = { zoneId: top.zoneId, tags: f.tags, citations: f.traceIds };
-      this.step("flavour", "Asking Qloo what this group is into around the top zone", "done", f.tags.slice(0, 5).map((t) => t.name).join(", "));
+      this.step("flavour", "Asking Qloo what this group is into around the top zone", "done", (f.via === "harness" ? "Via Qloo's official harness (backup): " : "") + f.tags.slice(0, 5).map((t) => t.name).join(", "));
     } catch (err) {
       this.step("flavour", "Asking Qloo what this group is into around the top zone", "skipped", (err as Error).message);
     }

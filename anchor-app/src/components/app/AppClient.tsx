@@ -21,6 +21,7 @@ import {
 import { Info } from "@/components/Info";
 import { PlanMap } from "@/components/app/PlanMap";
 import { PlaceAudience } from "@/components/app/PlaceAudience";
+import { PlaceFans } from "@/components/app/PlaceFans";
 import { ReadingCorner } from "@/components/app/ReadingCorner";
 import { AGE_GROUPS, DAYS, GOALS, type AgeGroup, type Day, type Goal, type Plan, type PlanEvent, type StepStatus } from "@/lib/domain/types";
 import type { TraceRecord } from "@/lib/trace/ledger";
@@ -701,6 +702,7 @@ function VenueDetail({ plan, venueId }: { plan: Plan; venueId: string }) {
       {v.qloo ? (
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <PlaceAudience key={v.qloo.entityId} qlooId={v.qloo.entityId} highlight={{ ages: plan.request.audience.ageGroups.flatMap((g) => [...AGE_GROUPS[g].qloo]), gender: plan.request.audience.gender }} />
+          <PlaceFans key={`fans-${v.qloo.entityId}`} qlooId={v.qloo.entityId} />
           <div className="space-y-3 rounded-[10px] border border-border p-4 text-sm">
             <h3 className="font-semibold">From Qloo</h3>
             {v.qloo.categories.length ? <p><span className="text-muted">Kind of place:</span> {v.qloo.categories.join(", ")}</p> : null}

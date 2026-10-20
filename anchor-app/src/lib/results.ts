@@ -33,6 +33,7 @@ export type EvalResults = {
     lovedPlacesMatchedToLicence: number | null;
     smallSalonCoverage: string;
     aiAudienceOverlap: number | null;
+    fanReach?: Record<"anchor" | "qlooNoNeed", { places: number; meanHighNeedShare: number } | null>;
     aiDistinctPlaces: string | null;
   } | null;
   notes: string[];

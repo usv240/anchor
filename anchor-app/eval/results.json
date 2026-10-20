@@ -1,6 +1,6 @@
 {
-  "runAt": "2026-10-20T04:11:50.288Z",
-  "durationSeconds": 7,
+  "runAt": "2026-10-20T04:45:19.343Z",
+  "durationSeconds": 109,
   "mode": {
     "trust": "qloo",
     "planner": "basic"
@@ -345,6 +345,16 @@
     "lovedPlacesMatchedToLicence": 0.636,
     "smallSalonCoverage": "Qloo returned 0 places for barber shop, hair salon or beauty salon tags in the top high-need zone (60 are licensed there). See docs/kill-tests.md.",
     "aiAudienceOverlap": 0.365,
+    "fanReach": {
+      "anchor": {
+        "places": 71,
+        "meanHighNeedShare": 0.335
+      },
+      "qlooNoNeed": {
+        "places": 60,
+        "meanHighNeedShare": 0.178
+      }
+    },
     "aiDistinctPlaces": "108 distinct places across 360 suggestions"
   },
   "notes": [

@@ -117,7 +117,7 @@ export const INFO = {
     why: "People go where they already feel welcome. That is what made the barbershop study work.",
     source: "Qloo taste data. No personal data is used.",
     learnMoreHref: "/how-it-works#trust",
-    technical: "GET /v2/insights?filter.type=urn:entity:place&filter.location=<zone polygon>&signal.demographics.age=...&feature.explainability=true",
+    technical: "GET /v2/insights?filter.type=urn:entity:place&filter.location=<zone polygon>&signal.demographics.age=...&signal.demographics.gender=..., then re-ranked by query.affinity.",
   },
   "step-plan": {
     title: "Checking and planning",
@@ -334,13 +334,20 @@ export const INFO = {
     source: "Qloo demographic insights. Aggregate taste data with no personal information.",
     technical: "GET /v2/insights?filter.type=urn:demographics&signal.interests.entities=<place id>. Scores are centred on 0.",
   },
+  "place-fans": {
+    title: "Where its fans are",
+    what: "The 20 areas of the county where this place's fans are most concentrated, and how many of them are high-need neighbourhoods.",
+    why: "A place whose fans live in high-need neighbourhoods brings in the people the checks are for, not just people passing through.",
+    source: "Qloo heatmap with this place as the signal (aggregate taste data), matched to CDC PLACES census tracts. If the direct call fails, Qloo's official harness answers instead.",
+    technical: "GET /v2/insights?filter.type=urn:heatmap&signal.interests.entities=<place id>&filter.location.query=Los Angeles. Top 20 cells by affinity inside the county; high need = tract need percentile above 0.8. Backup: harness qloo_where_popular.",
+  },
   "reading-corner": {
     title: "Reading corner",
     what: "A short list of children's books for the shop's waiting area, chosen from what the kids who come in already love.",
     why: "Children read more when books match their interests. Barbershop Books has put books in over 200 barbershops for this reason.",
-    source: "Qloo's links between games, shows, films, stars and books, limited to children's genres, then checked against Open Library and children's publishers.",
+    source: "Qloo's links between games, shows, films, stars and books, limited to children's genres, then checked against Open Library and children's publishers. Qloo's explanation of which interests led to the books shows when one interest clearly drove a book, and when an interest shaped none of them.",
     learnMoreHref: "/research#reading",
-    technical: "GET /search for each interest, then GET /v2/insights?filter.type=urn:entity:book&signal.interests.entities=...&filter.tags=<children's genres>. Open Library subject check.",
+    technical: "GET /search for each interest, then GET /v2/insights?filter.type=urn:entity:book&signal.interests.entities=...&filter.tags=<children's genres>&feature.explainability=true. Open Library subject check.",
   },
   "taste-map": {
     title: "Taste map",

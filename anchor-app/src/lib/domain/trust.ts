@@ -1,3 +1,4 @@
+import { harnessCall } from "@/lib/qloo/harness";
 import { QlooClient, type QlooCache } from "@/lib/qloo/client";
 import type { TraceLedger } from "@/lib/trace/ledger";
 import { metres, normName } from "@/lib/domain/geo";
@@ -38,13 +39,14 @@ export type LovedPlace = Venue & {
 
 export type ZoneTrust = { loved: LovedPlace[]; traceIds: string[]; returned: number; removed: { name: string; category: string; reason: string }[] };
 
-export type Flavour = { tags: { name: string; kind: string }[]; traceIds: string[] };
+export type Flavour = { tags: { name: string; kind: string }[]; traceIds: string[]; via?: "rest" | "harness" };
 
 export interface TrustProvider {
   readonly mode: "qloo" | "offline";
   forZone(zone: ZoneRef, licensed: Venue[], audience: Audience): Promise<ZoneTrust>;
   /** Taste analysis: what this group is into around a zone (talking points). */
-  localFlavour?(zone: ZoneRef, audience: Audience): Promise<Flavour>;
+  /** lovedIds: Qloo ids of the plan's loved places in this zone, for the harness backup. */
+  localFlavour?(zone: ZoneRef, audience: Audience, lovedIds?: string[]): Promise<Flavour>;
 }
 
 export class OfflineTrust implements TrustProvider {
@@ -150,8 +152,10 @@ const houseNumber = (s: string) => /^\s*(\d+)/.exec(s)?.[1] ?? "";
 export class QlooTrust implements TrustProvider {
   readonly mode = "qloo" as const;
   private readonly client: QlooClient;
+  private readonly apiKey: string;
 
   constructor(opts: { apiKey: string; byok?: boolean; ledger: TraceLedger; cache?: QlooCache; budget?: number; fetchImpl?: typeof fetch; minIntervalMs?: number }) {
+    this.apiKey = opts.apiKey;
     this.client = new QlooClient({
       apiKey: opts.apiKey,
       byok: opts.byok,
@@ -229,7 +233,7 @@ export class QlooTrust implements TrustProvider {
     return { loved, traceIds: res.traceId ? [res.traceId] : [], returned: entities.length, removed };
   }
 
-  async localFlavour(zone: ZoneRef, audience: Audience): Promise<Flavour> {
+  async localFlavour(zone: ZoneRef, audience: Audience, lovedIds: string[] = []): Promise<Flavour> {
     const params: Record<string, string | number> = {
       "filter.type": "urn:tag",
       "signal.location": zone.wkt,
@@ -237,21 +241,35 @@ export class QlooTrust implements TrustProvider {
       take: 25,
     };
     if (audience.gender !== "any") params["signal.demographics.gender"] = audience.gender;
-    type T = { results?: { tags?: { name: string; subtype?: string; type?: string }[] } };
-    const res = await this.client.insights<T>(params, (d) => `${d.results?.tags?.length ?? 0} taste tags around ${zone.zoneId}`);
-    const KIND: Record<string, string> = { media: "Shows and media", place: "Places", brand: "Shopping", specialty_dish: "Food", cuisine: "Food", music: "Music" };
-    const seen = new Set<string>();
-    const tags = (res.data.results?.tags ?? [])
-      .map((t) => {
-        const parts = (t.subtype ?? t.type ?? "").split(":");
-        const key = parts[2] === "genre" ? parts[3] ?? "" : parts[2] ?? "";
-        return { name: t.name.replace(/&amp;/g, "&"), kind: KIND[key] ?? "Interests" };
-      })
-      .filter((t) => !/politic|religio|ethnic|race|govern|military|tourist|immigra/i.test(t.name)) // never sensitive or unhelpful topics
-      .filter((t) => (seen.has(t.name.toLowerCase()) ? false : (seen.add(t.name.toLowerCase()), true)))
-      .slice(0, 12);
-    return { tags, traceIds: res.traceId ? [res.traceId] : [] };
+    type T = { results?: { tags?: RawTag[] } };
+    try {
+      const res = await this.client.insights<T>(params, (d) => `${d.results?.tags?.length ?? 0} taste tags around ${zone.zoneId}`);
+      return { tags: cleanTags(res.data.results?.tags ?? []), traceIds: res.traceId ? [res.traceId] : [], via: "rest" };
+    } catch (err) {
+      // Backup: Qloo's official harness describes what the group's loved places in this zone have in common.
+      if (lovedIds.length === 0) throw err;
+      const h = await harnessCall(this.apiKey, "qloo_entity_tags", { entities: lovedIds.slice(0, 10), entity_type: "place", limit: 20 }).catch(() => null);
+      if (h?.status !== "ok" || !h.results?.length) throw err;
+      return { tags: cleanTags(h.results as RawTag[]), traceIds: [], via: "harness" };
+    }
   }
+}
+
+type RawTag = { name: string; subtype?: string; type?: string; tag_id?: string };
+const KIND: Record<string, string> = { media: "Shows and media", place: "Places", brand: "Shopping", specialty_dish: "Food", cuisine: "Food", music: "Music" };
+
+/** Plain kinds, no sensitive or unhelpful topics, no duplicates, at most 12. */
+export function cleanTags(raw: RawTag[]): Flavour["tags"] {
+  const seen = new Set<string>();
+  return raw
+    .map((t) => {
+      const parts = (t.subtype ?? t.tag_id ?? t.type ?? "").split(":");
+      const key = parts[2] === "genre" ? parts[3] ?? "" : parts[2] ?? "";
+      return { name: t.name.replace(/&amp;/g, "&"), kind: KIND[key] ?? "Interests" };
+    })
+    .filter((t) => !/politic|religio|ethnic|race|govern|military|tourist|immigra|activis/i.test(t.name))
+    .filter((t) => (seen.has(t.name.toLowerCase()) ? false : (seen.add(t.name.toLowerCase()), true)))
+    .slice(0, 12);
 }
 
 /** Everyday community places score like licensed ones of the same kind; parks and markets are good public spaces. */

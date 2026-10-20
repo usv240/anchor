@@ -12,9 +12,10 @@ type Book = {
   isbn13: string | null;
   image: string | null;
   blurb: string;
+  because?: string[];
   links: { openLibrary: string | null; worldcat: string | null };
 };
-type Result = { interests: { query: string; matched: { name: string; type: string } | null }[]; books: Book[]; removed: { title: string; reason: string }[] };
+type Result = { interests: { query: string; matched: { name: string; type: string } | null }[]; books: Book[]; removed: { title: string; reason: string }[]; unused?: string[] };
 
 const SUGGESTIONS = ["Minecraft", "Pokemon", "Spider-Man", "Bluey", "Roblox", "Sonic the Hedgehog", "Frozen", "LeBron James"];
 
@@ -112,6 +113,11 @@ export function ReadingCorner({ venueName }: { venueName: string }) {
             Matched:{" "}
             {result.interests.map((i) => (i.matched ? `${i.matched.name} (${i.matched.type.replace("_", " ")})` : `${i.query} (not found)`)).join(", ")}
           </p>
+          {result.unused?.length ? (
+            <p className="mt-1 text-xs text-muted">
+              Qloo found no book links for {result.unused.join(" or ")}, so {result.unused.length === 1 ? "it" : "they"} did not shape this list. Try swapping in another interest.
+            </p>
+          ) : null}
           {result.books.length === 0 ? (
             <p className="mt-2 text-sm">No children&apos;s books passed the checks for these interests. Try different ones.</p>
           ) : (
@@ -125,6 +131,7 @@ export function ReadingCorner({ venueName }: { venueName: string }) {
                   <div className="min-w-0 text-sm">
                     <p className="font-semibold">{b.title}</p>
                     <p className="text-xs text-muted">{[b.publisher, b.year].filter(Boolean).join(", ")}</p>
+                    {b.because?.length ? <p className="mt-1 text-xs font-medium text-accent">Mostly for fans of {b.because[0]}</p> : null}
                     {b.blurb ? <p className="mt-1 line-clamp-3 text-xs">{b.blurb}</p> : null}
                     <p className="mt-1 flex flex-wrap gap-x-3 text-xs">
                       {b.links.worldcat ? (

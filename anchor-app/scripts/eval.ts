@@ -27,6 +27,7 @@ import { checkTargeting } from "../src/lib/domain/policy";
 import { OfflineTrust, QlooTrust, qlooAgeParam, readPlace, type QlooPlaceEntity } from "../src/lib/domain/trust";
 import { QlooClient } from "../src/lib/qloo/client";
 import { FileCache } from "../src/lib/qloo/fileCache";
+import { fanReach } from "../src/lib/domain/fans";
 import { TraceLedger } from "../src/lib/trace/ledger";
 import { PlanRequest, type AgeGroup } from "../src/lib/domain/types";
 
@@ -197,6 +198,7 @@ async function main() {
   const lovedByAudience = new Map<string, Set<string>>();
   let qlooMatchedToLicence = 0;
   let qlooPicks = 0;
+  const fanIds = { anchor: new Set<string>(), qlooNoNeed: new Set<string>() };
   let requests = 0;
   const NOW = () => new Date("2026-10-19T12:00:00Z");
   // "Confirmed" = an active business licence or a Qloo place listing (same rule for every column).
@@ -220,6 +222,7 @@ async function main() {
         qlooMatchedToLicence += loved.filter((v) => v.verification.status === "licensed").length;
         const set = lovedByAudience.get(audKey) ?? new Set<string>();
         loved.forEach((v) => set.add(v.id));
+        loved.forEach((v) => fanIds.anchor.add(v.id.slice(5)));
         lovedByAudience.set(audKey, set);
       }
 
@@ -234,7 +237,7 @@ async function main() {
     // city of Los Angeles; the places this audience loves most, by affinity. Two pages of 50.
     if (qlooKey) {
       const client = new QlooClient({ apiKey: qlooKey, cache, budget: 4 });
-      const pool: { lat: number; lon: number; category: string; unsuitable: boolean; licensed: boolean; affinity: number }[] = [];
+      const pool: { id: string; lat: number; lon: number; category: string; unsuitable: boolean; licensed: boolean; affinity: number }[] = [];
       for (const page of [1, 2]) {
         const params: Record<string, string | number> = {
           "filter.type": "urn:entity:place",
@@ -248,11 +251,30 @@ async function main() {
         for (const e of r.data.results?.entities ?? []) {
           const p = readPlace(e);
           if (typeof p.lat !== "number" || typeof p.lon !== "number" || p.closed) continue;
-          pool.push({ lat: p.lat, lon: p.lon, category: p.categories[0] ?? "Place", unsuitable: Boolean(p.unsuitable), licensed: true, affinity: p.affinity ?? 0 });
+          pool.push({ id: e.entity_id, lat: p.lat, lon: p.lon, category: p.categories[0] ?? "Place", unsuitable: Boolean(p.unsuitable), licensed: true, affinity: p.affinity ?? 0 });
         }
       }
       pool.sort((a, b) => b.affinity - a.affinity);
+      pool.slice(0, 20).forEach((x) => fanIds.qlooNoNeed.add(x.id));
       for (const size of sizes) qlooNoNeedRuns.push(measure(pool.slice(0, Math.ceil(size.maxVenues / 2)), tracts, TOP_CUT));
+    }
+  }
+
+  // Fan reach: of each Qloo place's 20 strongest fan areas (Qloo heatmap), how many are high-need
+  // neighbourhoods? Anchor's community picks against Qloo's top picks without the need layer.
+  const fans: Record<"anchor" | "qlooNoNeed", { places: number; meanHighNeedShare: number } | null> = { anchor: null, qlooNoNeed: null };
+  if (qlooKey) {
+    for (const k of ["anchor", "qlooNoNeed"] as const) {
+      const shares: number[] = [];
+      for (const id of fanIds[k]) {
+        try {
+          const r = await fanReach(qlooKey, id, { cache, harness: false });
+          if (r.areas.length) shares.push(r.highNeedAreas / r.areas.length);
+        } catch {
+          // no fan map for this place: left out, and the count of places says so
+        }
+      }
+      fans[k] = shares.length ? { places: shares.length, meanHighNeedShare: Math.round(mean(shares) * 1000) / 1000 } : null;
     }
   }
 
@@ -323,6 +345,7 @@ async function main() {
           lovedPlacesMatchedToLicence: qlooPicks ? Math.round((qlooMatchedToLicence / qlooPicks) * 1000) / 1000 : null,
           smallSalonCoverage: "Qloo returned 0 places for barber shop, hair salon or beauty salon tags in the top high-need zone (60 are licensed there). See docs/kill-tests.md.",
           aiAudienceOverlap: aiBaseline?.meanAudienceOverlap ?? null,
+          fanReach: fans,
           aiDistinctPlaces: aiBaseline ? `${aiBaseline.distinctPlaces} distinct places across ${aiBaseline.totalPlaces} suggestions` : null,
         }
       : null,

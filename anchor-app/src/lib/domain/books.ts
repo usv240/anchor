@@ -73,10 +73,13 @@ export type Book = {
   image: string | null;
   blurb: string;
   affinity: number;
+  /** The interest that clearly led Qloo to this book (explainability score 0.6 or more); usually empty when credit is shared. */
+  because: string[];
   links: { openLibrary: string | null; worldcat: string | null };
 };
 
-export type BookResult = { interests: Interest[]; books: Book[]; removed: { title: string; reason: string }[]; traceIds: string[] };
+/** unused: matched interests that shaped none of Qloo's books (explainability), so the user can try another. */
+export type BookResult = { interests: Interest[]; books: Book[]; removed: { title: string; reason: string }[]; unused: string[]; traceIds: string[] };
 
 type SearchResp = { results?: { entity_id: string; name: string; types?: string[]; type?: string }[] };
 type BookEntity = {
@@ -91,7 +94,7 @@ type BookEntity = {
     description?: string;
     image?: { url?: string };
   };
-  query?: { affinity?: number };
+  query?: { affinity?: number; explainability?: { "signal.interests.entities"?: { entity_id: string; score: number }[] } };
 };
 
 const decode = (s: string) => s.replace(/&apos;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
@@ -119,7 +122,7 @@ export async function findBooks(client: QlooClient, interests: string[], take = 
     });
   }
   const ids = resolved.flatMap((i) => (i.matched ? [i.matched.entityId] : []));
-  if (ids.length === 0) return { interests: resolved, books: [], removed: [], traceIds };
+  if (ids.length === 0) return { interests: resolved, books: [], removed: [], unused: [], traceIds };
 
   const res = await client.insights<{ results?: { entities?: BookEntity[] } }>(
     {
@@ -127,12 +130,24 @@ export async function findBooks(client: QlooClient, interests: string[], take = 
       "signal.interests.entities": ids.join(","),
       "filter.tags": KIDS_GENRES.join(","),
       "operator.filter.tags": "union",
+      "feature.explainability": true,
       take: 40,
     },
     (d) => `${d.results?.entities?.length ?? 0} children's books`,
   );
   if (res.traceId) traceIds.push(res.traceId);
 
+  const nameOf = new Map(resolved.flatMap((i) => (i.matched ? [[i.matched.entityId.toUpperCase(), i.query] as const] : [])));
+  const because = (e: BookEntity) =>
+    (e.query?.explainability?.["signal.interests.entities"] ?? [])
+      .filter((x) => x.score >= 0.6)
+      .sort((a, b) => b.score - a.score)
+      .flatMap((x) => nameOf.get(x.entity_id.toUpperCase()) ?? []);
+  const credited = new Set(
+    (res.data.results?.entities ?? []).flatMap((e) => (e.query?.explainability?.["signal.interests.entities"] ?? []).filter((x) => x.score > 0.05).map((x) => x.entity_id.toUpperCase())),
+  );
+  const anyExplained = (res.data.results?.entities ?? []).some((e) => e.query?.explainability);
+  const unused = anyExplained ? resolved.flatMap((i) => (i.matched && !credited.has(i.matched.entityId.toUpperCase()) ? [i.matched.name] : [])) : [];
   const books: Book[] = [];
   const removed: BookResult["removed"] = [];
   const seenSeries = new Set<string>();
@@ -178,6 +193,7 @@ export async function findBooks(client: QlooClient, interests: string[], take = 
       image: p.image?.url ?? null,
       blurb: blurb.length > 220 ? blurb.slice(0, 217).replace(/\s+\S*$/, "") + "..." : blurb,
       affinity: Math.round((e.query?.affinity ?? 0) * 100) / 100,
+      because: because(e),
       links: {
         openLibrary: isbn ? `https://openlibrary.org/isbn/${isbn}` : null,
         worldcat: isbn ? `https://search.worldcat.org/isbn/${isbn}` : null,
@@ -185,5 +201,5 @@ export async function findBooks(client: QlooClient, interests: string[], take = 
     });
     if (books.length >= take) break;
   }
-  return { interests: resolved, books, removed, traceIds };
+  return { interests: resolved, books, removed, unused, traceIds };
 }

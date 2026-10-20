@@ -135,6 +135,30 @@ export default async function ProofPage() {
         </section>
       ) : null}
 
+      {r.qloo?.fanReach?.anchor && r.qloo.fanReach.qlooNoNeed ? (
+        <section aria-labelledby="fans-title" className="mt-14">
+          <h2 id="fans-title" className="flex items-center text-2xl font-semibold">
+            Places whose fans live where the need is <Info id="place-fans" />
+          </h2>
+          <p className="mt-2 max-w-3xl text-muted">
+            A place can sit in a high-need neighbourhood and still draw its crowd from elsewhere. So for each Qloo place, Anchor asks Qloo where its fans are concentrated (the 20 strongest areas) and counts how many are high-need
+            neighbourhoods. By chance alone it would be about 1 in 5, because 1 in 5 neighbourhoods is high need.
+          </p>
+          <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+            {[
+              { big: pct(r.qloo.fanReach.anchor.meanHighNeedShare), label: "of fan areas are high need, for Anchor's community places", sub: `${r.qloo.fanReach.anchor.places} places measured` },
+              { big: pct(r.qloo.fanReach.qlooNoNeed.meanHighNeedShare), label: "for Qloo's top places without the need layer", sub: `${r.qloo.fanReach.qlooNoNeed.places} places measured` },
+            ].map((c) => (
+              <li key={c.label} className="rounded-[12px] border border-border bg-surface p-5">
+                <p className="tabular text-3xl font-semibold">{c.big}</p>
+                <p className="mt-1">{c.label}</p>
+                <p className="mt-1 text-sm text-muted">{c.sub}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       <section aria-labelledby="def-title" className="mt-14">
         <h2 id="def-title" className="text-2xl font-semibold">What each measure means</h2>
         <dl className="mt-4 grid gap-3 sm:grid-cols-2">

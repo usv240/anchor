@@ -106,3 +106,32 @@ export async function inHighNeedTract(county: string, zoneId: string, p: { lat: 
     return polys.some((rings) => inRing(p.lon, p.lat, rings[0]));
   });
 }
+
+type NeedTract = { needPct: number; geom: TractGeom; box: [number, number, number, number] };
+const tractCache = new Map<string, Promise<NeedTract[]>>();
+function loadTracts(county: string): Promise<NeedTract[]> {
+  let hit = tractCache.get(county);
+  if (!hit) {
+    hit = readJson<{ features: { properties: { need_pct: number }; geometry: TractGeom }[] }>(path.join(dataDir(county), "tracts.geojson")).then((fc) =>
+      fc.features.map((f) => {
+        const pts = (f.geometry.type === "Polygon" ? f.geometry.coordinates : f.geometry.coordinates.flat()).flat();
+        const xs = pts.map((p) => p[0]);
+        const ys = pts.map((p) => p[1]);
+        return { needPct: f.properties.need_pct, geom: f.geometry, box: [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)] };
+      }),
+    );
+    tractCache.set(county, hit);
+  }
+  return hit;
+}
+
+/** Need percentile (0 to 1) of the census tract containing a point, or null if the point is outside the county. */
+export async function needPercentileAt(county: string, p: { lat: number; lon: number }): Promise<number | null> {
+  const tracts = await loadTracts(county);
+  const t = tracts.find(
+    (t) =>
+      p.lon >= t.box[0] && p.lon <= t.box[2] && p.lat >= t.box[1] && p.lat <= t.box[3] &&
+      (t.geom.type === "Polygon" ? [t.geom.coordinates] : t.geom.coordinates).some((rings) => inRing(p.lon, p.lat, rings[0])),
+  );
+  return t ? t.needPct : null;
+}
