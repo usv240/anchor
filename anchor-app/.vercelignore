@@ -1,0 +1,11 @@
+# Never upload secrets or Qloo responses
+.env*
+!.env.example
+data/qloo-cache
+*.qloo.json
+.data
+# Not needed to build or run the site
+data/raw
+eval/.venv
+.vitest
+coverage

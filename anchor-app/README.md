@@ -2,6 +2,8 @@
 
 **Find the barbershops of every community.**
 
+Live: https://anchor-gamma-woad.vercel.app
+
 Anchor maps where high blood pressure goes uncontrolled, finds the places those neighbours already love and trust, and hands health workers a ready-to-walk outreach plan for them.
 
 When pharmacists met men in their barbershops, **63.6%** got their blood pressure under control, against **11.7%** with usual care (*New England Journal of Medicine*, 2018). A follow-up study reports the programme never spread beyond that trial. Anchor finds where it should go next, for any group of residents, using CDC data for need and Qloo's taste data for trust.

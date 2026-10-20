@@ -4,7 +4,7 @@
 
 Anchor helps community health workers decide where to hold free blood pressure checks. It finds the neighbourhoods where the most adults have high blood pressure without medicine (CDC data), then the local places people there already trust: licensed barbershops and salons from city records, and the places each age group loves, from Qloo.
 
-Built for the Qloo Agentic Hackathon 2026.
+Built for the Qloo Agentic Hackathon 2026. **Live: https://anchor-gamma-woad.vercel.app** (judge mode: [/judges](https://anchor-gamma-woad.vercel.app/judges)).
 
 ## Why it matters
 
