@@ -1,0 +1,45 @@
+{
+  "name": "anchor",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "data": "bash eval/pipeline/fetch_data.sh 06037 && cd eval && uv run python pipeline/build_need.py --county 06037 && uv run python pipeline/build_venues.py --county 06037",
+    "kill-test": "tsx scripts/kill-test.ts 5",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "eval": "tsx scripts/eval.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@radix-ui/react-accordion": "^1.3.1",
+    "@radix-ui/react-popover": "^1.3.1",
+    "@radix-ui/react-tabs": "^1.2.1",
+    "lucide-react": "^1.57.0",
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@qloo/qloo-harness": "^0.1.26",
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^5.0.5",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.2",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.0.5"
+  },
+  "description": "Find the barbershops of every community: an agent that plans blood pressure outreach at trusted local venues, using CDC data and Qloo taste data.",
+  "license": "MIT"
+}

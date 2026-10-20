@@ -1,0 +1,14 @@
+{
+  "countyFips": "06037",
+  "countyName": "Los Angeles County",
+  "source": "CDC PLACES 2025 release (data.cdc.gov yjkw-uj5s), US Census cartographic boundary tracts 2023",
+  "method": "untreated = adults x bphigh x (1 - bpmed); need = 0.5 pct_rank(untreated) + 0.5 pct_rank(bphigh)",
+  "topShare": 0.2,
+  "tracts": 2474,
+  "adults": 7959605,
+  "estUntreatedAdults": 683945,
+  "zones": 185,
+  "zoneTracts": 495,
+  "zoneEstUntreatedAdults": 182482,
+  "maxZoneWktBytes": 513
+}

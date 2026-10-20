@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+/*
+  Design tokens. Source of truth: shared/DESIGN_SYSTEM.md, section 7.
+  Theme order: an explicit data-theme on <html> wins; otherwise the system setting.
+  Contrast targets: body text 7:1 or better, UI text 4.5:1 or better, in both themes.
+  These pairs are checked by tests/contrast.test.ts.
+*/
+
+:root,
+[data-theme="light"] {
+  --bg: #fbfbfa;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --text: #111418;
+  --text-muted: #4b5563;
+  --border: #e3e5e8;
+  --focus: #1d4ed8;
+  --accent: #0b6e99;
+  --accent-contrast: #ffffff;
+  --accent-soft: #e6f2f8;
+  --success: #0f7b3f;
+  --warning: #9a5b00;
+  --danger: #b42318;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.06);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #0e1116;
+  --surface: #161b22;
+  --surface-2: #1f2630;
+  --text: #e8eaed;
+  --text-muted: #a9b1bc;
+  --border: #2b333e;
+  --focus: #8ab4f8;
+  --accent: #5cc3ee;
+  --accent-contrast: #0e1116;
+  --accent-soft: #12303d;
+  --success: #5fd39a;
+  --warning: #f2b661;
+  --danger: #ff8a80;
+  --shadow: none;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1116;
+    --surface: #161b22;
+    --surface-2: #1f2630;
+    --text: #e8eaed;
+    --text-muted: #a9b1bc;
+    --border: #2b333e;
+    --focus: #8ab4f8;
+    --accent: #5cc3ee;
+    --accent-contrast: #0e1116;
+    --accent-soft: #12303d;
+    --success: #5fd39a;
+    --warning: #f2b661;
+    --danger: #ff8a80;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-focus: var(--focus);
+  --color-accent: var(--accent);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --shadow-card: var(--shadow);
+  --radius-card: 12px;
+  --radius-button: 10px;
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-feature-settings: "cv11", "ss01";
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Always-visible keyboard focus, 3 px, theme aware. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/*
+  Simple / Technical layers (shared/DESIGN_SYSTEM.md, section 5).
+  Both versions are always in the HTML; CSS decides what shows.
+  Simple text is never hidden. Technical text is added under it.
+*/
+.layer-technical {
+  display: none;
+}
+[data-layer="technical"] .layer-technical {
+  display: block;
+}
+[data-layer="technical"] .layer-technical-inline {
+  display: inline;
+}
+.layer-technical-inline {
+  display: none;
+}
+
+/* Info popovers become bottom sheets on small screens (DESIGN_SYSTEM.md, section 6). */
+@media (max-width: 639px) {
+  [data-radix-popper-content-wrapper]:has(.info-pop) {
+    position: fixed !important;
+    transform: none !important;
+    inset: auto 0 0 0 !important;
+    min-width: 100% !important;
+  }
+  .info-pop {
+    border-radius: 16px 16px 0 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom)) !important;
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Skip link for keyboard and screen reader users. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--focus);
+  border-radius: var(--radius-button);
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Printing: a plan prints in light colours; the reading corner can print alone as a book list. */
+@media print {
+  :root, [data-theme="dark"] {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f3f4f6;
+    --text: #111418;
+    --text-muted: #4b5563;
+    --border: #d1d5db;
+    --accent: #0b6e99;
+    --accent-soft: #e6f2f8;
+  }
+  header, footer, .skip-link, form[aria-label="Plan settings"], [aria-label="Show results as"] {
+    display: none !important;
+  }
+  [data-print="reading"] body * {
+    visibility: hidden;
+  }
+  [data-print="reading"] .reading-corner,
+  [data-print="reading"] .reading-corner * {
+    visibility: visible;
+  }
+  [data-print="reading"] .reading-corner {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    border: 0;
+  }
+  [data-print="reading"] .reading-corner button,
+  [data-print="reading"] .reading-corner form,
+  [data-print="reading"] .reading-corner input {
+    display: none !important;
+  }
+}

@@ -1,0 +1,12 @@
+# Local only: editor and assistant settings, the copied hackathon rules,
+# the internal workspace index and the two backup ideas (not part of Anchor).
+/.claude/
+/.vscode/
+/Rules.md
+/WORKSPACE.md
+/hooked/
+/last-call/
+
+# Secrets, anywhere in the tree
+.env*
+!.env.example

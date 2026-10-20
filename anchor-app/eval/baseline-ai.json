@@ -1,0 +1,3126 @@
+{
+  "summary": {
+    "label": "AI alone (no tools)",
+    "model": "claude-opus-5-5",
+    "runAt": "2026-10-20T03:59:49.512Z",
+    "needCapture": 0.613,
+    "meanNeedPercentile": 0.767,
+    "unsuitableRate": 0,
+    "licensedRate": 0,
+    "outsideCountyRate": 0.01,
+    "categories": 11.75,
+    "foundInQlooRate": 0.408,
+    "distinctPlaces": 108,
+    "totalPlaces": 360,
+    "meanAudienceOverlap": 0.365,
+    "audienceOverlap": [
+      {
+        "a": "18_to_34/any",
+        "b": "35_to_54/male",
+        "overlap": 0.316
+      },
+      {
+        "a": "18_to_34/any",
+        "b": "35_to_54/female",
+        "overlap": 0.347
+      },
+      {
+        "a": "18_to_34/any",
+        "b": "55_plus/any",
+        "overlap": 0.373
+      },
+      {
+        "a": "35_to_54/male",
+        "b": "35_to_54/female",
+        "overlap": 0.346
+      },
+      {
+        "a": "35_to_54/male",
+        "b": "55_plus/any",
+        "overlap": 0.37
+      },
+      {
+        "a": "35_to_54/female",
+        "b": "55_plus/any",
+        "overlap": 0.44
+      }
+    ],
+    "perRunFoundInQloo": [
+      0.8,
+      0.6,
+      0.52,
+      0.45,
+      0.6,
+      0.533,
+      0.56,
+      0.4,
+      0.4,
+      0.4,
+      0.28,
+      0.3,
+      0.3,
+      0.4,
+      0.28,
+      0.25
+    ],
+    "note": "Existence is checked against Qloo's place data (same name within 500 m). Business-licence matching does not apply: most AI suggestions are churches, parks and libraries."
+  },
+  "runs": [
+    {
+      "audience": "18_to_34/any",
+      "asked": 10,
+      "places": [
+        {
+          "name": "Los Angeles Southwest College",
+          "street_address": "1600 W Imperial Hwy",
+          "city": "Los Angeles",
+          "latitude": 33.9277,
+          "longitude": -118.3048,
+          "kind": "Community college"
+        },
+        {
+          "name": "Compton College",
+          "street_address": "1111 E Artesia Blvd",
+          "city": "Compton",
+          "latitude": 33.8747,
+          "longitude": -118.2117,
+          "kind": "Community college"
+        },
+        {
+          "name": "East Los Angeles College",
+          "street_address": "1301 Avenida Cesar Chavez",
+          "city": "Monterey Park",
+          "latitude": 34.0416,
+          "longitude": -118.1512,
+          "kind": "Community college"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9434,
+          "longitude": -118.251,
+          "kind": "Public park and recreation center"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9387,
+          "longitude": -118.2413,
+          "kind": "Community arts center"
+        },
+        {
+          "name": "Kenneth Hahn State Recreation Area",
+          "street_address": "4100 S La Cienega Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0083,
+          "longitude": -118.3667,
+          "kind": "Public park"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0145,
+          "longitude": -118.2786,
+          "kind": "Community marketplace and food hall"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0225,
+          "longitude": -118.3349,
+          "kind": "Church"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0105,
+          "longitude": -118.3355,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0389,
+          "longitude": -118.1958,
+          "kind": "Community marketplace"
+        }
+      ],
+      "needCapture": 0.6,
+      "meanNeedPercentile": 0.76417,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "18_to_34/any",
+      "asked": 15,
+      "places": [
+        {
+          "name": "Los Angeles Southwest College",
+          "street_address": "1600 W Imperial Hwy",
+          "city": "Los Angeles",
+          "latitude": 33.929,
+          "longitude": -118.305,
+          "kind": "Community college campus"
+        },
+        {
+          "name": "Compton College",
+          "street_address": "1111 E Artesia Blvd",
+          "city": "Compton",
+          "latitude": 33.874,
+          "longitude": -118.212,
+          "kind": "Community college campus"
+        },
+        {
+          "name": "East Los Angeles College",
+          "street_address": "1301 Avenida Cesar Chavez",
+          "city": "Monterey Park",
+          "latitude": 34.042,
+          "longitude": -118.15,
+          "kind": "Community college campus"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.023,
+          "longitude": -118.335,
+          "kind": "Church / faith community"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0105,
+          "longitude": -118.3365,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Leimert Park",
+          "street_address": "4395 Leimert Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.009,
+          "longitude": -118.332,
+          "kind": "Public park / cultural plaza"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0158,
+          "longitude": -118.277,
+          "kind": "Public market / food hall"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0386,
+          "longitude": -118.1933,
+          "kind": "Public market"
+        },
+        {
+          "name": "Plaza Mexico",
+          "street_address": "3100 E Imperial Hwy",
+          "city": "Lynwood",
+          "latitude": 33.93,
+          "longitude": -118.215,
+          "kind": "Shopping center"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9388,
+          "longitude": -118.241,
+          "kind": "Community arts center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9437,
+          "longitude": -118.2513,
+          "kind": "Public park / recreation center"
+        },
+        {
+          "name": "Jesse Owens Park",
+          "street_address": "9651 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.948,
+          "longitude": -118.309,
+          "kind": "Public park / recreation center"
+        },
+        {
+          "name": "Ruben F. Salazar Park",
+          "street_address": "3864 Whittier Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0217,
+          "longitude": -118.1868,
+          "kind": "Public park / recreation center"
+        },
+        {
+          "name": "Dr. Mary McLeod Bethune Regional Library",
+          "street_address": "3900 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0124,
+          "longitude": -118.3089,
+          "kind": "Public library"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.605,
+          "longitude": -118.15,
+          "kind": "Shopping mall"
+        }
+      ],
+      "needCapture": 0.4666666666666667,
+      "meanNeedPercentile": 0.7232666666666666,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "18_to_34/any",
+      "asked": 25,
+      "places": [
+        {
+          "name": "Watts Labor Community Action Committee (WLCAC)",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.937,
+          "longitude": -118.2541,
+          "kind": "Community center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9435,
+          "longitude": -118.2509,
+          "kind": "Public park and recreation center"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9387,
+          "longitude": -118.2416,
+          "kind": "Arts and cultural center"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9174,
+          "longitude": -118.2588,
+          "kind": "Public park"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0187,
+          "longitude": -118.3352,
+          "kind": "Church"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0102,
+          "longitude": -118.336,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Kenneth Hahn State Recreation Area",
+          "street_address": "4100 S La Cienega Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0086,
+          "longitude": -118.3672,
+          "kind": "Public park"
+        },
+        {
+          "name": "Los Angeles Southwest College",
+          "street_address": "1600 W Imperial Hwy",
+          "city": "Los Angeles",
+          "latitude": 33.929,
+          "longitude": -118.3045,
+          "kind": "Community college"
+        },
+        {
+          "name": "Los Angeles Trade-Technical College",
+          "street_address": "400 W Washington Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0328,
+          "longitude": -118.2706,
+          "kind": "Community college"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0144,
+          "longitude": -118.278,
+          "kind": "Food hall and community marketplace"
+        },
+        {
+          "name": "Jesse Owens Park",
+          "street_address": "9651 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9473,
+          "longitude": -118.309,
+          "kind": "Public park and recreation center"
+        },
+        {
+          "name": "Algin Sutton Recreation Center",
+          "street_address": "8800 S Hoover St",
+          "city": "Los Angeles",
+          "latitude": 33.9565,
+          "longitude": -118.287,
+          "kind": "Recreation center"
+        },
+        {
+          "name": "Compton College",
+          "street_address": "1111 E Artesia Blvd",
+          "city": "Compton",
+          "latitude": 33.8786,
+          "longitude": -118.2104,
+          "kind": "Community college"
+        },
+        {
+          "name": "Compton Library (LA County Library)",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.8963,
+          "longitude": -118.2244,
+          "kind": "Public library"
+        },
+        {
+          "name": "Inglewood Main Library",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9612,
+          "longitude": -118.354,
+          "kind": "Public library"
+        },
+        {
+          "name": "Edward Vincent Jr. Park",
+          "street_address": "700 Warren Ln",
+          "city": "Inglewood",
+          "latitude": 33.9703,
+          "longitude": -118.3503,
+          "kind": "Public park"
+        },
+        {
+          "name": "Faithful Central Bible Church",
+          "street_address": "333 W Florence Ave",
+          "city": "Inglewood",
+          "latitude": 33.9749,
+          "longitude": -118.3592,
+          "kind": "Church"
+        },
+        {
+          "name": "Antelope Valley College",
+          "street_address": "3041 W Avenue K",
+          "city": "Lancaster",
+          "latitude": 34.6774,
+          "longitude": -118.1868,
+          "kind": "Community college"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.606,
+          "longitude": -118.153,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "East Los Angeles College",
+          "street_address": "1301 Avenida Cesar Chavez",
+          "city": "Monterey Park",
+          "latitude": 34.041,
+          "longitude": -118.15,
+          "kind": "Community college"
+        },
+        {
+          "name": "Mariachi Plaza",
+          "street_address": "1831 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0472,
+          "longitude": -118.2194,
+          "kind": "Public plaza"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0367,
+          "longitude": -118.1958,
+          "kind": "Indoor market"
+        },
+        {
+          "name": "Hollenbeck Park",
+          "street_address": "415 S St Louis St",
+          "city": "Los Angeles",
+          "latitude": 34.0418,
+          "longitude": -118.2181,
+          "kind": "Public park"
+        },
+        {
+          "name": "Dolores Mission Church",
+          "street_address": "171 S Gless St",
+          "city": "Los Angeles",
+          "latitude": 34.044,
+          "longitude": -118.2269,
+          "kind": "Church"
+        },
+        {
+          "name": "Pomona Public Library",
+          "street_address": "625 S Garey Ave",
+          "city": "Pomona",
+          "latitude": 34.053,
+          "longitude": -117.75,
+          "kind": "Public library"
+        }
+      ],
+      "needCapture": 0.52,
+      "meanNeedPercentile": 0.69646,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0.04
+    },
+    {
+      "audience": "18_to_34/any",
+      "asked": 40,
+      "places": [
+        {
+          "name": "Los Angeles Southwest College",
+          "street_address": "1600 W Imperial Hwy",
+          "city": "Los Angeles",
+          "latitude": 33.9285,
+          "longitude": -118.3045,
+          "kind": "Community college"
+        },
+        {
+          "name": "Los Angeles Trade-Technical College",
+          "street_address": "400 W Washington Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0335,
+          "longitude": -118.27,
+          "kind": "Community college"
+        },
+        {
+          "name": "East Los Angeles College",
+          "street_address": "1301 Avenida Cesar Chavez",
+          "city": "Monterey Park",
+          "latitude": 34.042,
+          "longitude": -118.151,
+          "kind": "Community college"
+        },
+        {
+          "name": "Compton College",
+          "street_address": "1111 E Artesia Blvd",
+          "city": "Compton",
+          "latitude": 33.877,
+          "longitude": -118.21,
+          "kind": "Community college"
+        },
+        {
+          "name": "Antelope Valley College",
+          "street_address": "3041 W Avenue K",
+          "city": "Lancaster",
+          "latitude": 34.678,
+          "longitude": -118.186,
+          "kind": "Community college"
+        },
+        {
+          "name": "Long Beach City College - Pacific Coast Campus",
+          "street_address": "1305 E Pacific Coast Hwy",
+          "city": "Long Beach",
+          "latitude": 33.79,
+          "longitude": -118.176,
+          "kind": "Community college"
+        },
+        {
+          "name": "California State University, Dominguez Hills",
+          "street_address": "1000 E Victoria St",
+          "city": "Carson",
+          "latitude": 33.864,
+          "longitude": -118.255,
+          "kind": "University"
+        },
+        {
+          "name": "California State University, Los Angeles",
+          "street_address": "5151 State University Dr",
+          "city": "Los Angeles",
+          "latitude": 34.0668,
+          "longitude": -118.1684,
+          "kind": "University"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0105,
+          "longitude": -118.3365,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Leimert Park Plaza",
+          "street_address": "4395 Leimert Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.004,
+          "longitude": -118.332,
+          "kind": "Public plaza / cultural hub"
+        },
+        {
+          "name": "Kenneth Hahn State Recreation Area",
+          "street_address": "4100 S La Cienega Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.009,
+          "longitude": -118.367,
+          "kind": "Park"
+        },
+        {
+          "name": "Jesse Owens Park",
+          "street_address": "9651 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.948,
+          "longitude": -118.309,
+          "kind": "Park / recreation center"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9388,
+          "longitude": -118.2412,
+          "kind": "Arts and community center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.944,
+          "longitude": -118.252,
+          "kind": "Park"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.918,
+          "longitude": -118.259,
+          "kind": "Park"
+        },
+        {
+          "name": "Exposition Park / LA84 Foundation-John C. Argue Swim Stadium area (Expo Center)",
+          "street_address": "3980 Bill Robertson Ln",
+          "city": "Los Angeles",
+          "latitude": 34.0145,
+          "longitude": -118.289,
+          "kind": "Recreation center / park"
+        },
+        {
+          "name": "Crenshaw Christian Center (FaithDome)",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles",
+          "latitude": 33.968,
+          "longitude": -118.2915,
+          "kind": "Church"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0225,
+          "longitude": -118.3355,
+          "kind": "Church"
+        },
+        {
+          "name": "First African Methodist Episcopal Church of Los Angeles",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0345,
+          "longitude": -118.306,
+          "kind": "Church"
+        },
+        {
+          "name": "Inglewood Main Library",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.961,
+          "longitude": -118.354,
+          "kind": "Public library"
+        },
+        {
+          "name": "Edward Vincent Jr. Park",
+          "street_address": "700 Warren Ln",
+          "city": "Inglewood",
+          "latitude": 33.967,
+          "longitude": -118.364,
+          "kind": "Park"
+        },
+        {
+          "name": "Dulan's on Crenshaw",
+          "street_address": "4859 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.999,
+          "longitude": -118.3305,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Slauson Super Mall",
+          "street_address": "1600 W Slauson Ave",
+          "city": "Los Angeles",
+          "latitude": 33.989,
+          "longitude": -118.305,
+          "kind": "Indoor swap meet"
+        },
+        {
+          "name": "Watts Labor Community Action Committee",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9355,
+          "longitude": -118.2545,
+          "kind": "Community organization"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.019,
+          "longitude": -118.2775,
+          "kind": "Public market / food hall"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0365,
+          "longitude": -118.195,
+          "kind": "Public market"
+        },
+        {
+          "name": "Mariachi Plaza",
+          "street_address": "1831 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.047,
+          "longitude": -118.2195,
+          "kind": "Public plaza"
+        },
+        {
+          "name": "Hollenbeck Park",
+          "street_address": "415 S St Louis St",
+          "city": "Los Angeles",
+          "latitude": 34.0425,
+          "longitude": -118.219,
+          "kind": "Park"
+        },
+        {
+          "name": "Ruben F. Salazar Park",
+          "street_address": "3864 Whittier Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0215,
+          "longitude": -118.184,
+          "kind": "Park"
+        },
+        {
+          "name": "Belvedere Community Regional Park",
+          "street_address": "4914 E Cesar E Chavez Ave",
+          "city": "Los Angeles",
+          "latitude": 34.04,
+          "longitude": -118.164,
+          "kind": "Park"
+        },
+        {
+          "name": "East Los Angeles Library",
+          "street_address": "4837 E 3rd St",
+          "city": "Los Angeles",
+          "latitude": 34.036,
+          "longitude": -118.165,
+          "kind": "Public library"
+        },
+        {
+          "name": "Salt Lake Park",
+          "street_address": "3401 E Florence Ave",
+          "city": "Huntington Park",
+          "latitude": 33.9725,
+          "longitude": -118.214,
+          "kind": "Park"
+        },
+        {
+          "name": "South Gate Park",
+          "street_address": "4900 Southern Ave",
+          "city": "South Gate",
+          "latitude": 33.9555,
+          "longitude": -118.201,
+          "kind": "Park"
+        },
+        {
+          "name": "Plaza México",
+          "street_address": "3100 E Imperial Hwy",
+          "city": "Lynwood",
+          "latitude": 33.9295,
+          "longitude": -118.213,
+          "kind": "Shopping center"
+        },
+        {
+          "name": "Compton Library",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.8965,
+          "longitude": -118.2235,
+          "kind": "Public library"
+        },
+        {
+          "name": "Lancaster City Park",
+          "street_address": "43011 10th St W",
+          "city": "Lancaster",
+          "latitude": 34.664,
+          "longitude": -118.149,
+          "kind": "Park"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.6155,
+          "longitude": -118.1495,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Palmdale City Library",
+          "street_address": "700 E Palmdale Blvd",
+          "city": "Palmdale",
+          "latitude": 34.58,
+          "longitude": -118.113,
+          "kind": "Public library"
+        },
+        {
+          "name": "Pomona Public Library",
+          "street_address": "625 S Garey Ave",
+          "city": "Pomona",
+          "latitude": 34.053,
+          "longitude": -117.7505,
+          "kind": "Public library"
+        },
+        {
+          "name": "Houghton Park",
+          "street_address": "6301 Myrtle Ave",
+          "city": "Long Beach",
+          "latitude": 33.869,
+          "longitude": -118.184,
+          "kind": "Park"
+        }
+      ],
+      "needCapture": 0.575,
+      "meanNeedPercentile": 0.7422675000000001,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "35_to_54/male",
+      "asked": 10,
+      "places": [
+        {
+          "name": "West Angeles Cathedral (West Angeles Church of God in Christ)",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0216,
+          "longitude": -118.3354,
+          "kind": "Church"
+        },
+        {
+          "name": "First African Methodist Episcopal Church (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0335,
+          "longitude": -118.306,
+          "kind": "Church"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9437,
+          "longitude": -118.2509,
+          "kind": "Public park and recreation center"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9175,
+          "longitude": -118.26,
+          "kind": "County park"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0103,
+          "longitude": -118.3363,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Dulan's Soul Food Kitchen",
+          "street_address": "4859 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9998,
+          "longitude": -118.3317,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Hawkins House of Burgers",
+          "street_address": "11603 Slater St",
+          "city": "Los Angeles",
+          "latitude": 33.93,
+          "longitude": -118.242,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Crenshaw Family YMCA",
+          "street_address": "3820 Santa Rosalia Dr",
+          "city": "Los Angeles",
+          "latitude": 34.0134,
+          "longitude": -118.3374,
+          "kind": "Gym and community center"
+        },
+        {
+          "name": "Randy's Donuts",
+          "street_address": "805 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9617,
+          "longitude": -118.3704,
+          "kind": "Donut shop"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0156,
+          "longitude": -118.2774,
+          "kind": "Community marketplace and food hall"
+        }
+      ],
+      "needCapture": 0.6,
+      "meanNeedPercentile": 0.729,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0.1
+    },
+    {
+      "audience": "35_to_54/male",
+      "asked": 15,
+      "places": [
+        {
+          "name": "First African Methodist Episcopal Church of Los Angeles (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0346,
+          "longitude": -118.3058,
+          "kind": "Church"
+        },
+        {
+          "name": "West Angeles Cathedral (West Angeles Church of God in Christ)",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0235,
+          "longitude": -118.3355,
+          "kind": "Church"
+        },
+        {
+          "name": "Holman United Methodist Church",
+          "street_address": "3320 W Adams Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0329,
+          "longitude": -118.3248,
+          "kind": "Church"
+        },
+        {
+          "name": "Faithful Central Bible Church",
+          "street_address": "333 W Florence Ave",
+          "city": "Inglewood",
+          "latitude": 33.9746,
+          "longitude": -118.3594,
+          "kind": "Church"
+        },
+        {
+          "name": "Crenshaw Christian Center",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9682,
+          "longitude": -118.2915,
+          "kind": "Church"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0103,
+          "longitude": -118.3365,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Vision Theatre (Leimert Park Village)",
+          "street_address": "3341 W 43rd Pl",
+          "city": "Los Angeles",
+          "latitude": 34.0045,
+          "longitude": -118.3318,
+          "kind": "Community cultural center / public plaza"
+        },
+        {
+          "name": "Kenneth Hahn State Recreation Area",
+          "street_address": "4100 S La Cienega Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0089,
+          "longitude": -118.3667,
+          "kind": "Park"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9388,
+          "longitude": -118.2412,
+          "kind": "Community arts center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9431,
+          "longitude": -118.2468,
+          "kind": "Park / recreation center"
+        },
+        {
+          "name": "Jesse Owens Park",
+          "street_address": "9651 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9475,
+          "longitude": -118.3087,
+          "kind": "Park / recreation center"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Recreation Area",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.92,
+          "longitude": -118.258,
+          "kind": "Park"
+        },
+        {
+          "name": "Compton Civic Center (Dr. Martin Luther King Jr. Memorial)",
+          "street_address": "205 S Willowbrook Ave",
+          "city": "Compton",
+          "latitude": 33.8958,
+          "longitude": -118.2201,
+          "kind": "Public civic plaza"
+        },
+        {
+          "name": "Randy's Donuts",
+          "street_address": "805 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9617,
+          "longitude": -118.3703,
+          "kind": "Donut shop"
+        },
+        {
+          "name": "Harold & Belle's",
+          "street_address": "2920 W Jefferson Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0255,
+          "longitude": -118.324,
+          "kind": "Restaurant (Creole/soul food)"
+        }
+      ],
+      "needCapture": 0.8666666666666667,
+      "meanNeedPercentile": 0.8939533333333334,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "35_to_54/male",
+      "asked": 25,
+      "places": [
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles (Watts)",
+          "latitude": 33.9388,
+          "longitude": -118.2411,
+          "kind": "Community arts center / cultural landmark"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles (Watts)",
+          "latitude": 33.9433,
+          "longitude": -118.2525,
+          "kind": "Public park and recreation center"
+        },
+        {
+          "name": "Watts Labor Community Action Committee (WLCAC)",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles (Watts)",
+          "latitude": 33.9353,
+          "longitude": -118.2545,
+          "kind": "Community service organization"
+        },
+        {
+          "name": "Hawkins House of Burgers",
+          "street_address": "11603 Slater St",
+          "city": "Los Angeles (Watts)",
+          "latitude": 33.9301,
+          "longitude": -118.2416,
+          "kind": "Local restaurant"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles (Willowbrook)",
+          "latitude": 33.9172,
+          "longitude": -118.258,
+          "kind": "Public park"
+        },
+        {
+          "name": "Compton Fashion Center (Compton Swap Meet)",
+          "street_address": "2100 N Long Beach Blvd",
+          "city": "Compton",
+          "latitude": 33.9083,
+          "longitude": -118.2075,
+          "kind": "Indoor swap meet / market"
+        },
+        {
+          "name": "Algin Sutton Recreation Center",
+          "street_address": "8800 S Hoover St",
+          "city": "Los Angeles (South LA)",
+          "latitude": 33.9558,
+          "longitude": -118.2866,
+          "kind": "Public recreation center"
+        },
+        {
+          "name": "Crenshaw Christian Center",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles (South LA)",
+          "latitude": 33.9679,
+          "longitude": -118.2915,
+          "kind": "Church"
+        },
+        {
+          "name": "Roscoe's House of Chicken and Waffles (Manchester)",
+          "street_address": "106 W Manchester Ave",
+          "city": "Los Angeles (South LA)",
+          "latitude": 33.96,
+          "longitude": -118.2754,
+          "kind": "Local restaurant"
+        },
+        {
+          "name": "Randy's Donuts",
+          "street_address": "805 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9617,
+          "longitude": -118.3704,
+          "kind": "Donut shop"
+        },
+        {
+          "name": "Edward Vincent Jr. Park",
+          "street_address": "700 Warren Ln",
+          "city": "Inglewood",
+          "latitude": 33.964,
+          "longitude": -118.364,
+          "kind": "Public park"
+        },
+        {
+          "name": "Simply Wholesome",
+          "street_address": "4508 W Slauson Ave",
+          "city": "Los Angeles (View Park-Windsor Hills)",
+          "latitude": 33.989,
+          "longitude": -118.344,
+          "kind": "Health food store and restaurant"
+        },
+        {
+          "name": "Dulan's on Crenshaw",
+          "street_address": "4859 Crenshaw Blvd",
+          "city": "Los Angeles (Hyde Park)",
+          "latitude": 33.999,
+          "longitude": -118.3313,
+          "kind": "Soul food restaurant"
+        },
+        {
+          "name": "Leimert Park Plaza",
+          "street_address": "4395 Leimert Blvd",
+          "city": "Los Angeles (Leimert Park)",
+          "latitude": 34.0055,
+          "longitude": -118.3317,
+          "kind": "Public plaza / community gathering space"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles (Baldwin Hills)",
+          "latitude": 34.0106,
+          "longitude": -118.3363,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Crenshaw Family YMCA",
+          "street_address": "3820 Santa Rosalia Dr",
+          "city": "Los Angeles (Baldwin Hills)",
+          "latitude": 34.0124,
+          "longitude": -118.3388,
+          "kind": "YMCA / fitness center"
+        },
+        {
+          "name": "Jim Gilliam Recreation Center",
+          "street_address": "4000 S La Brea Ave",
+          "city": "Los Angeles (Baldwin Village)",
+          "latitude": 34.0108,
+          "longitude": -118.3529,
+          "kind": "Public recreation center"
+        },
+        {
+          "name": "Kenneth Hahn State Recreation Area",
+          "street_address": "4100 S La Cienega Blvd",
+          "city": "Los Angeles (Baldwin Hills)",
+          "latitude": 34.0089,
+          "longitude": -118.3666,
+          "kind": "Regional park"
+        },
+        {
+          "name": "Earle's on Crenshaw",
+          "street_address": "3864 Crenshaw Blvd",
+          "city": "Los Angeles (Crenshaw)",
+          "latitude": 34.0157,
+          "longitude": -118.3352,
+          "kind": "Local restaurant"
+        },
+        {
+          "name": "West Angeles Cathedral (West Angeles Church of God in Christ)",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles (Crenshaw)",
+          "latitude": 34.0213,
+          "longitude": -118.3355,
+          "kind": "Church"
+        },
+        {
+          "name": "Holman United Methodist Church",
+          "street_address": "3320 W Adams Blvd",
+          "city": "Los Angeles (West Adams)",
+          "latitude": 34.0328,
+          "longitude": -118.3247,
+          "kind": "Church"
+        },
+        {
+          "name": "First AME Church of Los Angeles (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles (West Adams)",
+          "latitude": 34.0333,
+          "longitude": -118.306,
+          "kind": "Church"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles (South LA)",
+          "latitude": 34.0158,
+          "longitude": -118.277,
+          "kind": "Public market / food hall"
+        },
+        {
+          "name": "Ruben F. Salazar Park",
+          "street_address": "3864 Whittier Blvd",
+          "city": "Los Angeles (East Los Angeles)",
+          "latitude": 34.0199,
+          "longitude": -118.1872,
+          "kind": "Public park"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles (Boyle Heights)",
+          "latitude": 34.0372,
+          "longitude": -118.2017,
+          "kind": "Indoor market"
+        }
+      ],
+      "needCapture": 0.64,
+      "meanNeedPercentile": 0.80452,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "35_to_54/male",
+      "asked": 40,
+      "places": [
+        {
+          "name": "Crenshaw Christian Center (FaithDome)",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles",
+          "latitude": 33.968,
+          "longitude": -118.2918,
+          "kind": "Church"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0225,
+          "longitude": -118.3355,
+          "kind": "Church"
+        },
+        {
+          "name": "First AME Church of Los Angeles (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0346,
+          "longitude": -118.3053,
+          "kind": "Church"
+        },
+        {
+          "name": "Second Baptist Church",
+          "street_address": "2412 Griffith Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0257,
+          "longitude": -118.256,
+          "kind": "Church"
+        },
+        {
+          "name": "Holman United Methodist Church",
+          "street_address": "3320 W Adams Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.033,
+          "longitude": -118.3255,
+          "kind": "Church"
+        },
+        {
+          "name": "Bethel AME Church",
+          "street_address": "7900 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.968,
+          "longitude": -118.309,
+          "kind": "Church"
+        },
+        {
+          "name": "Faithful Central Bible Church",
+          "street_address": "321 N Eucalyptus Ave",
+          "city": "Inglewood",
+          "latitude": 33.9645,
+          "longitude": -118.362,
+          "kind": "Church"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0105,
+          "longitude": -118.3365,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Leimert Plaza Park",
+          "street_address": "4395 Leimert Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0049,
+          "longitude": -118.3318,
+          "kind": "Public park / community plaza"
+        },
+        {
+          "name": "Earle's on Crenshaw",
+          "street_address": "3864 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0145,
+          "longitude": -118.3355,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Dulan's Soul Food Kitchen",
+          "street_address": "4859 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.999,
+          "longitude": -118.3305,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Harold & Belle's",
+          "street_address": "2920 W Jefferson Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0255,
+          "longitude": -118.3215,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Hawkins House of Burgers",
+          "street_address": "11603 Slater St",
+          "city": "Los Angeles",
+          "latitude": 33.929,
+          "longitude": -118.2372,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9388,
+          "longitude": -118.2412,
+          "kind": "Community arts center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9433,
+          "longitude": -118.251,
+          "kind": "Public park"
+        },
+        {
+          "name": "Watts Labor Community Action Committee",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9345,
+          "longitude": -118.2545,
+          "kind": "Community center"
+        },
+        {
+          "name": "Jesse Owens Park",
+          "street_address": "9651 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.947,
+          "longitude": -118.309,
+          "kind": "Public park / recreation center"
+        },
+        {
+          "name": "Algin Sutton Recreation Center",
+          "street_address": "8800 S Hoover St",
+          "city": "Los Angeles",
+          "latitude": 33.9565,
+          "longitude": -118.2865,
+          "kind": "Recreation center"
+        },
+        {
+          "name": "Slauson Super Mall",
+          "street_address": "1600 W Slauson Ave",
+          "city": "Los Angeles",
+          "latitude": 33.989,
+          "longitude": -118.302,
+          "kind": "Indoor swap meet / shopping"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.017,
+          "longitude": -118.2765,
+          "kind": "Market / food hall"
+        },
+        {
+          "name": "Los Angeles Southwest College",
+          "street_address": "1600 W Imperial Hwy",
+          "city": "Los Angeles",
+          "latitude": 33.9285,
+          "longitude": -118.301,
+          "kind": "Community college"
+        },
+        {
+          "name": "Magic Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.917,
+          "longitude": -118.256,
+          "kind": "Public park"
+        },
+        {
+          "name": "Willowbrook/Rosa Parks Station",
+          "street_address": "11611 Willowbrook Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9285,
+          "longitude": -118.238,
+          "kind": "Transit station"
+        },
+        {
+          "name": "Kenneth Hahn State Recreation Area",
+          "street_address": "4100 S La Cienega Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0098,
+          "longitude": -118.3665,
+          "kind": "Public park"
+        },
+        {
+          "name": "Rogers Park",
+          "street_address": "400 W Beach Ave",
+          "city": "Inglewood",
+          "latitude": 33.969,
+          "longitude": -118.36,
+          "kind": "Public park"
+        },
+        {
+          "name": "Randy's Donuts",
+          "street_address": "805 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9614,
+          "longitude": -118.3703,
+          "kind": "Donut shop"
+        },
+        {
+          "name": "Kia Forum",
+          "street_address": "3900 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9583,
+          "longitude": -118.3419,
+          "kind": "Arena / event venue"
+        },
+        {
+          "name": "SoFi Stadium",
+          "street_address": "1001 Stadium Dr",
+          "city": "Inglewood",
+          "latitude": 33.9535,
+          "longitude": -118.3392,
+          "kind": "Stadium"
+        },
+        {
+          "name": "Compton Library",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.8962,
+          "longitude": -118.2253,
+          "kind": "Public library"
+        },
+        {
+          "name": "Martin Luther King Jr. Memorial (Compton Civic Center)",
+          "street_address": "205 S Willowbrook Ave",
+          "city": "Compton",
+          "latitude": 33.896,
+          "longitude": -118.2235,
+          "kind": "Civic plaza / public space"
+        },
+        {
+          "name": "Compton Fashion Center (Compton Swap Meet)",
+          "street_address": "2100 N Long Beach Blvd",
+          "city": "Compton",
+          "latitude": 33.9105,
+          "longitude": -118.2085,
+          "kind": "Indoor swap meet"
+        },
+        {
+          "name": "Plaza Mexico",
+          "street_address": "3100 E Imperial Hwy",
+          "city": "Lynwood",
+          "latitude": 33.9295,
+          "longitude": -118.2125,
+          "kind": "Shopping center"
+        },
+        {
+          "name": "Salt Lake Park",
+          "street_address": "3401 E Florence Ave",
+          "city": "Huntington Park",
+          "latitude": 33.9725,
+          "longitude": -118.2125,
+          "kind": "Public park"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0372,
+          "longitude": -118.2045,
+          "kind": "Market"
+        },
+        {
+          "name": "King Taco (Original)",
+          "street_address": "4504 E 3rd St",
+          "city": "Los Angeles",
+          "latitude": 34.034,
+          "longitude": -118.172,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Belvedere Park",
+          "street_address": "4914 E Cesar E Chavez Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0365,
+          "longitude": -118.161,
+          "kind": "Public park"
+        },
+        {
+          "name": "Ruben F. Salazar Park",
+          "street_address": "3864 Whittier Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0225,
+          "longitude": -118.188,
+          "kind": "Public park"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.6145,
+          "longitude": -118.1495,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Lancaster City Park",
+          "street_address": "43011 10th St W",
+          "city": "Lancaster",
+          "latitude": 34.664,
+          "longitude": -118.1455,
+          "kind": "Public park"
+        },
+        {
+          "name": "Antelope Valley Fairgrounds",
+          "street_address": "2551 W Avenue H",
+          "city": "Lancaster",
+          "latitude": 34.705,
+          "longitude": -118.168,
+          "kind": "Fairgrounds / event venue"
+        }
+      ],
+      "needCapture": 0.65,
+      "meanNeedPercentile": 0.78912,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "35_to_54/female",
+      "asked": 10,
+      "places": [
+        {
+          "name": "First African Methodist Episcopal Church (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0333,
+          "longitude": -118.307,
+          "kind": "Church"
+        },
+        {
+          "name": "West Angeles Cathedral (West Angeles Church of God in Christ)",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0186,
+          "longitude": -118.3354,
+          "kind": "Church"
+        },
+        {
+          "name": "Watts Labor Community Action Committee",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9358,
+          "longitude": -118.2547,
+          "kind": "Community center"
+        },
+        {
+          "name": "Compton Library (LA County Library)",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.8966,
+          "longitude": -118.2253,
+          "kind": "Public library"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9437,
+          "longitude": -118.25,
+          "kind": "Public park and recreation center"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0105,
+          "longitude": -118.3366,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Inglewood Public Library (Main Library)",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.96,
+          "longitude": -118.355,
+          "kind": "Public library"
+        },
+        {
+          "name": "Plaza Mexico",
+          "street_address": "3100 E Imperial Hwy",
+          "city": "Lynwood",
+          "latitude": 33.9301,
+          "longitude": -118.2116,
+          "kind": "Shopping center"
+        },
+        {
+          "name": "Dr. Mary McLeod Bethune Regional Library",
+          "street_address": "3900 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0115,
+          "longitude": -118.3087,
+          "kind": "Public library"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.6084,
+          "longitude": -118.1525,
+          "kind": "Shopping mall"
+        }
+      ],
+      "needCapture": 0.5,
+      "meanNeedPercentile": 0.7407,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "35_to_54/female",
+      "asked": 15,
+      "places": [
+        {
+          "name": "West Angeles Cathedral (West Angeles Church of God in Christ)",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0215,
+          "longitude": -118.3352,
+          "kind": "Church"
+        },
+        {
+          "name": "First AME Church of Los Angeles (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0335,
+          "longitude": -118.3058,
+          "kind": "Church"
+        },
+        {
+          "name": "Crenshaw Christian Center",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9681,
+          "longitude": -118.2915,
+          "kind": "Church"
+        },
+        {
+          "name": "Holman United Methodist Church",
+          "street_address": "3320 W Adams Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0328,
+          "longitude": -118.3247,
+          "kind": "Church"
+        },
+        {
+          "name": "Faithful Central Bible Church",
+          "street_address": "321 N Eucalyptus Ave",
+          "city": "Inglewood",
+          "latitude": 33.9644,
+          "longitude": -118.3613,
+          "kind": "Church"
+        },
+        {
+          "name": "Compton Library (LA County Library)",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.896,
+          "longitude": -118.226,
+          "kind": "Public library"
+        },
+        {
+          "name": "Inglewood Public Library",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9617,
+          "longitude": -118.3537,
+          "kind": "Public library"
+        },
+        {
+          "name": "Lancaster Library (LA County Library)",
+          "street_address": "601 W Lancaster Blvd",
+          "city": "Lancaster",
+          "latitude": 34.6979,
+          "longitude": -118.1434,
+          "kind": "Public library"
+        },
+        {
+          "name": "Watts Labor Community Action Committee (WLCAC)",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9353,
+          "longitude": -118.2543,
+          "kind": "Community center"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9387,
+          "longitude": -118.2412,
+          "kind": "Community arts center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9437,
+          "longitude": -118.2468,
+          "kind": "Public park and recreation center"
+        },
+        {
+          "name": "Jim Gilliam Recreation Center",
+          "street_address": "4000 S La Brea Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0119,
+          "longitude": -118.3524,
+          "kind": "Public recreation center"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0107,
+          "longitude": -118.336,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0182,
+          "longitude": -118.2786,
+          "kind": "Public market and community hub"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.6062,
+          "longitude": -118.1478,
+          "kind": "Shopping mall"
+        }
+      ],
+      "needCapture": 0.7333333333333333,
+      "meanNeedPercentile": 0.8235866666666666,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "35_to_54/female",
+      "asked": 25,
+      "places": [
+        {
+          "name": "First African Methodist Episcopal Church (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0336,
+          "longitude": -118.3065,
+          "kind": "Church"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0217,
+          "longitude": -118.3355,
+          "kind": "Church"
+        },
+        {
+          "name": "Faithful Central Bible Church",
+          "street_address": "321 N Eucalyptus Ave",
+          "city": "Inglewood",
+          "latitude": 33.964,
+          "longitude": -118.3655,
+          "kind": "Church"
+        },
+        {
+          "name": "Second Baptist Church",
+          "street_address": "2412 Griffith Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0229,
+          "longitude": -118.256,
+          "kind": "Church"
+        },
+        {
+          "name": "Holman United Methodist Church",
+          "street_address": "3320 W Adams Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0329,
+          "longitude": -118.3226,
+          "kind": "Church"
+        },
+        {
+          "name": "Crenshaw Christian Center",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9683,
+          "longitude": -118.2915,
+          "kind": "Church"
+        },
+        {
+          "name": "Watts Labor Community Action Committee",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9354,
+          "longitude": -118.2545,
+          "kind": "Community center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9431,
+          "longitude": -118.2507,
+          "kind": "Park and recreation center"
+        },
+        {
+          "name": "Compton Library",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.896,
+          "longitude": -118.226,
+          "kind": "Public library"
+        },
+        {
+          "name": "A C Bilbrew Library",
+          "street_address": "150 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9165,
+          "longitude": -118.272,
+          "kind": "Public library"
+        },
+        {
+          "name": "Inglewood Public Library",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.96,
+          "longitude": -118.354,
+          "kind": "Public library"
+        },
+        {
+          "name": "Jefferson-Vassie D. Wright Memorial Branch Library",
+          "street_address": "2211 W Jefferson Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0254,
+          "longitude": -118.3155,
+          "kind": "Public library"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0103,
+          "longitude": -118.3375,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9178,
+          "longitude": -118.258,
+          "kind": "Park"
+        },
+        {
+          "name": "Kenneth Hahn State Recreation Area",
+          "street_address": "4100 S La Cienega Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.01,
+          "longitude": -118.366,
+          "kind": "Park"
+        },
+        {
+          "name": "East Los Angeles Library",
+          "street_address": "4837 E 3rd St",
+          "city": "Los Angeles",
+          "latitude": 34.039,
+          "longitude": -118.168,
+          "kind": "Public library"
+        },
+        {
+          "name": "Belvedere Park",
+          "street_address": "4914 E Cesar E Chavez Ave",
+          "city": "Los Angeles",
+          "latitude": 34.042,
+          "longitude": -118.164,
+          "kind": "Park and community center"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0144,
+          "longitude": -118.2775,
+          "kind": "Community marketplace"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.6025,
+          "longitude": -118.149,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Lancaster Library",
+          "street_address": "601 W Lancaster Blvd",
+          "city": "Lancaster",
+          "latitude": 34.6977,
+          "longitude": -118.144,
+          "kind": "Public library"
+        },
+        {
+          "name": "Lynwood Library",
+          "street_address": "11320 Bullis Rd",
+          "city": "Lynwood",
+          "latitude": 33.93,
+          "longitude": -118.201,
+          "kind": "Public library"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9387,
+          "longitude": -118.2413,
+          "kind": "Arts and community center"
+        },
+        {
+          "name": "Hyde Park Miriam Matthews Branch Library",
+          "street_address": "2205 W Florence Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9746,
+          "longitude": -118.315,
+          "kind": "Public library"
+        },
+        {
+          "name": "Crenshaw Family YMCA",
+          "street_address": "3820 Santa Rosalia Dr",
+          "city": "Los Angeles",
+          "latitude": 34.0125,
+          "longitude": -118.338,
+          "kind": "YMCA / fitness center"
+        },
+        {
+          "name": "Exposition Park - Dr. Mary McLeod Bethune Regional Branch Library",
+          "street_address": "3900 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 34.011,
+          "longitude": -118.309,
+          "kind": "Public library"
+        }
+      ],
+      "needCapture": 0.84,
+      "meanNeedPercentile": 0.8641320000000001,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "35_to_54/female",
+      "asked": 40,
+      "places": [
+        {
+          "name": "First African Methodist Episcopal Church (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0335,
+          "longitude": -118.306,
+          "kind": "Church"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0218,
+          "longitude": -118.3354,
+          "kind": "Church"
+        },
+        {
+          "name": "Crenshaw Christian Center",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9685,
+          "longitude": -118.2915,
+          "kind": "Church"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0107,
+          "longitude": -118.3363,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Leimert Park Plaza",
+          "street_address": "4395 Leimert Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.004,
+          "longitude": -118.332,
+          "kind": "Public plaza / community gathering place"
+        },
+        {
+          "name": "Kenneth Hahn State Recreation Area",
+          "street_address": "4100 S La Cienega Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0094,
+          "longitude": -118.3681,
+          "kind": "Park"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9387,
+          "longitude": -118.2413,
+          "kind": "Arts and community center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9433,
+          "longitude": -118.2509,
+          "kind": "Park"
+        },
+        {
+          "name": "Martin Luther King Jr. Community Hospital",
+          "street_address": "1680 E 120th St",
+          "city": "Los Angeles",
+          "latitude": 33.9255,
+          "longitude": -118.2429,
+          "kind": "Hospital"
+        },
+        {
+          "name": "Watts Labor Community Action Committee (WLCAC)",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9345,
+          "longitude": -118.2546,
+          "kind": "Community center"
+        },
+        {
+          "name": "Compton Library",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.8964,
+          "longitude": -118.2246,
+          "kind": "Public library"
+        },
+        {
+          "name": "Compton Civic Center",
+          "street_address": "205 S Willowbrook Ave",
+          "city": "Compton",
+          "latitude": 33.8955,
+          "longitude": -118.2205,
+          "kind": "Civic center"
+        },
+        {
+          "name": "Inglewood Main Library",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9608,
+          "longitude": -118.3555,
+          "kind": "Public library"
+        },
+        {
+          "name": "Faithful Central Bible Church",
+          "street_address": "333 W Florence Ave",
+          "city": "Inglewood",
+          "latitude": 33.9745,
+          "longitude": -118.36,
+          "kind": "Church"
+        },
+        {
+          "name": "Edward Vincent Jr. Park",
+          "street_address": "700 Warren Ln",
+          "city": "Inglewood",
+          "latitude": 33.97,
+          "longitude": -118.362,
+          "kind": "Park"
+        },
+        {
+          "name": "California Science Center / Exposition Park",
+          "street_address": "700 Exposition Park Dr",
+          "city": "Los Angeles",
+          "latitude": 34.0157,
+          "longitude": -118.2856,
+          "kind": "Museum / park"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0158,
+          "longitude": -118.2785,
+          "kind": "Public market"
+        },
+        {
+          "name": "Dr. Mary McLeod Bethune Regional Library",
+          "street_address": "3900 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 34.013,
+          "longitude": -118.309,
+          "kind": "Public library"
+        },
+        {
+          "name": "A C Bilbrew Library",
+          "street_address": "150 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9165,
+          "longitude": -118.272,
+          "kind": "Public library"
+        },
+        {
+          "name": "Jesse Owens Park",
+          "street_address": "9651 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.948,
+          "longitude": -118.309,
+          "kind": "Park"
+        },
+        {
+          "name": "Algin Sutton Recreation Center",
+          "street_address": "8800 S Hoover St",
+          "city": "Los Angeles",
+          "latitude": 33.956,
+          "longitude": -118.286,
+          "kind": "Recreation center"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.917,
+          "longitude": -118.258,
+          "kind": "Park"
+        },
+        {
+          "name": "El Mercadito",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0367,
+          "longitude": -118.1985,
+          "kind": "Public market"
+        },
+        {
+          "name": "Mariachi Plaza",
+          "street_address": "1831 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0472,
+          "longitude": -118.2194,
+          "kind": "Public plaza"
+        },
+        {
+          "name": "Dolores Mission Church",
+          "street_address": "171 S Gless St",
+          "city": "Los Angeles",
+          "latitude": 34.043,
+          "longitude": -118.2253,
+          "kind": "Church"
+        },
+        {
+          "name": "Belvedere Community Regional Park",
+          "street_address": "4914 E Cesar E Chavez Ave",
+          "city": "Los Angeles",
+          "latitude": 34.039,
+          "longitude": -118.1625,
+          "kind": "Park"
+        },
+        {
+          "name": "East Los Angeles Library",
+          "street_address": "4837 E 3rd St",
+          "city": "Los Angeles",
+          "latitude": 34.037,
+          "longitude": -118.1666,
+          "kind": "Public library"
+        },
+        {
+          "name": "Ruben F. Salazar Park",
+          "street_address": "3864 Whittier Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0185,
+          "longitude": -118.1845,
+          "kind": "Park"
+        },
+        {
+          "name": "Plaza Mexico",
+          "street_address": "3100 E Imperial Hwy",
+          "city": "Lynwood",
+          "latitude": 33.93,
+          "longitude": -118.216,
+          "kind": "Shopping center"
+        },
+        {
+          "name": "Lynwood Library",
+          "street_address": "11320 Bullis Rd",
+          "city": "Lynwood",
+          "latitude": 33.93,
+          "longitude": -118.204,
+          "kind": "Public library"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Avenue P",
+          "city": "Palmdale",
+          "latitude": 34.6155,
+          "longitude": -118.156,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Lancaster Library",
+          "street_address": "601 W Lancaster Blvd",
+          "city": "Lancaster",
+          "latitude": 34.698,
+          "longitude": -118.143,
+          "kind": "Public library"
+        },
+        {
+          "name": "Antelope Valley Fairgrounds",
+          "street_address": "2551 W Avenue H",
+          "city": "Lancaster",
+          "latitude": 34.715,
+          "longitude": -118.172,
+          "kind": "Fairgrounds / event venue"
+        },
+        {
+          "name": "Second Baptist Church",
+          "street_address": "2412 Griffith Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0215,
+          "longitude": -118.256,
+          "kind": "Church"
+        },
+        {
+          "name": "Holman United Methodist Church",
+          "street_address": "3320 W Adams Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.033,
+          "longitude": -118.322,
+          "kind": "Church"
+        },
+        {
+          "name": "Ward AME Church",
+          "street_address": "1177 W 25th St",
+          "city": "Los Angeles",
+          "latitude": 34.033,
+          "longitude": -118.285,
+          "kind": "Church"
+        },
+        {
+          "name": "St. Brigid Catholic Church",
+          "street_address": "5214 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.995,
+          "longitude": -118.309,
+          "kind": "Church"
+        },
+        {
+          "name": "Carson Community Center",
+          "street_address": "3 Civic Plaza Dr",
+          "city": "Carson",
+          "latitude": 33.832,
+          "longitude": -118.262,
+          "kind": "Community center"
+        },
+        {
+          "name": "Pomona Public Library",
+          "street_address": "625 S Garey Ave",
+          "city": "Pomona",
+          "latitude": 34.0525,
+          "longitude": -117.7505,
+          "kind": "Public library"
+        },
+        {
+          "name": "Mark Twain Neighborhood Library",
+          "street_address": "1401 E Anaheim St",
+          "city": "Long Beach",
+          "latitude": 33.782,
+          "longitude": -118.175,
+          "kind": "Public library"
+        }
+      ],
+      "needCapture": 0.55,
+      "meanNeedPercentile": 0.7190999999999999,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0.025
+    },
+    {
+      "audience": "55_plus/any",
+      "asked": 10,
+      "places": [
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles (Crenshaw/Baldwin Hills)",
+          "latitude": 34.0215,
+          "longitude": -118.3352,
+          "kind": "Church (large congregation with many older adults)"
+        },
+        {
+          "name": "First AME Church of Los Angeles (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles (West Adams/South LA)",
+          "latitude": 34.0335,
+          "longitude": -118.306,
+          "kind": "Church (historic congregation)"
+        },
+        {
+          "name": "Crenshaw Christian Center",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles (South LA/Vermont Knolls)",
+          "latitude": 33.9688,
+          "longitude": -118.2915,
+          "kind": "Church (megachurch)"
+        },
+        {
+          "name": "Watts Labor Community Action Committee (WLCAC)",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles (Watts)",
+          "latitude": 33.9353,
+          "longitude": -118.2547,
+          "kind": "Community center / nonprofit"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles (Watts)",
+          "latitude": 33.9437,
+          "longitude": -118.2493,
+          "kind": "Public park and recreation center"
+        },
+        {
+          "name": "Algin Sutton Recreation Center",
+          "street_address": "8800 S Hoover St",
+          "city": "Los Angeles (South LA/Vermont-Slauson)",
+          "latitude": 33.9568,
+          "longitude": -118.2867,
+          "kind": "Public recreation center"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles (Crenshaw)",
+          "latitude": 34.0106,
+          "longitude": -118.3363,
+          "kind": "Shopping mall (popular with morning mall walkers)"
+        },
+        {
+          "name": "Inglewood Main Library",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9617,
+          "longitude": -118.354,
+          "kind": "Public library"
+        },
+        {
+          "name": "Compton Library (LA County Library)",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.896,
+          "longitude": -118.2245,
+          "kind": "Public library"
+        },
+        {
+          "name": "East Los Angeles Library (LA County Library)",
+          "street_address": "4837 E 3rd St",
+          "city": "East Los Angeles",
+          "latitude": 34.0384,
+          "longitude": -118.1667,
+          "kind": "Public library"
+        }
+      ],
+      "needCapture": 0.5,
+      "meanNeedPercentile": 0.74468,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "55_plus/any",
+      "asked": 15,
+      "places": [
+        {
+          "name": "West Angeles Cathedral (West Angeles Church of God in Christ)",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0225,
+          "longitude": -118.3354,
+          "kind": "Church"
+        },
+        {
+          "name": "First African Methodist Episcopal Church (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0335,
+          "longitude": -118.306,
+          "kind": "Church"
+        },
+        {
+          "name": "Second Baptist Church",
+          "street_address": "2412 Griffith Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0249,
+          "longitude": -118.2588,
+          "kind": "Church"
+        },
+        {
+          "name": "Crenshaw Christian Center",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9668,
+          "longitude": -118.2914,
+          "kind": "Church"
+        },
+        {
+          "name": "Watts Labor Community Action Committee",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9356,
+          "longitude": -118.2549,
+          "kind": "Community center"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9387,
+          "longitude": -118.2413,
+          "kind": "Arts and community center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9437,
+          "longitude": -118.2493,
+          "kind": "Public park"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9172,
+          "longitude": -118.2566,
+          "kind": "Public park"
+        },
+        {
+          "name": "Jesse Owens Park",
+          "street_address": "9651 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.948,
+          "longitude": -118.3089,
+          "kind": "Public park"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0108,
+          "longitude": -118.3355,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Inglewood Public Library (Main)",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.962,
+          "longitude": -118.353,
+          "kind": "Public library"
+        },
+        {
+          "name": "Compton Library",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.8963,
+          "longitude": -118.2245,
+          "kind": "Public library"
+        },
+        {
+          "name": "Carson Community Center",
+          "street_address": "3 Civic Plaza Dr",
+          "city": "Carson",
+          "latitude": 33.8317,
+          "longitude": -118.2577,
+          "kind": "Community center"
+        },
+        {
+          "name": "Belvedere Community Regional Park",
+          "street_address": "4914 E Cesar E Chavez Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0386,
+          "longitude": -118.1621,
+          "kind": "Public park"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0379,
+          "longitude": -118.2004,
+          "kind": "Marketplace"
+        }
+      ],
+      "needCapture": 0.6666666666666666,
+      "meanNeedPercentile": 0.7860466666666667,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "55_plus/any",
+      "asked": 25,
+      "places": [
+        {
+          "name": "First African Methodist Episcopal Church of Los Angeles (FAME)",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0327,
+          "longitude": -118.306,
+          "kind": "Church"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0194,
+          "longitude": -118.3355,
+          "kind": "Church"
+        },
+        {
+          "name": "Watts Labor Community Action Committee (WLCAC)",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9363,
+          "longitude": -118.2546,
+          "kind": "Community center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9434,
+          "longitude": -118.2508,
+          "kind": "Park / recreation center"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0105,
+          "longitude": -118.3363,
+          "kind": "Shopping mall"
+        },
+        {
+          "name": "Vision Theatre (Leimert Park)",
+          "street_address": "3341 W 43rd Pl",
+          "city": "Los Angeles",
+          "latitude": 34.0045,
+          "longitude": -118.3315,
+          "kind": "Cultural venue / plaza"
+        },
+        {
+          "name": "Dulan's Soul Food Kitchen",
+          "street_address": "4859 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.999,
+          "longitude": -118.335,
+          "kind": "Restaurant"
+        },
+        {
+          "name": "Watts Senior Citizen Center",
+          "street_address": "1657 E Century Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9456,
+          "longitude": -118.2453,
+          "kind": "Senior center"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9387,
+          "longitude": -118.2413,
+          "kind": "Arts / community center"
+        },
+        {
+          "name": "Algin Sutton Recreation Center",
+          "street_address": "8800 S Hoover St",
+          "city": "Los Angeles",
+          "latitude": 33.9568,
+          "longitude": -118.2866,
+          "kind": "Park / recreation center"
+        },
+        {
+          "name": "St. Brigid Catholic Church",
+          "street_address": "5214 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9952,
+          "longitude": -118.3088,
+          "kind": "Church"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0148,
+          "longitude": -118.2787,
+          "kind": "Public market / food hall"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0383,
+          "longitude": -118.2006,
+          "kind": "Public market"
+        },
+        {
+          "name": "Mariachi Plaza",
+          "street_address": "1831 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0473,
+          "longitude": -118.2195,
+          "kind": "Public plaza"
+        },
+        {
+          "name": "Dolores Mission Church",
+          "street_address": "171 S Gless St",
+          "city": "Los Angeles",
+          "latitude": 34.0445,
+          "longitude": -118.2295,
+          "kind": "Church"
+        },
+        {
+          "name": "Belvedere Community Regional Park",
+          "street_address": "4914 E Cesar E Chavez Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0399,
+          "longitude": -118.1648,
+          "kind": "Park / senior programs"
+        },
+        {
+          "name": "East Los Angeles Library",
+          "street_address": "4837 E 3rd St",
+          "city": "Los Angeles",
+          "latitude": 34.0377,
+          "longitude": -118.169,
+          "kind": "Public library"
+        },
+        {
+          "name": "Compton Library",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.8963,
+          "longitude": -118.2253,
+          "kind": "Public library"
+        },
+        {
+          "name": "Inglewood Public Library (Main)",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9606,
+          "longitude": -118.3555,
+          "kind": "Public library"
+        },
+        {
+          "name": "Salt Lake Park",
+          "street_address": "3401 E Florence Ave",
+          "city": "Huntington Park",
+          "latitude": 33.9739,
+          "longitude": -118.2124,
+          "kind": "Park / recreation center"
+        },
+        {
+          "name": "South Gate Park",
+          "street_address": "4900 Southern Ave",
+          "city": "South Gate",
+          "latitude": 33.9497,
+          "longitude": -118.2009,
+          "kind": "Park / senior center"
+        },
+        {
+          "name": "Plaza México",
+          "street_address": "3100 E Imperial Hwy",
+          "city": "Lynwood",
+          "latitude": 33.93,
+          "longitude": -118.213,
+          "kind": "Shopping center"
+        },
+        {
+          "name": "Pacoima Branch Library",
+          "street_address": "13605 Van Nuys Blvd",
+          "city": "Pacoima",
+          "latitude": 34.2672,
+          "longitude": -118.4205,
+          "kind": "Public library"
+        },
+        {
+          "name": "James C. Gilley Lancaster Senior Center",
+          "street_address": "777 W Jackman St",
+          "city": "Lancaster",
+          "latitude": 34.6913,
+          "longitude": -118.143,
+          "kind": "Senior center"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.6052,
+          "longitude": -118.146,
+          "kind": "Shopping mall"
+        }
+      ],
+      "needCapture": 0.48,
+      "meanNeedPercentile": 0.6959720000000001,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    },
+    {
+      "audience": "55_plus/any",
+      "asked": 40,
+      "places": [
+        {
+          "name": "First AME Church of Los Angeles",
+          "street_address": "2270 S Harvard Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0336,
+          "longitude": -118.3065,
+          "kind": "church"
+        },
+        {
+          "name": "West Angeles Cathedral",
+          "street_address": "3600 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0218,
+          "longitude": -118.3352,
+          "kind": "church"
+        },
+        {
+          "name": "Holman United Methodist Church",
+          "street_address": "3320 W Adams Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0325,
+          "longitude": -118.327,
+          "kind": "church"
+        },
+        {
+          "name": "Second Baptist Church",
+          "street_address": "2412 Griffith Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0215,
+          "longitude": -118.2528,
+          "kind": "church"
+        },
+        {
+          "name": "Crenshaw Christian Center",
+          "street_address": "7901 S Vermont Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9675,
+          "longitude": -118.2915,
+          "kind": "church"
+        },
+        {
+          "name": "Faithful Central Bible Church",
+          "street_address": "333 W Florence Ave",
+          "city": "Inglewood",
+          "latitude": 33.9745,
+          "longitude": -118.3585,
+          "kind": "church"
+        },
+        {
+          "name": "Baldwin Hills Crenshaw Plaza",
+          "street_address": "3650 W Martin Luther King Jr Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.0105,
+          "longitude": -118.3365,
+          "kind": "shopping mall"
+        },
+        {
+          "name": "Vision Theatre (Leimert Park)",
+          "street_address": "3341 W 43rd Pl",
+          "city": "Los Angeles",
+          "latitude": 34.004,
+          "longitude": -118.332,
+          "kind": "community arts venue"
+        },
+        {
+          "name": "Watts Labor Community Action Committee",
+          "street_address": "10950 S Central Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9355,
+          "longitude": -118.2545,
+          "kind": "community center"
+        },
+        {
+          "name": "Watts Towers Arts Center",
+          "street_address": "1727 E 107th St",
+          "city": "Los Angeles",
+          "latitude": 33.9387,
+          "longitude": -118.2413,
+          "kind": "community arts center"
+        },
+        {
+          "name": "Ted Watkins Memorial Park",
+          "street_address": "1335 E 103rd St",
+          "city": "Los Angeles",
+          "latitude": 33.9435,
+          "longitude": -118.249,
+          "kind": "park"
+        },
+        {
+          "name": "Earvin \"Magic\" Johnson Park",
+          "street_address": "905 E El Segundo Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9175,
+          "longitude": -118.26,
+          "kind": "park"
+        },
+        {
+          "name": "Jesse Owens Park",
+          "street_address": "9651 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 33.948,
+          "longitude": -118.309,
+          "kind": "park"
+        },
+        {
+          "name": "Algin Sutton Recreation Center",
+          "street_address": "8800 S Hoover St",
+          "city": "Los Angeles",
+          "latitude": 33.9555,
+          "longitude": -118.286,
+          "kind": "recreation center"
+        },
+        {
+          "name": "Jim Gilliam Recreation Center",
+          "street_address": "4000 S La Brea Ave",
+          "city": "Los Angeles",
+          "latitude": 34.009,
+          "longitude": -118.35,
+          "kind": "recreation center"
+        },
+        {
+          "name": "Compton Library",
+          "street_address": "240 W Compton Blvd",
+          "city": "Compton",
+          "latitude": 33.8955,
+          "longitude": -118.226,
+          "kind": "public library"
+        },
+        {
+          "name": "Compton City Hall / Civic Center",
+          "street_address": "205 S Willowbrook Ave",
+          "city": "Compton",
+          "latitude": 33.8962,
+          "longitude": -118.2235,
+          "kind": "civic center"
+        },
+        {
+          "name": "Inglewood Public Library (Main)",
+          "street_address": "101 W Manchester Blvd",
+          "city": "Inglewood",
+          "latitude": 33.9595,
+          "longitude": -118.354,
+          "kind": "public library"
+        },
+        {
+          "name": "Dulan's on Crenshaw",
+          "street_address": "4859 Crenshaw Blvd",
+          "city": "Los Angeles",
+          "latitude": 33.9995,
+          "longitude": -118.3315,
+          "kind": "soul food restaurant"
+        },
+        {
+          "name": "Hawkins House of Burgers",
+          "street_address": "11603 Slater St",
+          "city": "Los Angeles",
+          "latitude": 33.9305,
+          "longitude": -118.2395,
+          "kind": "restaurant"
+        },
+        {
+          "name": "Simply Wholesome",
+          "street_address": "4508 W Slauson Ave",
+          "city": "Los Angeles",
+          "latitude": 33.989,
+          "longitude": -118.344,
+          "kind": "health food store and restaurant"
+        },
+        {
+          "name": "Belvedere Park",
+          "street_address": "4914 E Cesar E Chavez Ave",
+          "city": "Los Angeles",
+          "latitude": 34.037,
+          "longitude": -118.163,
+          "kind": "park"
+        },
+        {
+          "name": "Ruben F. Salazar Park",
+          "street_address": "3864 Whittier Blvd",
+          "city": "Los Angeles",
+          "latitude": 34.023,
+          "longitude": -118.184,
+          "kind": "park"
+        },
+        {
+          "name": "East Los Angeles Library",
+          "street_address": "4837 E 3rd St",
+          "city": "Los Angeles",
+          "latitude": 34.0365,
+          "longitude": -118.165,
+          "kind": "public library"
+        },
+        {
+          "name": "El Mercado de Los Angeles",
+          "street_address": "3425 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.04,
+          "longitude": -118.196,
+          "kind": "marketplace"
+        },
+        {
+          "name": "Mariachi Plaza",
+          "street_address": "1831 E 1st St",
+          "city": "Los Angeles",
+          "latitude": 34.0472,
+          "longitude": -118.2194,
+          "kind": "public plaza"
+        },
+        {
+          "name": "Dolores Mission Church",
+          "street_address": "171 S Gless St",
+          "city": "Los Angeles",
+          "latitude": 34.044,
+          "longitude": -118.227,
+          "kind": "church"
+        },
+        {
+          "name": "Hollenbeck Park",
+          "street_address": "415 S St Louis St",
+          "city": "Los Angeles",
+          "latitude": 34.0395,
+          "longitude": -118.2195,
+          "kind": "park"
+        },
+        {
+          "name": "Salt Lake Park",
+          "street_address": "3401 E Florence Ave",
+          "city": "Huntington Park",
+          "latitude": 33.9725,
+          "longitude": -118.2065,
+          "kind": "park"
+        },
+        {
+          "name": "Huntington Park Library",
+          "street_address": "6518 Miles Ave",
+          "city": "Huntington Park",
+          "latitude": 33.98,
+          "longitude": -118.225,
+          "kind": "public library"
+        },
+        {
+          "name": "Plaza Mexico",
+          "street_address": "3100 E Imperial Hwy",
+          "city": "Lynwood",
+          "latitude": 33.93,
+          "longitude": -118.2155,
+          "kind": "shopping center"
+        },
+        {
+          "name": "Bateman Hall",
+          "street_address": "11331 Ernestine Ave",
+          "city": "Lynwood",
+          "latitude": 33.93,
+          "longitude": -118.2105,
+          "kind": "community center"
+        },
+        {
+          "name": "South Gate Park",
+          "street_address": "4900 Southern Ave",
+          "city": "South Gate",
+          "latitude": 33.95,
+          "longitude": -118.196,
+          "kind": "park"
+        },
+        {
+          "name": "Ritchie Valens Park",
+          "street_address": "10736 Laurel Canyon Blvd",
+          "city": "Pacoima",
+          "latitude": 34.265,
+          "longitude": -118.4265,
+          "kind": "park"
+        },
+        {
+          "name": "Pacoima Branch Library",
+          "street_address": "13605 Van Nuys Blvd",
+          "city": "Pacoima",
+          "latitude": 34.2705,
+          "longitude": -118.418,
+          "kind": "public library"
+        },
+        {
+          "name": "Antelope Valley Senior Center",
+          "street_address": "777 W Jackman St",
+          "city": "Lancaster",
+          "latitude": 34.695,
+          "longitude": -118.144,
+          "kind": "senior center"
+        },
+        {
+          "name": "Antelope Valley Mall",
+          "street_address": "1233 W Rancho Vista Blvd",
+          "city": "Palmdale",
+          "latitude": 34.6095,
+          "longitude": -118.1495,
+          "kind": "shopping mall"
+        },
+        {
+          "name": "Mercado La Paloma",
+          "street_address": "3655 S Grand Ave",
+          "city": "Los Angeles",
+          "latitude": 34.015,
+          "longitude": -118.2785,
+          "kind": "marketplace"
+        },
+        {
+          "name": "Dr. Mary McLeod Bethune Regional Library",
+          "street_address": "3900 S Western Ave",
+          "city": "Los Angeles",
+          "latitude": 34.0125,
+          "longitude": -118.309,
+          "kind": "public library"
+        },
+        {
+          "name": "Hyde Park Miriam Matthews Branch Library",
+          "street_address": "2205 W Florence Ave",
+          "city": "Los Angeles",
+          "latitude": 33.9745,
+          "longitude": -118.317,
+          "kind": "public library"
+        }
+      ],
+      "needCapture": 0.625,
+      "meanNeedPercentile": 0.7522475000000002,
+      "confirmed": 0,
+      "unsuitable": 0,
+      "outsideCounty": 0
+    }
+  ]
+}
