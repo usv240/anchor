@@ -172,3 +172,18 @@ describe("daily allowance for hosted keys", () => {
     resetBudget();
   });
 });
+
+describe("API keys (signed, no storage)", () => {
+  it("accepts a key it made, on any server, and refuses a tampered one", async () => {
+    const { createKey, verifyKey, identify } = await import("@/lib/api/keys");
+    const { key } = await createKey("county dashboard");
+    expect(key).toMatch(/^anc_live_[\w-]+\.[\w-]{32}$/);
+    expect(verifyKey(key)).not.toBeNull();
+    expect(verifyKey(key.slice(0, -1) + (key.endsWith("A") ? "B" : "A"))).toBeNull();
+    expect(verifyKey("anc_live_nope")).toBeNull();
+    const ok = await identify(new Request("http://x/", { headers: { authorization: `Bearer ${key}` } }));
+    expect(ok).toMatchObject({ kind: "key" });
+    const bad = await identify(new Request("http://x/", { headers: { authorization: "Bearer anc_live_abc.def" } }));
+    expect(bad).toHaveProperty("error");
+  });
+});

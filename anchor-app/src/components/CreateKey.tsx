@@ -27,7 +27,7 @@ export function CreateKey() {
   }
 
   return (
-    <div className="rounded-[12px] border border-border bg-surface p-5">
+    <div className="rounded-[12px] bg-panel p-5">
       {key ? (
         <div>
           <p className="font-semibold">Your key</p>
@@ -40,12 +40,21 @@ export function CreateKey() {
                 await navigator.clipboard.writeText(key);
                 setCopied(true);
               }}
-              className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border border-border px-3 text-sm font-medium hover:bg-surface-2"
+              className="press inline-flex min-h-11 items-center gap-2 rounded-[10px] bg-surface px-3 text-sm font-medium hover:bg-surface-2"
             >
               <Copy aria-hidden="true" size={16} /> {copied ? "Copied" : "Copy"}
             </button>
           </div>
           <p className="sr-only" aria-live="polite">{copied ? "Key copied" : ""}</p>
+          <p className="mt-4 text-sm font-semibold">Try it now: make a plan from your own terminal</p>
+          <pre className="mt-2 overflow-x-auto rounded-[8px] bg-surface p-3 text-[0.8125rem] leading-relaxed"><code className="font-mono">{curl(key)}</code></pre>
+          <button
+            type="button"
+            onClick={() => navigator.clipboard.writeText(curl(key))}
+            className="press mt-2 inline-flex min-h-11 items-center gap-2 rounded-[10px] bg-surface px-3 text-sm font-medium hover:bg-surface-2"
+          >
+            <Copy aria-hidden="true" size={16} /> Copy example
+          </button>
         </div>
       ) : (
         <form
@@ -64,7 +73,7 @@ export function CreateKey() {
               className="mt-1.5 h-11 w-full rounded-[10px] border border-border bg-surface px-3"
             />
           </label>
-          <button type="submit" disabled={busy} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[10px] bg-accent px-4 font-semibold text-accent-contrast disabled:opacity-60">
+          <button type="submit" disabled={busy} className="press inline-flex min-h-11 items-center justify-center gap-2 rounded-[10px] bg-accent px-4 font-semibold text-accent-contrast disabled:opacity-60">
             <KeyRound aria-hidden="true" size={18} /> Create API key
           </button>
         </form>
@@ -72,4 +81,12 @@ export function CreateKey() {
       {error ? <p role="alert" className="mt-2 text-sm text-danger">{error}</p> : null}
     </div>
   );
+}
+
+function curl(key: string): string {
+  const host = typeof window === "undefined" ? "https://YOUR-ANCHOR-HOST" : window.location.origin;
+  return `curl -X POST "${host}/api/v1/plans?stream=false" \\
+  -H "Authorization: Bearer ${key}" \\
+  -H "Content-Type: application/json" \\
+  -d '{"audience":{"ageGroups":["55_plus"],"gender":"female"},"area":{"countyFips":"06037"}}'`;
 }

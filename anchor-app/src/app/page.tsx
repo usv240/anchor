@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { Info } from "@/components/Info";
 import { Faq } from "@/components/Faq";
+import { QuickTry } from "@/components/QuickTry";
+import { CreateKey } from "@/components/CreateKey";
 import { NeedLegend, NeedMap } from "@/components/NeedMap";
 import { FAQ, REFERENCES, VOICES } from "@/content/landing";
 import { PHOTOS } from "@/content/photos";
@@ -311,6 +313,79 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* 1a. Anchor in 30 seconds: the whole project in one look */}
+      <section id="overview" aria-labelledby="overview-title" className="mx-auto max-w-[1200px] px-4 pt-20 sm:px-6 sm:pt-28">
+        <h2 id="overview-title" data-reveal className="text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.06] tracking-[-0.025em]">
+          Anchor in 30 seconds
+        </h2>
+        <dl className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
+          {[
+            {
+              k: "What it is",
+              v: "A free tool that tells health workers where to hold free blood pressure checks: the local places people already trust, in the neighbourhoods that need it most.",
+              t: "A plan is a ranked list of named places, a visit schedule, owner invitations and downloads.",
+              info: "overview-what" as InfoId,
+              href: "#try",
+              cta: "Try it right here",
+            },
+            {
+              k: "Why it matters",
+              v: "Half of US adults have high blood pressure and most do not have it under control. Taking checks to barbershops worked brilliantly in one study, but it never spread.",
+              t: "The missing step was knowing which places each community trusts. That is what Anchor finds.",
+              info: "overview-why" as InfoId,
+              href: "#problem",
+              cta: "See the research",
+            },
+            {
+              k: "How it works",
+              v: "CDC data shows where the need is. Qloo's taste data shows which places each age group loves there. Anchor checks every place and ranks them with a published formula.",
+              t: "Each step is shown as it runs and recorded, so anyone can check where an answer came from.",
+              info: "overview-how" as InfoId,
+              href: "#how",
+              cta: "See the steps",
+            },
+          ].map((x, i) => (
+            <div key={x.k} data-reveal style={delay(i * 80)}>
+              <dt className="flex items-center text-xl font-semibold text-accent">
+                {x.k}
+                <Info id={x.info} className="-my-2" />
+              </dt>
+              <dd className="mt-2 text-lg">{x.v}</dd>
+              <dd className="mt-2 text-muted">{x.t}</dd>
+              <dd className="mt-3">
+                <a href={x.href} className="inline-flex min-h-11 items-center gap-1 font-medium text-accent underline underline-offset-4">
+                  {x.cta} <ArrowRight aria-hidden="true" size={16} />
+                </a>
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <nav aria-label="Jump to" data-reveal className="mt-12 rounded-[16px] bg-panel p-5 sm:p-6">
+          <p className="font-semibold">Where to go next</p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {[
+              ["#try", "Try it right here (1 minute)"],
+              ["/judges", "Judge mode: everything in 3 minutes"],
+              ["#proof", "The proof, measured"],
+              ["#service", "Use it as a service (free API key)"],
+              ["/app", "The full app"],
+              ["#faq", "Questions"],
+            ].map(([href, label]) => (
+              <li key={href}>
+                <a href={href} className="press inline-flex min-h-11 items-center rounded-full bg-surface px-4 text-sm font-medium hover:bg-surface-2">
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 flex flex-wrap items-center text-sm text-muted">
+            New here? Every <span className="mx-1 font-semibold text-text">i</span> button explains one thing in plain words: hover it, tap it or press Enter. Want the formulas and API calls? Switch to
+            <span className="mx-1 font-semibold text-text">Technical</span> at the top of the page.
+            <Info id="simple-technical" className="-my-2" />
+          </p>
+        </nav>
+      </section>
+
       {/* 1b. Impact band: the strongest numbers, right under the hero */}
       <section aria-label="Impact in numbers" className="bg-panel">
         <ul className="mx-auto grid max-w-[1200px] gap-x-8 gap-y-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
@@ -326,6 +401,15 @@ export default async function Home() {
           ))}
         </ul>
       </section>
+
+      {/* 1c. The one live thing: a real plan on the landing page */}
+      <Section
+        id="try"
+        title="Try it right here"
+        intro="Pick who and where. Anchor finds the neighbourhoods with the most untreated high blood pressure, then the places that group already goes to, and shows each step as it runs. No sign-up."
+      >
+        <QuickTry />
+      </Section>
 
       {/* 2. Problem */}
       <Section
@@ -697,8 +781,28 @@ export default async function Home() {
       <Section
         id="ways"
         title="Use it as an app, an API or an AI tool"
-        intro="Not a developer? You only need the web app. Switch to Technical in the header to see the details for each option."
+        intro="Not a developer? You only need the web app. Building something? Create a free key below and call Anchor from your own software."
       >
+        <div id="service" className="mb-8 scroll-mt-24 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <h3 className="flex items-center text-2xl font-semibold">
+              Use Anchor as a service <Info id="use-service" />
+            </h3>
+            <p className="mt-2 text-lg">
+              Get a free API key in one click. Send who and where; get back a ranked plan as data, ready for your dashboard, spreadsheet or app.
+            </p>
+            <ul className="mt-4 space-y-2 text-muted">
+              <li>No sign-up. The key is shown once and never stored.</li>
+              <li>Try without a key: use the public demo key <code className="font-mono text-text">anc_demo</code>.</li>
+              <li>
+                Full reference:{" "}
+                <Link href="/developers" className="text-accent underline underline-offset-4">developer docs</Link> and the{" "}
+                <a href="/api/v1/openapi.json" className="text-accent underline underline-offset-4">OpenAPI spec</a>.
+              </li>
+            </ul>
+          </div>
+          <CreateKey />
+        </div>
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {WAYS.map((w) => (
             <li key={w.title} className="rounded-[12px] bg-panel p-5">
