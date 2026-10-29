@@ -2,7 +2,7 @@
 
 **Tagline:** Maps where blood pressure goes uncontrolled, finds the places those neighbours love, and hands health workers a verified outreach plan.
 
-**Try it:** https://anchor-gamma-woad.vercel.app (no sign-up). Judge mode, a 3-minute tour with a way to check every claim: https://anchor-gamma-woad.vercel.app/judges
+**Try it:** https://anchor-gamma-woad.vercel.app (no sign-up). The landing page explains the project in 30 seconds and lets you make a real plan right there, watching each step run. Judge mode, a 3-minute tour with a way to check every claim: https://anchor-gamma-woad.vercel.app/judges
 **Code:** https://github.com/usv240/anchor (MIT licence)
 
 ---
@@ -57,7 +57,7 @@ We also tested the rest of the API and recorded why each part is left out. Inter
 - **Web app:** phone or desktop, light or dark, Simple or Technical wording.
 - **Bring your own data:** upload the places your team already works with. Anchor shows how many are in high-need neighbourhoods and puts those first. Files with columns about people are refused.
 - **Bring your own key:** use your own Qloo key for one plan. It is never stored.
-- **REST API** with OpenAPI 3.1 and a public demo key.
+- **Use it as a service:** a free API key in one click on the landing page, with a ready example. Keys are signed, so nothing about them is stored. REST API with OpenAPI 3.1 and a public demo key.
 - **MCP server** with 5 tools, so Claude and other AI assistants can plan outreach, check fan reach and build reading lists.
 
 ## Safety and limits
