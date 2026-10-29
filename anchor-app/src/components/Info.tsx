@@ -25,6 +25,7 @@ export function Info({ id, className = "" }: { id: InfoId; className?: string })
   const titleId = `info-${id}-title`;
   const [open, setOpen] = useState(false);
   const pinned = useRef(false);
+  const returnFocus = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clear = () => {
@@ -38,6 +39,7 @@ export function Info({ id, className = "" }: { id: InfoId; className?: string })
   const change = (next: boolean) => {
     setOpen(next);
     if (!next) {
+      returnFocus.current = pinned.current;
       pinned.current = false;
       lastClosed = Date.now();
     }
@@ -102,6 +104,10 @@ export function Info({ id, className = "" }: { id: InfoId; className?: string })
           // A hover preview must not steal focus; a click or tap moves focus inside as usual.
           onOpenAutoFocus={(e) => {
             if (!pinned.current) e.preventDefault();
+          }}
+          // Closing a hover preview leaves focus where it was; a pinned one returns focus to its button.
+          onCloseAutoFocus={(e) => {
+            if (!returnFocus.current) e.preventDefault();
           }}
           className="info-pop z-50 w-[22rem] max-w-[calc(100vw-1.5rem)] rounded-[12px] bg-surface p-5 text-left text-[0.9375rem] leading-relaxed text-text shadow-[0_12px_32px_rgb(0_0_0/0.28)] ring-1 ring-border"
         >
