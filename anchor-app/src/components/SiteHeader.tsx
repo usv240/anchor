@@ -28,7 +28,7 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur supports-[backdrop-filter]:bg-bg/75">
+    <header className="sticky top-0 z-40 bg-bg">
       <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-3 px-4 sm:px-6">
         <Link href="/" className="flex min-h-11 items-center gap-2 text-lg font-semibold tracking-tight">
           <Anchor aria-hidden="true" className="text-accent" size={24} strokeWidth={2} />

@@ -22,7 +22,7 @@ export default async function ProofPage() {
 
   return (
     <div className="mx-auto max-w-[1100px] px-4 py-16 sm:px-6">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Proof</h1>
+      <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em]">Proof</h1>
       <p className="mt-4 max-w-2xl text-lg text-muted">
         We test Anchor against the obvious alternatives, on public data, and publish what it must never do. Run on{" "}
         {new Date(r.runAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}, across {r.requests} plan
@@ -40,7 +40,7 @@ export default async function ProofPage() {
             { big: `${r.policy.controls.passed} of ${r.policy.controls.total}`, label: "ordinary requests were left alone", sub: r.policy.medical.measured ? `And ${r.policy.medical.passed} of ${r.policy.medical.total} requests for medical advice were declined by the AI agent` : "For example Koreatown or Blackwelder Street" },
             { big: pct(r.systems.anchor.licensedRate), label: "of places confirmed in a city licence or a Qloo listing", sub: `AI alone: ${pct(r.systems.aiOnly.licensedRate)} could be confirmed` },
           ].map((c) => (
-            <li key={c.label} className="rounded-[12px] border border-border bg-surface p-5">
+            <li key={c.label} className="rounded-[12px] bg-panel p-5">
               <ShieldCheck aria-hidden="true" className="text-success" />
               <p className="tabular mt-2 text-3xl font-semibold">{c.big}</p>
               <p className="mt-1">{c.label}</p>
@@ -56,9 +56,9 @@ export default async function ProofPage() {
         </h2>
         <p className="mt-2 max-w-3xl text-muted">
           Each system makes the same number of picks for the same 16 requests. The map searches are repeated 200 times with random picks and averaged.
-          Columns marked Pending need an API key we are waiting for; they are not estimates.
+          Every column is measured with live Qloo and Claude; none are estimates.
         </p>
-        <div className="mt-4 overflow-x-auto rounded-[12px] border border-border">
+        <div className="mt-4 overflow-x-auto rounded-[12px] bg-panel">
           <table className="w-full min-w-[900px] border-collapse text-left">
             <caption className="sr-only">Evaluation results by system</caption>
             <thead className="bg-surface-2 text-sm">
@@ -103,7 +103,7 @@ export default async function ProofPage() {
           <p className="mt-2 max-w-3xl text-muted">
             How much the places each group loves overlap, across all 16 requests (0% means no place in common). Low overlap means Anchor is not giving everyone the same list.
           </p>
-          <div className="mt-4 overflow-x-auto rounded-[12px] border border-border">
+          <div className="mt-4 overflow-x-auto rounded-[12px] bg-panel">
             <table className="w-full min-w-[520px] text-left text-sm">
               <thead className="bg-surface-2">
                 <tr>
@@ -147,7 +147,7 @@ export default async function ProofPage() {
               { big: dec(r.secondCounty.anchor.meanNeedPercentile), label: "average need of the neighbourhoods reached (0 to 1)", sub: `Map search: ${dec(r.secondCounty.mapSearch.meanNeedPercentile)}` },
               { big: pct(r.secondCounty.anchor.unsuitableRate), label: "bars, liquor stores or similar", sub: `${pct(r.secondCounty.anchor.licensedRate)} confirmed in the city register or a Qloo listing` },
             ].map((c) => (
-              <li key={c.label} className="rounded-[12px] border border-border bg-surface p-5">
+              <li key={c.label} className="rounded-[12px] bg-panel p-5">
                 <p className="tabular text-3xl font-semibold">{c.big}</p>
                 <p className="mt-1">{c.label}</p>
                 <p className="mt-1 text-sm text-muted">{c.sub}</p>
@@ -172,7 +172,7 @@ export default async function ProofPage() {
               { big: pct(r.qloo.fanReach.anchor.meanHighNeedShare), label: "of fan areas are high need, for Anchor's community places", sub: `${r.qloo.fanReach.anchor.places} places measured` },
               { big: pct(r.qloo.fanReach.qlooNoNeed.meanHighNeedShare), label: "for Qloo's top places without the need layer", sub: `${r.qloo.fanReach.qlooNoNeed.places} places measured` },
             ].map((c) => (
-              <li key={c.label} className="rounded-[12px] border border-border bg-surface p-5">
+              <li key={c.label} className="rounded-[12px] bg-panel p-5">
                 <p className="tabular text-3xl font-semibold">{c.big}</p>
                 <p className="mt-1">{c.label}</p>
                 <p className="mt-1 text-sm text-muted">{c.sub}</p>
@@ -186,7 +186,7 @@ export default async function ProofPage() {
         <h2 id="def-title" className="text-2xl font-semibold">What each measure means</h2>
         <dl className="mt-4 grid gap-3 sm:grid-cols-2">
           {Object.entries(r.definitions).map(([k, v]) => (
-            <div key={k} className="rounded-[12px] border border-border bg-surface p-4">
+            <div key={k} className="rounded-[12px] bg-panel p-4">
               <dt className="font-mono text-sm">{k}</dt>
               <dd className="mt-1 text-muted">{v}</dd>
             </div>
@@ -196,7 +196,7 @@ export default async function ProofPage() {
 
       <section aria-labelledby="rt-title" className="mt-14">
         <h2 id="rt-title" className="text-2xl font-semibold">Every policy test, one by one</h2>
-        <details className="mt-4 rounded-[12px] border border-border bg-surface">
+        <details className="mt-4 rounded-[12px] bg-panel">
           <summary className="flex min-h-12 cursor-pointer items-center px-5 font-medium">Show all {r.policy.rows.length} tests</summary>
           <div className="overflow-x-auto border-t border-border">
             <table className="w-full text-left text-sm">
@@ -224,7 +224,7 @@ export default async function ProofPage() {
         <p className="mt-2 text-sm text-muted">The prompts are in the repository at eval/redteam/anchor.jsonl.</p>
       </section>
 
-      <section aria-labelledby="rerun-title" className="mt-14 rounded-[12px] border border-border bg-surface p-6">
+      <section aria-labelledby="rerun-title" className="mt-14 rounded-[12px] bg-panel p-6">
         <h2 id="rerun-title" className="text-xl font-semibold">Rerun it yourself</h2>
         <p className="mt-2 text-muted">Clone the repository, then run one command. Without a Qloo key it uses only public data and takes about 10 seconds; with your own Qloo key it adds the Qloo comparisons and takes about a minute the first time.</p>
         <pre className="mt-3 overflow-x-auto rounded-[8px] bg-surface-2 p-4 font-mono text-sm">npm install{"\n"}npm run eval</pre>

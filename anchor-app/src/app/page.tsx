@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import {
   ArrowRight,
   Building2,
@@ -16,49 +17,44 @@ import { Info } from "@/components/Info";
 import { Faq } from "@/components/Faq";
 import { NeedLegend, NeedMap } from "@/components/NeedMap";
 import { FAQ, REFERENCES, VOICES } from "@/content/landing";
+import { PHOTOS } from "@/content/photos";
+import { examplePlan } from "@/lib/example";
 import type { InfoId } from "@/content/info";
 import { loadNeed } from "@/lib/need";
 import { dec, loadResults, pct } from "@/lib/results";
 
 const fmt = new Intl.NumberFormat("en-US");
 
+const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
+
 function Section({
   id,
-  eyebrow,
   title,
   intro,
   children,
 }: {
   id: string;
-  eyebrow?: string;
   title: string;
   intro?: ReactNode;
   children: ReactNode;
 }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="mx-auto max-w-[1200px] px-4 pt-20 sm:px-6 sm:pt-28">
-      {eyebrow ? <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">{eyebrow}</p> : null}
-      <h2 id={`${id}-title`} className="mt-2 max-w-3xl text-3xl font-semibold sm:text-4xl">
+    <section id={id} aria-labelledby={`${id}-title`} className="mx-auto max-w-[1200px] scroll-mt-20 px-4 pt-24 sm:px-6 sm:pt-36">
+      <h2 id={`${id}-title`} data-reveal className="max-w-[24ch] text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.06] tracking-[-0.025em]">
         {title}
       </h2>
-      {intro ? <div className="mt-4 max-w-2xl text-lg text-muted">{intro}</div> : null}
-      <div className="mt-10">{children}</div>
+      {intro ? (
+        <div data-reveal style={delay(80)} className="mt-5 max-w-[60ch] text-lg text-muted">
+          {intro}
+        </div>
+      ) : null}
+      <div data-reveal style={delay(160)} className="mt-12">
+        {children}
+      </div>
     </section>
   );
 }
 
-function StatCard({ value, meaning, source, info }: { value: string; meaning: string; source: string; info: InfoId }) {
-  return (
-    <div className="rounded-[12px] border border-border bg-surface p-6 shadow-card">
-      <div className="flex items-start justify-between">
-        <p className="tabular text-4xl font-semibold tracking-tight text-text sm:text-5xl">{value}</p>
-        <Info id={info} className="-mr-2 -mt-2" />
-      </div>
-      <p className="mt-3 text-[1.0625rem]">{meaning}</p>
-      <p className="mt-3 text-sm text-muted">Source: {source}</p>
-    </div>
-  );
-}
 
 const IMPACT_BAND: { big: string; label: string; note: string; info: InfoId }[] = [
   {
@@ -149,25 +145,6 @@ const STEPS:{ title: string; body: string; info: InfoId; Icon: typeof Users }[] 
   },
 ];
 
-const COMPARE: { aiAlone: string; anchor: string }[] = [
-  {
-    aiAlone: "Suggests \"local barbershops, churches and community centres\", with no names, or names that may not exist.",
-    anchor: "Names specific places, each confirmed on a public map and inside a high-need neighbourhood.",
-  },
-  {
-    aiAlone: "Has no idea which neighbourhoods need it most.",
-    anchor: "Uses CDC estimates for every one of the county's neighbourhoods.",
-  },
-  {
-    aiAlone: "Guesses what people like from stereotypes.",
-    anchor: "Uses Qloo data on what this exact age group loves, place by place. Men and women aged 35 to 54 got completely different lists.",
-  },
-  {
-    aiAlone: "Cannot show its evidence.",
-    anchor: "Every place has a plain reason and the exact data behind it.",
-  },
-];
-
 const AUDIENCES = [
   {
     title: "Health workers",
@@ -239,73 +216,108 @@ export default async function Home() {
     { label: "Places confirmed in a licence or Qloo listing", cells: [pct(sys.anchor.licensedRate), pct(sys.aiOnly.licensedRate), pct(sys.qlooNoNeed.licensedRate), pct(sys.mapSearch.licensedRate)] },
   ];
   const top = zones.slice(0, 10);
+  const example = await examplePlan();
+  const compare: { aiAlone: string; anchor: string }[] = [
+    {
+      aiAlone: `Names well-known places, mostly churches, parks, libraries and malls. Only ${pct(sys.aiOnly.licensedRate)} could be found in a city record or Qloo's listings.`,
+      anchor: `Names specific local places, ${pct(sys.anchor.licensedRate)} confirmed in a city business record or a Qloo listing.`,
+    },
+    {
+      aiAlone: `${pct(sys.aiOnly.needCapture)} of its places are in the neighbourhoods that need checks most.`,
+      anchor: `${pct(sys.anchor.needCapture)} are, because it starts from CDC estimates for every neighbourhood.`,
+    },
+    {
+      aiAlone: `Gives different audiences similar lists (${pct(results.qloo?.aiAudienceOverlap ?? undefined)} of places shared).`,
+      anchor: `Uses Qloo data on what each age group loves, place by place (${pct(results.qloo?.meanAudienceOverlap ?? undefined)} shared). Men and women aged 35 to 54 got no place in common.`,
+    },
+    {
+      aiAlone: "Cannot show its evidence.",
+      anchor: "Every place has a plain reason and a record of the data behind it.",
+    },
+  ];
 
   return (
     <>
       {/* 1. Hero */}
-      <section aria-labelledby="hero-title" className="border-b border-border bg-surface">
-        <div className="mx-auto grid max-w-[1200px] items-center gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_1fr]">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
-              Public health outreach, powered by taste data
-            </p>
-            <h1 id="hero-title" className="mt-3 text-[2.25rem] font-semibold leading-[1.1] sm:text-[3.25rem]">
-              Find the barbershops of every community.
-            </h1>
-            <p className="mt-5 max-w-xl text-lg text-muted sm:text-xl">
-              Anchor shows health workers where high blood pressure goes untreated, and which local places people
-              there already love and trust, so free health checks happen where people actually are.
-            </p>
-            <p className="mt-4 max-w-xl border-l-4 border-accent pl-4 text-[1.0625rem]">
-              When pharmacists came to the barbershop, <strong>5 times as many men</strong> got their blood pressure under
-              control. Anchor finds the right places to do that in every community.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/app"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[10px] bg-accent px-6 text-base font-semibold text-accent-contrast hover:opacity-90"
-              >
-                Try the live demo <ArrowRight aria-hidden="true" size={18} />
-              </Link>
-              <Link
-                href="#how"
-                className="inline-flex min-h-12 items-center justify-center rounded-[10px] border border-border px-6 text-base font-medium hover:bg-surface-2"
-              >
-                See how it works (60 sec)
-              </Link>
-            </div>
-            <p className="mt-6 text-sm text-muted">
-              Built on Qloo&apos;s taste data, CDC public health data and a landmark study in the New England Journal of
-              Medicine. Free and open source.
-              <Info id="hero-qloo" className="-my-3" />
-            </p>
-          </div>
-          <figure className="overflow-hidden rounded-[16px] border border-border bg-bg shadow-card">
-            <NeedMap focus={focus} titleId="hero-map-title" descId="hero-map-desc" />
-            <figcaption className="border-t border-border p-4 text-sm text-muted">
-              <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-                <span id="hero-map-title" className="font-medium text-text">
-                  Central and South Los Angeles: where high blood pressure most often goes untreated
-                </span>
-                <NeedLegend />
+      <section aria-labelledby="hero-title" className="overflow-hidden bg-surface">
+        <div className="mx-auto max-w-[1200px] px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
+          <h1 id="hero-title" className="text-[clamp(2rem,8vw,6rem)] font-semibold leading-[0.98] tracking-[-0.035em]">
+            Find the barbershops of every community.
+          </h1>
+          <div className="mt-10 grid items-start gap-12 lg:mt-14 lg:grid-cols-[0.85fr_1.15fr] [&>*]:min-w-0">
+            <div>
+              <p className="max-w-[46ch] text-lg sm:text-xl">
+                Anchor shows health workers where high blood pressure goes untreated, and which local places people there
+                already love and trust, so free checks happen where people actually are.
+              </p>
+              <p className="mt-6 text-2xl font-semibold leading-snug tracking-[-0.01em] text-accent sm:text-[1.75rem]">
+                With a pharmacist in the barbershop, 5 times as many men reached a healthy blood pressure.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/app"
+                  className="press inline-flex min-h-12 items-center justify-center gap-2 rounded-[10px] bg-accent px-6 text-base font-semibold text-accent-contrast hover:opacity-90"
+                >
+                  Try the live demo <ArrowRight aria-hidden="true" size={18} />
+                </Link>
+                <Link
+                  href="#how"
+                  className="press inline-flex min-h-12 items-center justify-center rounded-[10px] bg-panel px-6 text-base font-medium hover:bg-surface-2"
+                >
+                  See how it works
+                </Link>
               </div>
-              <span id="hero-map-desc">
-                Blue areas are neighbourhoods in the county&apos;s highest-need fifth. Numbers mark the 10 zones with the
-                most adults who have high blood pressure and no medicine. Real CDC data.{" "}
-                <a href="#example" className="text-accent underline underline-offset-4">See the list</a>
-              </span>
-            </figcaption>
-          </figure>
+              <p className="mt-6 flex max-w-[52ch] items-start text-sm text-muted">
+                <span>
+                  Built on Qloo&apos;s taste data, CDC public health data and a landmark study in the New England Journal of
+                  Medicine. Free and open source.
+                </span>
+                <Info id="hero-qloo" className="-my-3 shrink-0" />
+              </p>
+            </div>
+            <figure className="relative">
+              <Image
+                src={PHOTOS.barber.src}
+                width={PHOTOS.barber.width}
+                height={PHOTOS.barber.height}
+                alt={PHOTOS.barber.alt}
+                priority
+                sizes="(min-width: 1024px) 640px, 100vw"
+                className="aspect-[4/3] w-full rounded-[16px] object-cover"
+              />
+              <div className="relative -mt-16 ml-4 mr-4 rounded-[14px] bg-bg p-4 sm:ml-8 sm:w-[22rem] lg:absolute lg:-bottom-10 lg:-left-10 lg:m-0">
+                <p className="flex items-center justify-between text-sm font-semibold">
+                  A real plan: men aged 35 to 54, Los Angeles
+                  <Info id="hero-plan" className="-my-3 -mr-3" />
+                </p>
+                <ol className="mt-2 space-y-1.5 text-sm">
+                  {example.venues.slice(0, 4).map((v) => (
+                    <li key={v.id} className="flex items-baseline justify-between gap-3">
+                      <span className="min-w-0 truncate">
+                        <span className="tabular mr-2 text-muted">{v.rank}</span>
+                        {v.name}
+                        <span className="text-muted"> &middot; {v.category}</span>
+                      </span>
+                      <span className="tabular shrink-0 font-semibold text-accent">{v.scores.anchor.toFixed(2)}</span>
+                    </li>
+                  ))}
+                </ol>
+                <Link href="/app" className="mt-3 inline-flex min-h-9 items-center gap-1 text-sm font-medium text-accent underline underline-offset-4">
+                  Make your own plan <ArrowRight aria-hidden="true" size={14} />
+                </Link>
+              </div>
+            </figure>
+          </div>
         </div>
       </section>
 
       {/* 1b. Impact band: the strongest numbers, right under the hero */}
-      <section aria-label="Impact in numbers" className="border-b border-border bg-bg">
-        <ul className="mx-auto grid max-w-[1200px] gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
-          {IMPACT_BAND.map((s) => (
-            <li key={s.info} className="flex flex-col bg-bg px-5 py-6 sm:px-6">
+      <section aria-label="Impact in numbers" className="bg-panel">
+        <ul className="mx-auto grid max-w-[1200px] gap-x-8 gap-y-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+          {IMPACT_BAND.map((s, i) => (
+            <li key={s.info} data-reveal style={delay(i * 70)} className="flex flex-col">
               <div className="flex items-start justify-between gap-2">
-                <p className="tabular text-3xl font-semibold tracking-tight text-accent sm:text-[2.125rem]">{s.big}</p>
+                <p className="tabular text-4xl font-semibold tracking-[-0.02em] text-accent sm:text-5xl">{s.big}</p>
                 <Info id={s.info} className="-mr-3 -mt-2" />
               </div>
               <p className="mt-1 font-medium">{s.label}</p>
@@ -318,20 +330,43 @@ export default async function Home() {
       {/* 2. Problem */}
       <Section
         id="problem"
-        eyebrow="The problem"
-        title="Blood pressure medicine works. It is just not reaching people."
+        title="Medicine works. It is not reaching people."
         intro="High blood pressure usually has no symptoms, so people who feel fine do not come in. Care has to go to them."
       >
-        <div className="grid gap-5 md:grid-cols-3">
-          <StatCard value="120 million" meaning="US adults with high blood pressure, about half of all adults." source="CDC" info="stat-120m" />
-          <StatCard value="1 in 4" meaning="Of them have it under control." source="CDC" info="stat-1in4" />
-          <StatCard value="680,179" meaning="Deaths in 2024 where high blood pressure was a cause." source="CDC" info="stat-deaths" />
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1fr]">
+          <figure>
+            <Image
+              src={PHOTOS.cuff.src}
+              width={PHOTOS.cuff.width}
+              height={PHOTOS.cuff.height}
+              alt={PHOTOS.cuff.alt}
+              sizes="(min-width: 1024px) 560px, 100vw"
+              className="aspect-[4/3] w-full rounded-[16px] object-cover object-bottom"
+            />
+            <figcaption className="mt-3 text-sm text-muted">A check takes about five minutes and needs no appointment.</figcaption>
+          </figure>
+          <dl className="space-y-8">
+            {[
+              { value: "120 million", meaning: "US adults with high blood pressure, about half of all adults.", info: "stat-120m" as InfoId },
+              { value: "1 in 4", meaning: "of them have it under control.", info: "stat-1in4" as InfoId },
+              { value: "680,179", meaning: "deaths in 2024 where high blood pressure was a cause.", info: "stat-deaths" as InfoId },
+            ].map((x) => (
+              <div key={x.value}>
+                <dt className="flex items-center">
+                  <span className="tabular text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">{x.value}</span>
+                  <Info id={x.info} className="ml-1" />
+                </dt>
+                <dd className="mt-1 max-w-[40ch] text-lg">{x.meaning}</dd>
+              </div>
+            ))}
+            <p className="text-sm text-muted">All three figures: Centers for Disease Control and Prevention.</p>
+          </dl>
         </div>
       </Section>
 
       {/* 3. Research */}
-      <Section id="study" eyebrow="The research" title="What happened when health care went to the barbershop">
-        <article className="grid gap-8 rounded-[16px] border border-border bg-surface p-6 shadow-card sm:p-10 lg:grid-cols-[1fr_auto]">
+      <Section id="study" title="When care went to the barbershop">
+        <article className="grid gap-8 rounded-[16px] bg-panel p-6 sm:p-10 lg:grid-cols-[1fr_auto_auto]">
           <dl className="grid gap-5 text-[1.0625rem] sm:grid-cols-2">
             <div>
               <dt className="font-semibold">The question</dt>
@@ -361,33 +396,41 @@ export default async function Home() {
               </dd>
             </div>
           </dl>
-          <div className="flex flex-col justify-center rounded-[12px] bg-accent-soft p-6 text-center lg:w-72">
-            <p className="text-sm font-medium">Men who reached a healthy blood pressure</p>
-            <p className="tabular mt-3 text-5xl font-semibold text-accent">63.6%</p>
-            <p className="text-sm text-muted">with a pharmacist in the barbershop</p>
+          <div className="order-first flex flex-col justify-center rounded-[12px] bg-accent-soft p-6 text-center lg:order-none lg:w-72">
+            <p className="tabular text-5xl font-semibold text-accent">63.6%</p>
+            <p className="text-sm">of men reached a healthy blood pressure with a pharmacist in the barbershop</p>
             <p className="tabular mt-4 text-3xl font-semibold">11.7%</p>
             <p className="text-sm text-muted">with the usual advice</p>
             <div className="mt-2 flex justify-center">
               <Info id="study-card" />
             </div>
           </div>
+          <figure className="hidden w-44 lg:block">
+            <Image
+              src={PHOTOS.pole.src}
+              width={PHOTOS.pole.width}
+              height={PHOTOS.pole.height}
+              alt={PHOTOS.pole.alt}
+              sizes="176px"
+              className="h-full max-h-80 w-full rounded-[12px] object-cover object-[50%_45%]"
+            />
+          </figure>
         </article>
       </Section>
 
       {/* 3b. Impact */}
       <Section
         id="impact"
-        eyebrow="The impact"
-        title="A proven way to prevent strokes is stuck in one city. Anchor tells you where to take it next."
+        title="A proven fix, stuck in one city"
+        intro="Anchor tells you where to take it next."
       >
         <ol className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {IMPACT_CHAIN.map((c, i) => (
-            <li key={c.title} className="flex flex-col rounded-[12px] border border-border bg-surface p-6">
+            <li key={c.title} data-reveal style={delay(i * 70)} className="flex flex-col rounded-[12px] bg-panel p-6">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-muted">{i + 1}</span>
+                <h3 className="text-lg font-semibold">{c.title}</h3>
                 <Info id={c.info} className="-my-2 -mr-2" />
               </div>
-              <h3 className="mt-2 text-lg font-semibold">{c.title}</h3>
               <p className="tabular mt-3 text-3xl font-semibold text-accent">{c.big}</p>
               <p className="mt-2 flex-1 text-muted">{c.body}</p>
             </li>
@@ -417,7 +460,7 @@ export default async function Home() {
               ))}
             </tbody>
           </table>
-          <p className="border-t border-border bg-surface px-4 py-3 text-sm text-muted">
+          <p className="max-w-[90ch] bg-surface px-4 pb-4 pt-2 text-sm text-muted">
             How we got these: the 21.6-point drop measured in the barbershop study, combined with a review of 123 trials
             and 613,815 people that measured what each 10-point drop prevents (Ettehad et al., The Lancet, 2016). These
             are estimates, not results from Anchor. Anchor&apos;s part is getting the programme to the right places.
@@ -428,15 +471,14 @@ export default async function Home() {
       {/* 3c. Voices from the field (published research) */}
       <Section
         id="voices"
-        eyebrow="Voices from the field"
-        title="What the people who do this work have told researchers"
+        title="What people in the field told researchers"
         intro="From published studies, quoted exactly and cited. We read these before designing Anchor."
       >
         <ul className="grid gap-5 md:grid-cols-3">
           {VOICES.map((v) => (
-            <li key={v.source} className="flex flex-col rounded-[12px] border border-border bg-surface p-6">
+            <li key={v.source} className="flex flex-col rounded-[12px] bg-panel p-6">
               <p className="text-sm font-semibold text-muted">{v.who}</p>
-              {v.quote ? <blockquote className="mt-3 border-l-4 border-accent pl-3 text-lg">&ldquo;{v.quote}&rdquo;</blockquote> : null}
+              {v.quote ? <blockquote className="mt-3 text-xl font-medium leading-snug text-accent">&ldquo;{v.quote}&rdquo;</blockquote> : null}
               <p className="mt-3 flex-1 text-muted">{v.finding}</p>
               <a href={v.href} className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-accent underline underline-offset-4">
                 {v.source}
@@ -446,19 +488,29 @@ export default async function Home() {
         </ul>
       </Section>
 
+      <figure className="mx-auto mt-24 max-w-[1200px] px-4 sm:mt-36 sm:px-6" data-reveal>
+        <Image
+          src={PHOTOS.interior.src}
+          width={PHOTOS.interior.width}
+          height={PHOTOS.interior.height}
+          alt={PHOTOS.interior.alt}
+          sizes="(min-width: 1200px) 1152px, 100vw"
+          className="aspect-[21/9] w-full rounded-[16px] object-cover"
+        />
+        <figcaption className="mt-3 text-sm text-muted">
+          Barbershops have long been places where neighbours wait, talk and trust each other. That waiting time is when a check fits in.
+        </figcaption>
+      </figure>
+
       {/* 4. How it works */}
-      <Section id="how" eyebrow="How it works" title="How Anchor builds a plan, in 4 steps">
+      <Section id="how" title="How Anchor builds a plan">
         <ol className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((step, i) => (
-            <li key={step.title} className="relative rounded-[12px] border border-border bg-surface p-6">
-              <div className="flex items-center justify-between">
-                <span className="grid h-10 w-10 place-items-center rounded-full bg-accent-soft text-accent">
-                  <step.Icon aria-hidden="true" size={20} />
-                </span>
-                <Info id={step.info} className="-mr-2" />
+            <li key={step.title} data-reveal style={delay(i * 70)} className="rounded-[12px] bg-panel p-6">
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="text-xl font-semibold">{step.title}</h3>
+                <Info id={step.info} className="-mr-2 -mt-2" />
               </div>
-              <p className="mt-4 text-sm font-semibold text-muted">Step {i + 1}</p>
-              <h3 className="mt-1 text-lg font-semibold">{step.title}</h3>
               <p className="mt-2 text-muted">{step.body}</p>
             </li>
           ))}
@@ -468,8 +520,7 @@ export default async function Home() {
       {/* 5. Why Qloo */}
       <Section
         id="why-qloo"
-        eyebrow="Why Qloo, and not just AI"
-        title="The same question, two answers"
+        title="Why Qloo, and not just AI"
         intro={
           <p className="flex flex-wrap items-center">
             &ldquo;Where should we hold free blood pressure checks for men aged 35 to 54 in South Los Angeles?&rdquo;
@@ -477,7 +528,7 @@ export default async function Home() {
           </p>
         }
       >
-        <div className="overflow-hidden rounded-[12px] border border-border">
+        <div className="overflow-hidden rounded-[12px] bg-panel">
           <table className="w-full border-collapse text-left">
             <caption className="sr-only">How an AI chatbot alone compares with Anchor on the same request</caption>
             <thead className="bg-surface-2">
@@ -486,8 +537,8 @@ export default async function Home() {
                 <th scope="col" className="w-1/2 p-4 font-semibold text-accent">Anchor with Qloo</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border bg-surface">
-              {COMPARE.map((row) => (
+            <tbody className="divide-y divide-border">
+              {compare.map((row) => (
                 <tr key={row.anchor}>
                   <td className="p-4 align-top text-muted">{row.aiAlone}</td>
                   <td className="p-4 align-top">{row.anchor}</td>
@@ -497,16 +548,15 @@ export default async function Home() {
           </table>
         </div>
         <p className="mt-3 text-sm text-muted">
-          This comparison describes the expected behaviour. Our logged side-by-side run will replace it with real answers
-          before submission.
+          Measured: the same model Anchor&apos;s agent uses, asked the same question with no tools, across {results.requests} requests.{" "}
+          <Link href="/proof" className="text-accent underline underline-offset-4">See every answer and the method</Link>
         </p>
       </Section>
 
       {/* 6. See it work: real need data */}
       <Section
         id="example"
-        eyebrow="See it work"
-        title="The need layer for Los Angeles County, built from real CDC data"
+        title="Where the need is, from real CDC data"
         intro={
           <p>
             Across {fmt.format(summary.tracts)} neighbourhoods, CDC estimates point to about{" "}
@@ -517,20 +567,22 @@ export default async function Home() {
         }
       >
         <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr] [&>*]:min-w-0">
-          <ol className="space-y-4">
-            {[
-              { n: fmt.format(summary.tracts), t: "neighbourhoods scored", d: "Every census tract in Los Angeles County with CDC data." },
-              { n: fmt.format(summary.zones), t: "high-need zones", d: "The top fifth of neighbourhoods, grouped into areas one outreach team can cover." },
-              { n: `${fmt.format(zones.slice(0, 20).reduce((s, z) => s + z.estUntreatedAdults, 0))}`, t: "untreated adults in the top 20 zones", d: "Where a first plan would start. Most are in South Los Angeles, where the barbershop study ran." },
-            ].map((s) => (
-              <li key={s.t} className="rounded-[12px] border border-border bg-surface p-5">
-                <p className="tabular text-3xl font-semibold">{s.n}</p>
-                <p className="font-medium">{s.t}</p>
-                <p className="mt-1 text-sm text-muted">{s.d}</p>
-              </li>
-            ))}
-          </ol>
-          <div className="rounded-[12px] border border-border bg-surface">
+          <figure className="overflow-hidden rounded-[16px] bg-panel">
+            <NeedMap focus={focus} titleId="need-map-title" descId="need-map-desc" />
+            <figcaption className="p-4 text-sm text-muted">
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                <span id="need-map-title" className="font-medium text-text">
+                  Central and South Los Angeles: where high blood pressure most often goes untreated
+                </span>
+                <NeedLegend />
+              </div>
+              <span id="need-map-desc">
+                Blue areas are neighbourhoods in the county&apos;s highest-need fifth. Numbers mark the 10 zones with the most
+                adults who have high blood pressure and no medicine.
+              </span>
+            </figcaption>
+          </figure>
+          <div className="rounded-[12px] bg-panel">
             <table className="w-full text-left text-[0.9375rem]">
               <caption className="flex flex-wrap items-center justify-between gap-x-3 px-3 pt-3 text-left font-semibold sm:px-4">
                 Top 10 zones
@@ -560,8 +612,8 @@ export default async function Home() {
               </tbody>
             </table>
             <p className="px-4 py-3 text-sm text-muted">
-              Next, Anchor asks Qloo which places people love inside each zone. That step needs our Qloo API key and
-              appears here once it is live.
+              Next, Anchor asks Qloo which places each audience loves inside these zones.{" "}
+              <Link href="/app" className="text-accent underline underline-offset-4">Try it live</Link>
             </p>
             <div className="layer-technical border-t border-border px-4 py-3 font-mono text-[0.8125rem] text-muted">
               {summary.method}. Source: {summary.source}. Largest zone outline: {summary.maxZoneWktBytes} bytes of WKT.
@@ -573,8 +625,7 @@ export default async function Home() {
       {/* 7. Proof */}
       <Section
         id="proof"
-        eyebrow="Proof"
-        title="We test it against the obvious alternatives"
+        title="Tested against the obvious alternatives"
         intro={`Measured on ${results.requests} plan requests in Los Angeles County, using only public data. Rerun it yourself with one command.`}
       >
         <div className="mb-6 grid gap-4 sm:grid-cols-3">
@@ -583,7 +634,7 @@ export default async function Home() {
             { big: `${results.policy.targeting.passed} of ${results.policy.targeting.total}`, label: "race or religion targeting requests planned by need instead", sub: `${results.policy.controls.passed} of ${results.policy.controls.total} look-alike ordinary requests left alone` },
             { big: pct(sys.anchor.licensedRate), label: "of places confirmed in a city licence or a Qloo listing", sub: `AI alone: ${pct(sys.aiOnly.licensedRate)} could be confirmed` },
           ].map((c) => (
-            <div key={c.label} className="flex gap-3 rounded-[12px] border border-border bg-surface p-5">
+            <div key={c.label} className="flex gap-3 rounded-[12px] bg-panel p-5">
               <ShieldCheck aria-hidden="true" className="mt-1 shrink-0 text-success" />
               <div>
                 <p className="tabular text-2xl font-semibold">{c.big}</p>
@@ -593,7 +644,7 @@ export default async function Home() {
             </div>
           ))}
         </div>
-        <div className="overflow-x-auto rounded-[12px] border border-border">
+        <div className="overflow-x-auto rounded-[12px] bg-panel">
           <table className="w-full min-w-[820px] border-collapse text-left">
             <caption className="sr-only">Anchor compared with AI alone, Qloo alone and a map search</caption>
             <thead className="bg-surface-2 text-sm">
@@ -621,19 +672,18 @@ export default async function Home() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-sm text-muted">
+        <p className="mt-3 max-w-[80ch] text-sm text-muted">
           AI alone is the same model Anchor&apos;s agent uses, asked the same question with no tools or data. It mostly names famous churches, parks and libraries, and gives every audience a similar list.{" "}
           <Link href="/proof" className="text-accent underline underline-offset-4">See the full method, every test and the honesty notes</Link>
         </p>
       </Section>
 
       {/* 8. Who it is for */}
-      <Section id="who" eyebrow="Who it is for" title="Start where you are">
+      <Section id="who" title="Who it is for">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {AUDIENCES.map((a) => (
-            <div key={a.title} className="flex flex-col rounded-[12px] border border-border bg-surface p-6">
-              <a.Icon aria-hidden="true" className="text-accent" size={24} />
-              <h3 className="mt-4 text-lg font-semibold">{a.title}</h3>
+            <div key={a.title} className="flex flex-col rounded-[12px] bg-panel p-6">
+              <h3 className="text-xl font-semibold">{a.title}</h3>
               <p className="mt-2 flex-1 text-muted">{a.body}</p>
               <Link href={a.href} className="mt-4 inline-flex min-h-11 items-center gap-1 font-medium text-accent">
                 {a.cta} <ArrowRight aria-hidden="true" size={16} />
@@ -646,34 +696,33 @@ export default async function Home() {
       {/* 9. Use it your way */}
       <Section
         id="ways"
-        eyebrow="Use it your way"
-        title="An app, an API, and a tool for AI assistants"
+        title="Use it as an app, an API or an AI tool"
         intro="Not a developer? You only need the web app. Switch to Technical in the header to see the details for each option."
       >
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {WAYS.map((w) => (
-            <li key={w.title} className="rounded-[12px] border border-border bg-surface p-5">
+            <li key={w.title} className="rounded-[12px] bg-panel p-5">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold">{w.title}</h3>
                 {w.info ? <Info id={w.info} className="-my-2 -mr-2" /> : null}
               </div>
               <p className="mt-2 text-muted">{w.simple}</p>
-              <p className="layer-technical mt-3 rounded-[8px] bg-surface-2 p-3 font-mono text-[0.8125rem]">{w.technical}</p>
+              <p className="layer-technical mt-3 rounded-[8px] bg-surface p-3 text-sm">{w.technical}</p>
             </li>
           ))}
         </ul>
       </Section>
 
       {/* 10. Safety and limits */}
-      <Section id="safety" eyebrow="Safety and limits" title="What Anchor does and does not do">
+      <Section id="safety" title="What Anchor does and does not do">
         <ul className="grid gap-4 md:grid-cols-2">
           {[
-            { t: "It never targets people by race, ethnicity or religion.", b: "It plans by neighbourhood need, age and gender only. We test this with 30 tricky requests and publish the result.", info: "race-policy" as InfoId },
+            { t: "It never targets people by race, ethnicity or religion.", b: "It plans by neighbourhood need, age and gender only. We test this with 20 tricky requests, plus 5 ordinary look-alikes it must leave alone, and publish the result.", info: "race-policy" as InfoId },
             { t: "It uses no personal data.", b: "No patient records, no names, no tracking." },
             { t: "It does not give medical advice.", b: "Health wording comes from public health sources, and a person must review every flyer before it is shared." },
             { t: "Its numbers are estimates.", b: "CDC neighbourhood figures come from a national survey and statistical models. Qloo shows what groups of people love, not how many walk through a door.", info: "estimates" as InfoId },
           ].map((item) => (
-            <li key={item.t} className="rounded-[12px] border border-border bg-surface p-5">
+            <li key={item.t} className="rounded-[12px] bg-panel p-5">
               <div className="flex items-start justify-between gap-2">
                 <p className="font-semibold">{item.t}</p>
                 {item.info ? <Info id={item.info} className="-my-2 -mr-2" /> : null}
@@ -688,12 +737,12 @@ export default async function Home() {
       </Section>
 
       {/* 11. FAQ */}
-      <Section id="faq" eyebrow="Questions" title="Frequently asked questions">
+      <Section id="faq" title="Questions">
         <Faq items={FAQ} />
       </Section>
 
       {/* 12. References */}
-      <Section id="references" eyebrow="References" title="Sources">
+      <Section id="references" title="Sources">
         <ol className="list-decimal space-y-2 pl-6 text-muted">
           {REFERENCES.map((r) => (
             <li key={r.id}>

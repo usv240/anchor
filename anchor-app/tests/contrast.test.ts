@@ -42,6 +42,9 @@ const themes = {
 const PAIRS: { fg: string; bg: string; min: number; why: string }[] = [
   { fg: "text", bg: "bg", min: 7, why: "body text" },
   { fg: "text", bg: "surface", min: 7, why: "body text on cards" },
+  { fg: "text", bg: "panel", min: 7, why: "body text on filled panels" },
+  { fg: "text-muted", bg: "panel", min: 4.5, why: "secondary text on filled panels" },
+  { fg: "accent", bg: "panel", min: 4.5, why: "accent and links on filled panels" },
   { fg: "text", bg: "surface-2", min: 7, why: "body text on raised surfaces" },
   { fg: "text-muted", bg: "bg", min: 4.5, why: "secondary text" },
   { fg: "text-muted", bg: "surface", min: 4.5, why: "secondary text on cards" },

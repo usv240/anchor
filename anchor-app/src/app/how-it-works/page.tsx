@@ -1,24 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Info } from "@/components/Info";
-import { runBasicPlanner } from "@/lib/agent/basic";
 import { WEIGHTS } from "@/lib/domain/scoring";
-import { OfflineTrust } from "@/lib/domain/trust";
-import { PlanRequest } from "@/lib/domain/types";
 import { loadNeed } from "@/lib/need";
+import { examplePlan } from "@/lib/example";
 
 export const metadata: Metadata = { title: "How it works" };
 
 const fmt = new Intl.NumberFormat("en-US");
 
-async function examplePlan() {
-  "use cache";
-  const { plan } = await runBasicPlanner(PlanRequest.parse({ audience: { ageGroups: ["35_to_54"], gender: "male" } }), {
-    trust: new OfflineTrust(),
-    now: () => new Date("2026-10-17T12:00:00Z"),
-  });
-  return plan;
-}
 
 function Step({ id, n, title, children }: { id: string; n: number; title: string; children: React.ReactNode }) {
   return (
@@ -36,7 +26,7 @@ export default async function HowItWorks() {
 
   return (
     <div className="mx-auto max-w-[860px] px-4 py-16 sm:px-6">
-      <h1 className="text-3xl font-semibold sm:text-4xl">How Anchor works</h1>
+      <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em]">How Anchor works</h1>
       <p className="mt-4 text-lg text-muted">
         Five steps, each recorded so it can be checked. This page uses a real plan for men aged 35 to 54 in Los Angeles County, computed when the page was built.
       </p>
@@ -93,7 +83,7 @@ export default async function HowItWorks() {
         <p id="formula" className="scroll-mt-24">
           The ranking is done by a published formula, never by the AI. Each score runs from 0 to 1.
         </p>
-        <div className="rounded-[12px] border border-border bg-surface p-5">
+        <div className="rounded-[12px] bg-panel p-5">
           <p className="font-mono text-sm sm:text-base">
             anchor = need x verified x ({WEIGHTS.withTrust.trust} trust + {WEIGHTS.withTrust.evidence} evidence + {WEIGHTS.withTrust.feasible} practicality)
           </p>
@@ -113,7 +103,7 @@ export default async function HowItWorks() {
         </div>
 
         <h3 className="pt-2 text-lg font-semibold">The real example: the top 3 places</h3>
-        <div className="overflow-x-auto rounded-[12px] border border-border">
+        <div className="overflow-x-auto rounded-[12px] bg-panel">
           <table className="w-full min-w-[560px] text-left text-sm">
             <thead className="bg-surface-2">
               <tr>

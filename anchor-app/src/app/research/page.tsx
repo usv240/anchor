@@ -21,7 +21,7 @@ const LIMITS = [
 export default function ResearchPage() {
   return (
     <div className="mx-auto max-w-[860px] px-4 py-16 sm:px-6">
-      <h1 className="text-3xl font-semibold sm:text-4xl">The research behind Anchor</h1>
+      <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em]">The research behind Anchor</h1>
       <p className="mt-4 text-lg text-muted">
         Every number on this site comes from a cited source. This page explains the evidence in plain words, and is
         just as clear about what the evidence does not show.
@@ -30,7 +30,7 @@ export default function ResearchPage() {
       <h2 id="problem" className="mt-12 scroll-mt-24 text-2xl font-semibold">The problem in numbers</h2>
       <dl className="mt-4 grid gap-4 sm:grid-cols-2">
         {PROBLEM.map((p) => (
-          <div key={p.n} className="rounded-[12px] border border-border bg-surface p-5">
+          <div key={p.n} className="rounded-[12px] bg-panel p-5">
             <dt className="tabular text-2xl font-semibold">{p.n}</dt>
             <dd className="mt-1 text-muted">{p.m}</dd>
           </div>
@@ -115,7 +115,7 @@ export default function ResearchPage() {
       </p>
       <ul className="mt-4 space-y-4">
         {VOICES.map((v) => (
-          <li key={v.source} className="rounded-[12px] border border-border bg-surface p-5">
+          <li key={v.source} className="rounded-[12px] bg-panel p-5">
             <p className="text-sm font-semibold text-muted">{v.who}</p>
             {v.quote ? <blockquote className="mt-2 border-l-4 border-accent pl-3">&ldquo;{v.quote}&rdquo;</blockquote> : null}
             <p className="mt-2">{v.finding}</p>

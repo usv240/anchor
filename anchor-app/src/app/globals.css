@@ -12,6 +12,7 @@
   --bg: #fbfbfa;
   --surface: #ffffff;
   --surface-2: #f3f4f6;
+  --panel: #eef0f2;
   --text: #111418;
   --text-muted: #4b5563;
   --border: #e3e5e8;
@@ -30,6 +31,7 @@
   --bg: #0e1116;
   --surface: #161b22;
   --surface-2: #1f2630;
+  --panel: #161b22;
   --text: #e8eaed;
   --text-muted: #a9b1bc;
   --border: #2b333e;
@@ -49,6 +51,7 @@
     --bg: #0e1116;
     --surface: #161b22;
     --surface-2: #1f2630;
+    --panel: #161b22;
     --text: #e8eaed;
     --text-muted: #a9b1bc;
     --border: #2b333e;
@@ -68,6 +71,7 @@
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-panel: var(--panel);
   --color-text: var(--text);
   --color-muted: var(--text-muted);
   --color-border: var(--border);
@@ -226,4 +230,82 @@ p {
     font-size: 12pt;
     resize: none;
   }
+}
+
+/*
+  Motion (Emil Kowalski's rules: strong ease-out, under 300ms for UI, transform
+  and opacity only, nothing that delays reading). Content is visible by default;
+  the reveal only applies once the script has set data-reveal on <html>.
+*/
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+html[data-reveal] [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 600ms var(--ease-out), transform 700ms var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+html[data-reveal] [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+.press {
+  transition: transform 160ms var(--ease-out), opacity 160ms ease, background-color 160ms ease;
+}
+.press:active {
+  transform: scale(0.97);
+}
+.info-pop {
+  transform-origin: var(--radix-popover-content-transform-origin);
+  animation: info-in 150ms var(--ease-out);
+}
+@keyframes info-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+@media (max-width: 639px) {
+  .info-pop {
+    animation-name: sheet-in;
+    animation-duration: 220ms;
+  }
+}
+@keyframes sheet-in {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-reveal] [data-reveal] {
+    transform: none;
+    transition: opacity 250ms ease;
+  }
+  .press:active {
+    transform: none;
+  }
+  .info-pop {
+    animation: none;
+  }
+}
+@media print {
+  html[data-reveal] [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Browser surfaces carry the palette too. */
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+html {
+  accent-color: var(--accent);
+  scrollbar-color: var(--border) transparent;
+}
+a {
+  text-underline-offset: 0.2em;
 }

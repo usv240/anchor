@@ -10,3 +10,4 @@
 # Secrets, anywhere in the tree
 .env*
 !.env.example
+/.serena/

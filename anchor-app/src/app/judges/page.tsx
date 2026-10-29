@@ -29,23 +29,23 @@ export default async function JudgesPage() {
   const keys = configured();
   return (
     <div className="mx-auto max-w-[900px] px-4 py-16 sm:px-6">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Judge mode</h1>
+      <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em]">Judge mode</h1>
       <p className="mt-4 text-lg text-muted">Everything you need in about 3 minutes, with a way to check each claim yourself.</p>
 
       <ol className="mt-10 space-y-6">
-        <li className="rounded-[12px] border border-border bg-surface p-6">
+        <li className="rounded-[12px] bg-panel p-6">
           <p className="text-sm font-semibold text-accent">30 seconds: what it is</p>
           <p className="mt-2 text-[1.0625rem]">
             When pharmacists met men in their barbershops, 63.6% got their blood pressure under control, against 11.7% with usual care (New England Journal of Medicine, 2018). The programme never spread. Anchor finds
             where it should go next: the neighbourhoods with the most untreated high blood pressure (CDC data) and the local places people there love (Qloo).
           </p>
         </li>
-        <li className="rounded-[12px] border border-border bg-surface p-6">
+        <li className="rounded-[12px] bg-panel p-6">
           <p className="text-sm font-semibold text-accent">60 seconds: run it</p>
           <p className="mt-2">Open the app; an example is filled in. Press Run plan and watch each step. Open any place to see why it was chosen and the evidence behind it.</p>
           <Link href="/app" className="mt-3 inline-flex min-h-11 items-center rounded-[10px] bg-accent px-4 font-semibold text-accent-contrast">Open the app</Link>
         </li>
-        <li className="rounded-[12px] border border-border bg-surface p-6">
+        <li className="rounded-[12px] bg-panel p-6">
           <p className="text-sm font-semibold text-accent">60 seconds: the proof</p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>{pct(r.systems.anchor.needCapture)} of Anchor&apos;s places are in the highest-need fifth of neighbourhoods, against {pct(r.systems.mapSearch.needCapture)} for a map search of barbershops and salons.</li>
@@ -55,7 +55,7 @@ export default async function JudgesPage() {
           </ul>
           <Link href="/proof" className="mt-3 inline-flex min-h-11 items-center font-medium text-accent underline underline-offset-4">Full results and method</Link>
         </li>
-        <li className="rounded-[12px] border border-border bg-surface p-6">
+        <li className="rounded-[12px] bg-panel p-6">
           <p className="text-sm font-semibold text-accent">30 seconds: check it yourself</p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>Every plan has an evidence chain: open a plan, then &ldquo;Check the whole evidence chain&rdquo;, or call <code className="font-mono">GET /api/v1/plans/&#123;id&#125;/verify</code>.</li>
@@ -75,7 +75,7 @@ export default async function JudgesPage() {
 
       <section className="mt-12" aria-labelledby="qloo-t">
         <h2 id="qloo-t" className="text-2xl font-semibold">How Anchor uses Qloo</h2>
-        <div className="mt-4 overflow-x-auto rounded-[12px] border border-border">
+        <div className="mt-4 overflow-x-auto rounded-[12px] bg-panel">
           <table className="w-full min-w-[640px] text-left text-sm">
             <thead className="bg-surface-2">
               <tr>
@@ -90,7 +90,7 @@ export default async function JudgesPage() {
                 <tr key={c}>
                   <td className="p-3 font-medium">{c}</td>
                   <td className="p-3">{w}</td>
-                  <td className="p-3 font-mono text-xs">{call}</td>
+                  <td className="p-3"><code className="font-mono text-[0.8125rem] break-words">{call}</code></td>
                   <td className={`p-3 ${status === "Live" || status === "Live, backup path" ? "font-medium" : "text-muted"}`}>{status}</td>
                 </tr>
               ))}
@@ -108,7 +108,7 @@ export default async function JudgesPage() {
             ["Potential impact", "Built on one of the strongest blood pressure results ever published (NEJM 2018), aimed at the step that stopped it spreading. Measured: 100% of Anchor's places are in high-need neighbourhoods, against 61% for the same AI model without tools and 18% for a map search, and the result holds in a second county (San Francisco: 100% against 18%). About 684,000 adults in Los Angeles County alone have high blood pressure without medicine (CDC estimates)."],
             ["Quality of the idea", "Taste data used as public health infrastructure: finding the trusted places of each community, and checking that their fans live where the need is (33.5% of fan areas are high need for Anchor's places, against 17.8% for Qloo's top places alone). Qloo alone sends only 6.9% of picks to high-need areas, so need data and taste data only work together. It plans by need, never by race, and says what its data cannot tell you."],
           ].map(([k, v]) => (
-            <div key={k} className="rounded-[12px] border border-border bg-surface p-5">
+            <div key={k} className="rounded-[12px] bg-panel p-5">
               <dt className="font-semibold">{k}</dt>
               <dd className="mt-1 text-muted">{v}</dd>
             </div>

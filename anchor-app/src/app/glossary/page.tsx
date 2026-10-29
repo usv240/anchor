@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Glossary" };
 export default function GlossaryPage() {
   return (
     <div className="mx-auto max-w-[760px] px-4 py-16 sm:px-6">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Glossary</h1>
+      <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em]">Glossary</h1>
       <p className="mt-4 text-lg text-muted">Every term used on this site, in plain words.</p>
       <nav aria-label="Jump to a term" className="mt-6 flex flex-wrap gap-2">
         {GLOSSARY.map((t) => (

@@ -195,7 +195,7 @@ export const INFO = {
     title: "No targeting by race",
     what: "Anchor plans by neighbourhood need, age and gender only. It never guesses anyone's race or ethnicity from their tastes.",
     why: "Guessing race from tastes is unreliable and can harm communities. Need data already shows where help is needed.",
-    source: "Anchor's safety policy, tested with 30 tricky requests.",
+    source: "Anchor's safety policy, tested with 20 tricky targeting requests and 5 ordinary look-alikes, all published on the Proof page.",
     learnMoreHref: "/safety",
   },
   "estimates": {
@@ -368,6 +368,14 @@ export const INFO = {
     why: "In the barbershop study, barbers were partners, not just hosts. Asking well, with a clear time and a clear reason, is the first step.",
     source: "Built from your plan: the visit schedule, the CDC need estimate for the neighbourhood, and Qloo talking points when Qloo is on. No AI writes it, so it makes no health claims.",
     technical: "Template in components/app/OwnerInvite.tsx (inviteText). Anchor never sends messages; you copy or print it.",
+  },
+  "hero-plan": {
+    title: "A real plan",
+    what: "The first four places in a plan Anchor made for men aged 35 to 54 in Los Angeles County, with each place's score from 0 to 1.",
+    why: "It shows what a health worker gets: named, licensed places inside the neighbourhoods with the most untreated high blood pressure.",
+    source: "Built when this page was built, from CDC need data and City of Los Angeles business licences. The live app adds the places each audience loves, from Qloo.",
+    learnMoreHref: "/how-it-works",
+    technical: "Basic planner, offline trust, request { audience: 35_to_54 / male }. Score = need x verified x (0.65 evidence + 0.35 practicality) without Qloo.",
   },
   "reading-corner": {
     title: "Reading corner",

@@ -17,7 +17,7 @@ export default async function SafetyPage() {
   const r = await loadResults();
   return (
     <div className="mx-auto max-w-[800px] px-4 py-16 sm:px-6">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Safety and limits</h1>
+      <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em]">Safety and limits</h1>
       <p className="mt-4 text-lg text-muted">What Anchor does, what it refuses to do, and what its data cannot tell you. Each promise below is tested, and the results are on the Proof page.</p>
 
       <Block id="targeting" title="No targeting by race, ethnicity, religion or origin">

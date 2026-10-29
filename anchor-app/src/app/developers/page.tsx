@@ -118,7 +118,7 @@ const ENDPOINTS: [string, string, string][] = [
 export default function DevelopersPage() {
   return (
     <div className="mx-auto max-w-[900px] px-4 py-16 sm:px-6">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Developers</h1>
+      <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em]">Developers</h1>
       <p className="mt-4 text-lg text-muted">
         Use Anchor from your own software or AI assistant. <strong className="text-text">Not a developer?</strong> You only need the{" "}
         <Link href="/app" className="text-accent underline underline-offset-4">web app</Link>; you can skip this page.
@@ -136,7 +136,7 @@ export default function DevelopersPage() {
 
       <section className="mt-12" aria-labelledby="ep">
         <h2 id="ep" className="text-2xl font-semibold">Endpoints</h2>
-        <div className="mt-4 overflow-x-auto rounded-[12px] border border-border">
+        <div className="mt-4 overflow-x-auto rounded-[12px] bg-panel">
           <table className="w-full min-w-[640px] text-left text-sm">
             <thead className="bg-surface-2">
               <tr>

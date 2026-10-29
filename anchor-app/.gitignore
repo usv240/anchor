@@ -65,3 +65,7 @@ __pycache__/
 
 # San Francisco raw register includes owner names; re-download with eval/pipeline/fetch_data.sh 06075
 /data/raw/sf/
+
+# design tooling output
+/.taste-skill/
+/assets/
