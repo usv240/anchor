@@ -65,7 +65,7 @@ export function QuickTry() {
     }
   }
 
-  const chip = "press min-h-11 rounded-full px-4 text-sm font-medium aria-pressed:bg-accent aria-pressed:text-accent-contrast bg-surface hover:bg-surface-2";
+  const chip = "press min-h-11 rounded-full px-4 text-sm font-medium aria-pressed:bg-accent aria-pressed:text-accent-contrast bg-bg hover:bg-surface-2";
 
   return (
     <div className="rounded-[16px] bg-panel p-5 sm:p-8">
@@ -115,7 +115,7 @@ export function QuickTry() {
             <p className="text-lg">{plan.summary}</p>
             <ol className="mt-4 grid gap-3 md:grid-cols-2">
               {plan.venues.slice(0, 6).map((v) => (
-                <li key={v.id} className="rounded-[12px] bg-surface p-4">
+                <li key={v.id} className="rounded-[12px] bg-bg p-4">
                   <p className="flex items-baseline justify-between gap-3">
                     <span className="min-w-0 font-semibold">
                       <span className="tabular mr-2 text-muted">{v.rank}</span>

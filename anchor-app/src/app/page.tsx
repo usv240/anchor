@@ -264,7 +264,7 @@ export default async function Home() {
                 </Link>
                 <Link
                   href="#how"
-                  className="press inline-flex min-h-12 items-center justify-center rounded-[10px] bg-panel px-6 text-base font-medium hover:bg-surface-2"
+                  className="press inline-flex min-h-12 items-center justify-center rounded-[10px] bg-bg px-6 text-base font-medium hover:bg-surface-2"
                 >
                   See how it works
                 </Link>
@@ -372,7 +372,7 @@ export default async function Home() {
               ["#faq", "Questions"],
             ].map(([href, label]) => (
               <li key={href}>
-                <a href={href} className="press inline-flex min-h-11 items-center rounded-full bg-surface px-4 text-sm font-medium hover:bg-surface-2">
+                <a href={href} className="press inline-flex min-h-11 items-center rounded-full bg-bg px-4 text-sm font-medium hover:bg-surface-2">
                   {label}
                 </a>
               </li>
@@ -811,7 +811,7 @@ export default async function Home() {
                 {w.info ? <Info id={w.info} className="-my-2 -mr-2" /> : null}
               </div>
               <p className="mt-2 text-muted">{w.simple}</p>
-              <p className="layer-technical mt-3 rounded-[8px] bg-surface p-3 text-sm">{w.technical}</p>
+              <p className="layer-technical mt-3 rounded-[8px] bg-bg p-3 text-sm">{w.technical}</p>
             </li>
           ))}
         </ul>
