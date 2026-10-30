@@ -10,7 +10,7 @@ Built for the Qloo Agentic Hackathon 2026. **Live: https://anchor-gamma-woad.ver
 
 - When pharmacists met men in their barbershops, **63.6%** got their blood pressure under control, against **11.7%** with usual care (*New England Journal of Medicine*, 2018).
 - Applying the size of that drop to large trials of blood pressure treatment suggests about half of strokes could be prevented if the effect lasts (estimate, *Lancet* 2016 meta-analysis).
-- A follow-up study reports that the programme never spread. The people in it said success came from a trusted place and a trusted person. Anchor finds those places for any group of residents.
+- In a follow-up study, the people in it said success came from a trusted place and a trusted person. Anchor finds those places for any group of residents.
 
 ## Proof, measured
 

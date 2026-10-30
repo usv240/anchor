@@ -6,6 +6,7 @@ import { Info } from "@/components/Info";
 import { Faq } from "@/components/Faq";
 import { QuickTry } from "@/components/QuickTry";
 import { CreateKey } from "@/components/CreateKey";
+import { AudienceCompare } from "@/components/AudienceCompare";
 import { DeepDive, type DeepDivePanel } from "@/components/DeepDive";
 import { NeedLegend, NeedMap } from "@/components/NeedMap";
 import { FAQ, REFERENCES } from "@/content/landing";
@@ -222,10 +223,10 @@ export default async function Home() {
               </div>
               <div>
                 <dt className="flex items-center font-semibold">
-                  Why it never spread <Info id="impact-stuck" className="-my-2" />
+                  Taking it further <Info id="impact-stuck" className="-my-2" />
                 </dt>
                 <dd className="mt-1 text-muted">
-                  Every community trusts different places, and nobody has a map of them. Anchor makes that map.
+                  Every community trusts different places, so each new place needs its own list. Anchor makes that list.
                   <Info id="impact-preferences" className="-my-3 align-middle" />
                 </dd>
               </div>
@@ -413,6 +414,27 @@ export default async function Home() {
           <p className="max-w-[70ch] text-[1.0625rem]">
             Measured on {results.requests} plan requests in Los Angeles County, using only public data. Anyone can rerun it with one command.
           </p>
+          <figure className="mt-5 rounded-[12px] bg-panel p-5">
+            <figcaption className="flex items-center font-semibold">
+              Share of chosen places in the highest-need fifth of neighbourhoods <Info id="proof-baselines" className="-my-2" />
+            </figcaption>
+            <ul className="mt-4 space-y-3">
+              {[
+                { name: "Anchor", v: sys.anchor.needCapture, lead: true },
+                { name: "AI alone (same model, no data)", v: sys.aiOnly.needCapture },
+                { name: "Map search for barbershops", v: sys.mapSearch.needCapture },
+                { name: "Qloo alone, without need data", v: sys.qlooNoNeed.needCapture },
+              ].map((b) => (
+                <li key={b.name} className="grid items-center gap-x-4 gap-y-1 sm:grid-cols-[16rem_1fr_3.5rem]">
+                  <span className={b.lead ? "font-semibold" : "text-muted"}>{b.name}</span>
+                  <span className="h-4 rounded-full bg-bg" aria-hidden="true">
+                    <span className={`block h-4 rounded-full ${b.lead ? "bg-accent" : "bg-muted/50"}`} style={{ width: `${Math.max(2, (b.v ?? 0) * 100)}%` }} />
+                  </span>
+                  <span className={`tabular sm:text-right ${b.lead ? "font-semibold text-accent" : ""}`}>{pct(b.v)}</span>
+                </li>
+              ))}
+            </ul>
+          </figure>
           <div className="mt-5 grid gap-4 sm:grid-cols-3">
             {[
               { big: pct(sys.anchor.unsuitableRate), label: "bars or liquor stores in Anchor's plans", sub: `A search of local businesses: ${pct(sys.mapSearchAny.unsuitableRate)}` },
@@ -598,7 +620,7 @@ export default async function Home() {
                 },
                 {
                   k: "Why it matters",
-                  v: "Half of US adults have high blood pressure, and only 1 in 4 of them has it under control. Checks in barbershops worked brilliantly in one study but never spread, because nobody knew which places each community trusts.",
+                  v: "Half of US adults have high blood pressure, and only 1 in 4 of them has it under control. Checks in barbershops worked brilliantly in one study. Taking them further means finding the trusted places of each new community, and that is what Anchor does.",
                   info: "overview-why" as InfoId,
                   href: "#research",
                   cta: "See the research",
@@ -662,6 +684,15 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* 2b. Qloo's part, made visible: same neighbourhoods, two audiences */}
+      <Section
+        id="compare"
+        title="Same neighbourhoods. Different people. Different places."
+        intro="CDC data tells Anchor where help is needed. Qloo tells it where each group of people feels at home. Press the button to see both at work, live."
+      >
+        <AudienceCompare />
+      </Section>
 
       {/* 3. Everything else, one tab at a time */}
       <Section

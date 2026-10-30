@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Info } from "@/components/Info";
 import type { Plan, PlanEvent } from "@/lib/domain/types";
+import { shareUrl } from "@/lib/share";
 
 const AUDIENCES = [
   { label: "Men 35 to 54", audience: { ageGroups: ["35_to_54"], gender: "male" } },
@@ -132,7 +133,7 @@ export function QuickTry({ placeholder }: { placeholder?: ReactNode }) {
               ))}
             </ol>
             <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-              <Link href={`/app?plan=${plan.planId}`} className="inline-flex min-h-11 items-center gap-1 font-semibold text-accent underline underline-offset-4">
+              <Link href={shareUrl(plan, "")} className="inline-flex min-h-11 items-center gap-1 font-semibold text-accent underline underline-offset-4">
                 Open the full plan: map, schedule, invitations, downloads <ArrowRight aria-hidden="true" size={16} />
               </Link>
               <span className="text-muted">{plan.mode.trust === "qloo" ? "Live Qloo taste data." : "Qloo is off on this server, so places are ranked without taste data."}</span>

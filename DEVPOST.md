@@ -9,7 +9,7 @@
 
 ## What it does
 
-When pharmacists met Black men in their barbershops, **63.6%** got their blood pressure under control, against **11.7%** with usual care (*New England Journal of Medicine*, 2018). A drop that size, if it lasts, could prevent about half of strokes. But the programme never spread beyond the study. In follow-up interviews, the barbers, customers and pharmacist said success came from a trusted place and a trusted person, and that spreading it depends on finding those places.
+When pharmacists met Black men in their barbershops, **63.6%** got their blood pressure under control, against **11.7%** with usual care (*New England Journal of Medicine*, 2018). A drop that size, if it lasts, could prevent about half of strokes. In follow-up interviews, the barbers, customers and pharmacist said success came from a trusted place and a trusted person, and that taking it to new communities depends on finding those places.
 
 Anchor finds them. A community health worker picks an age group, a gender and a county. Anchor then:
 

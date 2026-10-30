@@ -26,6 +26,7 @@ import { PlaceAudience } from "@/components/app/PlaceAudience";
 import { PlaceFans } from "@/components/app/PlaceFans";
 import { ReadingCorner } from "@/components/app/ReadingCorner";
 import { OwnerInvite } from "@/components/app/OwnerInvite";
+import { shareUrl } from "@/lib/share";
 import { AGE_GROUPS, DAYS, GOALS, type AgeGroup, type Day, type Goal, type Plan, type PlanEvent, type PlanRequest, type StepStatus } from "@/lib/domain/types";
 import type { TraceRecord } from "@/lib/trace/ledger";
 
@@ -199,7 +200,7 @@ export function AppClient() {
       <div className="mt-6 grid gap-6 lg:grid-cols-[360px_1fr]">
         {/* Settings and steps */}
         <div className="space-y-6">
-          <Settings form={form} setForm={setForm} onRun={run} running={status === "running"} claudeOn={health?.modes.planner === "claude"} />
+          <Settings form={form} setForm={setForm} onRun={run} running={status === "running"} claudeOn={health ? health.modes.planner === "claude" : null} />
           {steps.length > 0 ? <Steps steps={steps} /> : null}
         </div>
 
@@ -279,7 +280,8 @@ function Settings({
   setForm: (f: Form) => void;
   onRun: () => void;
   running: boolean;
-  claudeOn: boolean;
+  /** null until the server says which planner is on, so the hint never guesses. */
+  claudeOn: boolean | null;
 }) {
   const toggle = <T,>(list: T[], item: T, keepOne = true) =>
     list.includes(item) ? (keepOne && list.length === 1 ? list : list.filter((x) => x !== item)) : [...list, item];
@@ -422,7 +424,7 @@ function Settings({
           <Field
             label="Your request in your own words"
             info="opt-prompt"
-            hint={claudeOn ? "The Claude agent will read this." : "The Claude agent is off on this server, so this note is checked for policy but not read by a model."}
+            hint={claudeOn === null ? "Checked for policy, then read by the planner." : claudeOn ? "The Claude agent will read this." : "The Claude agent is off on this server, so this note is checked for policy but not read by a model."}
           >
             <textarea
               value={form.prompt}
@@ -964,14 +966,6 @@ function audienceWords(plan: Plan): string {
   const ages = plan.request.audience.ageGroups.map((g) => AGE_GROUPS[g].label).join(" and ");
   const who = plan.request.audience.gender === "male" ? "men" : plan.request.audience.gender === "female" ? "women" : "adults";
   return `${who} aged ${ages}`;
-}
-
-/** Share link: the plan id, plus its settings so the plan can be made again if the server has forgotten it. Partner lists are never put in a link. */
-function shareUrl(plan: Plan, origin: string): string {
-  const { partners: _partners, ...settings } = plan.request;
-  void _partners;
-  const r = btoa(unescape(encodeURIComponent(JSON.stringify(settings)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-  return `${origin}/app?plan=${plan.planId}&r=${r}`;
 }
 
 function readSettings(r: string | null): object | null {

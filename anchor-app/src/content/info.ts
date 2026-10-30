@@ -24,6 +24,14 @@ export const INFO = {
     learnMoreHref: "/glossary#qloo",
     technical: "Anchor calls the Qloo Insights API (GET /v2/insights) with place, tag, heatmap and audience queries. The full list is on the Judges page.",
   },
+  "compare-audiences": {
+    title: "Two audiences, one county",
+    what: "Two real plans, made live when you press the button: one for men aged 35 to 54, one for women aged 55 and older. Both use the same high-need neighbourhoods in Los Angeles County.",
+    why: "The need data is the same for both, so every difference you see comes from Qloo: the places each group loves in those neighbourhoods. Across 16 measured requests, lists for different audiences shared 11.5% of places with Qloo, and 36.5% with AI alone.",
+    source: "Qloo Insights API, live; CDC PLACES 2025 for the neighbourhoods.",
+    learnMoreHref: "/proof",
+    technical: "Two parallel POST /api/v1/plans?planner=basic&stream=false calls. The lists show each plan's community group: Qloo places re-ranked by that audience's affinity, top third per zone.",
+  },
   "stat-120m": {
     title: "120 million adults",
     what: "The number of US adults with high blood pressure: 130/80 or higher, or taking medicine for it.",
@@ -84,9 +92,9 @@ export const INFO = {
     learnMoreHref: "/research#impact",
   },
   "impact-stuck": {
-    title: "It never spread",
-    what: "A 2024 follow-up study reports that the barbershop programme has not expanded beyond the original trial.",
-    why: "A proven, life-saving approach is stuck in one place. Each new city must work out which local places to partner with.",
+    title: "Taking it further",
+    what: "In a 2024 follow-up study, the trial's barbers, customers and pharmacist said success came from a trusted place and a trusted person, and that taking it further depends on finding those places.",
+    why: "Each new community needs its own list of trusted places. Anchor makes that list in minutes.",
     source: "Kohrman et al., PLoS One, 2024.",
     learnMoreHref: "/research#impact",
   },
@@ -387,7 +395,7 @@ export const INFO = {
   },
   "overview-why": {
     title: "Why it matters",
-    what: "Half of US adults have high blood pressure and only 1 in 4 of them have it under control. A trial in Los Angeles barbershops got 5 times as many men under control, but the programme never spread.",
+    what: "Half of US adults have high blood pressure and only 1 in 4 of them have it under control. A trial in Los Angeles barbershops got 5 times as many men under control. Taking that to new communities starts with finding the places each one trusts.",
     why: "The people in that trial said it worked because of a trusted place and a trusted person. Finding those places for every community is the step that was missing.",
     source: "CDC; Victor et al., New England Journal of Medicine, 2018; Kohrman et al., PLoS One, 2024.",
     learnMoreHref: "/research",
