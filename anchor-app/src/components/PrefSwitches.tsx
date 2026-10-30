@@ -13,13 +13,13 @@ import {
 } from "@/lib/prefs";
 
 const THEMES: { value: Theme; label: string; Icon: typeof Sun }[] = [
-  { value: "system", label: "Match my device", Icon: Monitor },
   { value: "light", label: "Light", Icon: Sun },
   { value: "dark", label: "Dark", Icon: Moon },
+  { value: "system", label: "Match my device", Icon: Monitor },
 ];
 
 export function ThemeSwitch() {
-  const theme = useSyncExternalStore<Theme>(subscribePrefs, readTheme, () => "system");
+  const theme = useSyncExternalStore<Theme>(subscribePrefs, readTheme, () => "light");
   return (
     <div role="group" aria-label="Colour theme" className="flex rounded-[10px] border border-border bg-surface p-0.5">
       {THEMES.map(({ value, label, Icon }) => (

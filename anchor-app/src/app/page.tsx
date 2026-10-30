@@ -1,24 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import {
-  ArrowRight,
-  Building2,
-  CalendarCheck,
-  Code2,
-  Gavel,
-  HeartHandshake,
-  MapPinned,
-  ShieldCheck,
-  Stethoscope,
-  Users,
-} from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { Info } from "@/components/Info";
 import { Faq } from "@/components/Faq";
 import { QuickTry } from "@/components/QuickTry";
 import { CreateKey } from "@/components/CreateKey";
+import { DeepDive, type DeepDivePanel } from "@/components/DeepDive";
 import { NeedLegend, NeedMap } from "@/components/NeedMap";
-import { FAQ, REFERENCES, VOICES } from "@/content/landing";
+import { FAQ, REFERENCES } from "@/content/landing";
 import { PHOTOS } from "@/content/photos";
 import { examplePlan } from "@/lib/example";
 import type { InfoId } from "@/content/info";
@@ -41,16 +31,16 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="mx-auto max-w-[1200px] scroll-mt-20 px-4 pt-24 sm:px-6 sm:pt-36">
-      <h2 id={`${id}-title`} data-reveal className="max-w-[24ch] text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.06] tracking-[-0.025em]">
+    <section id={id} aria-labelledby={`${id}-title`} className="mx-auto max-w-[1200px] scroll-mt-20 px-4 pt-16 sm:px-6 sm:pt-24">
+      <h2 id={`${id}-title`} data-reveal className="max-w-[28ch] text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-[1.1] tracking-[-0.02em]">
         {title}
       </h2>
       {intro ? (
-        <div data-reveal style={delay(80)} className="mt-5 max-w-[60ch] text-lg text-muted">
+        <div data-reveal style={delay(80)} className="mt-3 max-w-[64ch] text-muted">
           {intro}
         </div>
       ) : null}
-      <div data-reveal style={delay(160)} className="mt-12">
+      <div data-reveal style={delay(160)} className="mt-7">
         {children}
       </div>
     </section>
@@ -85,33 +75,6 @@ const IMPACT_BAND: { big: string; label: string; note: string; info: InfoId }[] 
   },
 ];
 
-const IMPACT_CHAIN: { title: string; big: string; body: string; info: InfoId }[] = [
-  {
-    title: "It works",
-    big: "5.4x",
-    body: "More men reached a healthy blood pressure when pharmacists met them in their barbershop.",
-    info: "impact-5x",
-  },
-  {
-    title: "It saves lives",
-    big: "About half",
-    body: "Of strokes could be prevented by a drop that size, if it lasts. Also fewer heart attacks and deaths.",
-    info: "impact-strokes",
-  },
-  {
-    title: "It is stuck",
-    big: "1 city",
-    body: "The programme has not spread beyond the original study. Every new place must work out which local businesses to partner with, and the right places differ by community.",
-    info: "impact-stuck",
-  },
-  {
-    title: "Anchor unlocks it",
-    big: "Any county",
-    body: "Anchor finds where need is highest and which local places people there love, in minutes, for any age group. Live for Los Angeles and San Francisco; need data covers every US county.",
-    info: "impact-preferences",
-  },
-];
-
 const OUTCOMES = [
   { outcome: "Strokes", change: "About 49% fewer" },
   { outcome: "Heart failure", change: "About 51% fewer" },
@@ -120,30 +83,26 @@ const OUTCOMES = [
   { outcome: "Deaths from any cause", change: "About 26% fewer" },
 ];
 
-const STEPS:{ title: string; body: string; info: InfoId; Icon: typeof Users }[] = [
+const STEPS: { title: string; body: string; info: InfoId }[] = [
   {
     title: "Tell it who and where",
     body: "Choose a goal (like free blood pressure checks), an age group and a county.",
     info: "step-who-where",
-    Icon: Users,
   },
   {
     title: "It finds the need",
     body: "CDC data shows the neighbourhoods where the most adults have high blood pressure and no medicine.",
     info: "step-need",
-    Icon: MapPinned,
   },
   {
     title: "It finds the trust",
     body: "Barbershops and salons from city records, plus the local places that age group loves most, from Qloo: bakeries, taquerias, markets, parks.",
     info: "step-trust",
-    Icon: HeartHandshake,
   },
   {
     title: "It checks and plans",
     body: "Every place is checked against city business records or Qloo's listings, ranked by a clear formula, and turned into a visit schedule, owner invitations and files.",
     info: "step-plan",
-    Icon: CalendarCheck,
   },
 ];
 
@@ -153,28 +112,24 @@ const AUDIENCES = [
     body: "Get a short list of places to visit, the best days to go and what to say. Works on your phone.",
     href: "/app",
     cta: "Try the demo",
-    Icon: Stethoscope,
   },
   {
     title: "Health departments and health plans",
     body: "See need and trust on one map. Upload your current partners to see which ones reach high-need neighbourhoods. Export to spreadsheets, map tools and calendars.",
     href: "/app",
     cta: "Open the app",
-    Icon: Building2,
   },
   {
     title: "Developers and AI agents",
     body: "Use Anchor from your own software with the API, or from Claude and other AI assistants with MCP.",
     href: "/developers",
     cta: "Developer docs",
-    Icon: Code2,
   },
   {
     title: "Judges",
     body: "A 3-minute tour of what we built, how it uses Qloo and how to check every claim yourself.",
     href: "/judges",
     cta: "Judge mode",
-    Icon: Gavel,
   },
 ];
 
@@ -238,38 +193,337 @@ export default async function Home() {
     },
   ];
 
+  const h2 = "text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-[1.1] tracking-[-0.02em]";
+
+  const learn: DeepDivePanel[] = [
+    {
+      id: "research",
+      label: "The research",
+      aliases: ["problem", "study", "impact", "voices"],
+      content: (
+        <div className="space-y-5">
+          <article className="grid gap-6 rounded-[16px] bg-panel p-6 sm:grid-cols-[13rem_1fr] sm:p-8 lg:grid-cols-[13rem_1fr_15rem]">
+            <div className="flex flex-col justify-center rounded-[12px] bg-accent-soft p-5 text-center">
+              <p className="tabular text-5xl font-semibold text-accent">63.6%</p>
+              <p className="text-sm">of men reached a healthy blood pressure with a pharmacist in the barbershop</p>
+              <p className="tabular mt-4 text-3xl font-semibold">11.7%</p>
+              <p className="text-sm text-muted">with the usual advice</p>
+              <div className="mt-2 flex justify-center">
+                <Info id="study-card" />
+              </div>
+            </div>
+            <dl className="space-y-4 self-center">
+              <div>
+                <dt className="font-semibold">What they did</dt>
+                <dd className="mt-1 text-muted">
+                  52 Los Angeles barbershops were split into two groups by chance. In one, barbers encouraged customers to meet
+                  a pharmacist right there in the shop.
+                </dd>
+              </div>
+              <div>
+                <dt className="flex items-center font-semibold">
+                  Why it never spread <Info id="impact-stuck" className="-my-2" />
+                </dt>
+                <dd className="mt-1 text-muted">
+                  Every community trusts different places, and nobody has a map of them. Anchor makes that map.
+                  <Info id="impact-preferences" className="-my-3 align-middle" />
+                </dd>
+              </div>
+              <div>
+                <dt className="font-semibold">The study</dt>
+                <dd className="mt-1 text-muted">
+                  Victor et al., New England Journal of Medicine, 2018.{" "}
+                  <a className="text-accent underline underline-offset-4" href={REFERENCES[0].href}>
+                    Read it
+                  </a>
+                </dd>
+              </div>
+            </dl>
+            <Image
+              src={PHOTOS.pole.src}
+              width={PHOTOS.pole.width}
+              height={PHOTOS.pole.height}
+              alt={PHOTOS.pole.alt}
+              sizes="240px"
+              className="hidden h-full max-h-72 w-full rounded-[12px] object-cover object-[50%_40%] lg:block"
+            />
+          </article>
+          <div className="grid gap-5 lg:grid-cols-2 [&>*]:min-w-0">
+            <div>
+            <dl className="grid gap-4 sm:grid-cols-3">
+              {[
+                { value: "120M", meaning: "US adults with high blood pressure", info: "stat-120m" as InfoId },
+                { value: "1 in 4", meaning: "of them have it under control", info: "stat-1in4" as InfoId },
+                { value: "680,179", meaning: "deaths in 2024 where it was a cause", info: "stat-deaths" as InfoId },
+              ].map((x) => (
+                <div key={x.value}>
+                  <dt className="flex items-center">
+                    <span className="tabular text-2xl font-semibold tracking-[-0.02em] sm:text-3xl">{x.value}</span>
+                    <Info id={x.info} className="-my-2" />
+                  </dt>
+                  <dd className="mt-1 text-sm">{x.meaning}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-3 text-sm text-muted">Source for all three: Centers for Disease Control and Prevention.</p>
+            <Link href="/research" className="mt-2 inline-flex min-h-11 items-center gap-1 font-medium text-accent">
+              The full research: interviews, method and sources <ArrowRight aria-hidden="true" size={16} />
+            </Link>
+            </div>
+            <div className="rounded-[12px] bg-panel p-5">
+              <p className="flex items-center font-semibold">
+                If that drop lasted, an estimate <Info id="impact-strokes" className="-my-2" />
+              </p>
+              <ul className="tabular mt-2 space-y-1 text-sm">
+                {OUTCOMES.map((o) => (
+                  <li key={o.outcome} className="flex justify-between gap-3">
+                    <span className="text-muted">{o.outcome}</span>
+                    <span className="shrink-0 font-semibold">{o.change}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "how",
+      label: "How it works",
+      aliases: ["why-qloo", "steps"],
+      content: (
+        <>
+          <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {STEPS.map((step, i) => (
+              <li key={step.title} className="rounded-[12px] bg-panel p-5">
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="font-semibold">
+                    <span className="tabular mr-2 text-accent">{i + 1}</span>
+                    {step.title}
+                  </h4>
+                  <Info id={step.info} className="-mr-2 -mt-2" />
+                </div>
+                <p className="mt-2 text-muted">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-5 overflow-hidden rounded-[12px] bg-panel">
+            <p className="flex flex-wrap items-center px-4 pt-4 font-semibold">
+              Why Qloo, and not just AI <Info id="why-qloo" className="-my-2" />
+            </p>
+            <p className="px-4 pb-3 text-sm text-muted">
+              Same question to both: &ldquo;Where should we hold free blood pressure checks for men aged 35 to 54 in South Los Angeles?&rdquo;
+            </p>
+            <table className="w-full border-collapse text-left">
+              <caption className="sr-only">How an AI chatbot alone compares with Anchor on the same request</caption>
+              <thead className="bg-surface-2">
+                <tr>
+                  <th scope="col" className="w-1/2 px-4 py-3 font-semibold">AI alone</th>
+                  <th scope="col" className="w-1/2 px-4 py-3 font-semibold text-accent">Anchor with Qloo</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {compare.map((row) => (
+                  <tr key={row.anchor}>
+                    <td className="px-4 py-3 align-top text-muted">{row.aiAlone}</td>
+                    <td className="px-4 py-3 align-top">{row.anchor}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 text-sm text-muted">
+            Measured with the same model Anchor&apos;s agent uses, asked with no tools, across {results.requests} requests.{" "}
+            <Link href="/how-it-works" className="text-accent underline underline-offset-4">Every step and the ranking formula</Link>
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "need",
+      label: "Where the need is",
+      aliases: ["example", "map"],
+      content: (
+        <>
+          <p className="max-w-[70ch] text-[1.0625rem]">
+            Across {fmt.format(summary.tracts)} Los Angeles neighbourhoods, CDC estimates point to about{" "}
+            <strong>{fmt.format(summary.estUntreatedAdults)}</strong> adults with high blood pressure who take no medicine for
+            it. Anchor grouped the highest-need fifth into {fmt.format(summary.zones)} zones, home to about{" "}
+            {fmt.format(summary.zoneEstUntreatedAdults)} of them.
+          </p>
+          <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_1.2fr] [&>*]:min-w-0">
+            <figure className="overflow-hidden rounded-[16px] bg-panel">
+              <NeedMap focus={focus} titleId="need-map-title" descId="need-map-desc" />
+              <figcaption className="p-4 text-sm text-muted">
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <span id="need-map-title" className="font-medium text-text">
+                    Central and South Los Angeles
+                  </span>
+                  <NeedLegend />
+                </div>
+                <span id="need-map-desc">
+                  Blue areas are in the county&apos;s highest-need fifth. Numbers mark the 10 zones with the most adults who have
+                  high blood pressure and no medicine.
+                </span>
+              </figcaption>
+            </figure>
+            <div className="rounded-[12px] bg-panel">
+              <table className="w-full text-left text-[0.9375rem]">
+                <caption className="flex flex-wrap items-center justify-between gap-x-3 px-3 pt-3 text-left font-semibold sm:px-4">
+                  Top 10 zones
+                  <span className="flex items-center text-sm font-normal text-muted">
+                    What is a zone? <Info id="zones" />
+                  </span>
+                </caption>
+                <thead>
+                  <tr className="border-b border-border text-sm text-muted">
+                    <th scope="col" className="px-3 py-2 font-medium sm:px-4">Rank</th>
+                    <th scope="col" className="px-3 py-2 font-medium sm:px-4">
+                      <span className="inline-flex items-center">
+                        Untreated adults <Info id="untreated" />
+                      </span>
+                    </th>
+                    <th scope="col" className="px-3 py-2 font-medium sm:px-4">Area</th>
+                  </tr>
+                </thead>
+                <tbody className="tabular">
+                  {top.map((z, i) => (
+                    <tr key={z.zoneId} className="border-b border-border last:border-0">
+                      <td className="px-3 py-1.5 sm:px-4">{i + 1}</td>
+                      <td className="px-3 py-1.5 sm:px-4">about {fmt.format(z.estUntreatedAdults)}</td>
+                      <td className="px-3 py-1.5 sm:px-4">{z.areaKm2} sq km</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="px-4 py-3 text-sm text-muted">Next, Anchor asks Qloo which places each audience loves inside these zones.</p>
+              <div className="layer-technical border-t border-border px-4 py-3 font-mono text-[0.8125rem] text-muted">
+                {summary.method}. Source: {summary.source}. Largest zone outline: {summary.maxZoneWktBytes} bytes of WKT.
+              </div>
+            </div>
+          </div>
+        </>
+      ),
+    },
+    {
+      id: "proof",
+      label: "The proof",
+      content: (
+        <>
+          <p className="max-w-[70ch] text-[1.0625rem]">
+            Measured on {results.requests} plan requests in Los Angeles County, using only public data. Anyone can rerun it with one command.
+          </p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            {[
+              { big: pct(sys.anchor.unsuitableRate), label: "bars or liquor stores in Anchor's plans", sub: `A search of local businesses: ${pct(sys.mapSearchAny.unsuitableRate)}` },
+              { big: `${results.policy.targeting.passed} of ${results.policy.targeting.total}`, label: "race or religion targeting requests planned by need instead", sub: `${results.policy.controls.passed} of ${results.policy.controls.total} look-alike ordinary requests left alone` },
+              { big: pct(sys.anchor.licensedRate), label: "of places confirmed in a city licence or a Qloo listing", sub: `AI alone: ${pct(sys.aiOnly.licensedRate)} could be confirmed` },
+            ].map((c) => (
+              <div key={c.label} className="flex gap-3 rounded-[12px] bg-panel p-5">
+                <ShieldCheck aria-hidden="true" className="mt-1 shrink-0 text-success" />
+                <div>
+                  <p className="tabular text-2xl font-semibold">{c.big}</p>
+                  <p>{c.label}</p>
+                  <p className="mt-1 text-sm text-muted">{c.sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 overflow-x-auto rounded-[12px] bg-panel">
+            <table className="w-full min-w-[820px] border-collapse text-left">
+              <caption className="sr-only">Anchor compared with AI alone, Qloo alone and a map search</caption>
+              <thead className="bg-surface-2 text-sm">
+                <tr>
+                  <th scope="col" className="px-4 py-3 font-semibold">Measure</th>
+                  <th scope="col" className="px-4 py-3 font-semibold text-accent">Anchor</th>
+                  <th scope="col" className="px-4 py-3 font-semibold">AI alone (same model, no data)</th>
+                  <th scope="col" className="px-4 py-3 font-semibold">Qloo alone, without need data</th>
+                  <th scope="col" className="px-4 py-3 font-semibold">
+                    <span className="inline-flex items-center">
+                      Map search for barbershops <Info id="proof-baselines" />
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="tabular divide-y divide-border bg-surface">
+                {proofRows.map((row) => (
+                  <tr key={row.label}>
+                    <th scope="row" className="px-4 py-3 font-normal">{row.label}</th>
+                    {row.cells.map((c, i) => (
+                      <td key={i} className={`px-4 py-3 ${i === 0 ? "font-semibold" : "text-muted"}`}>{c}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Link href="/proof" className="mt-3 inline-flex min-h-11 items-center gap-1 font-medium text-accent">
+            The full method, every test and the honesty notes <ArrowRight aria-hidden="true" size={16} />
+          </Link>
+        </>
+      ),
+    },
+    {
+      id: "safety",
+      label: "Safety and limits",
+      content: (
+        <>
+          <ul className="grid gap-4 md:grid-cols-2">
+            {[
+              { t: "It never targets people by race, ethnicity or religion.", b: "It plans by neighbourhood need, age and gender only. We test this with 20 tricky requests, plus 5 ordinary look-alikes it must leave alone, and publish the result.", info: "race-policy" as InfoId },
+              { t: "It uses no personal data.", b: "No patient records, no names, no tracking." },
+              { t: "It does not give medical advice.", b: "Health wording comes from public health sources, and a person must review every flyer before it is shared." },
+              { t: "Its numbers are estimates.", b: "CDC neighbourhood figures come from a national survey and statistical models. Qloo shows what groups of people love, not how many walk through a door.", info: "estimates" as InfoId },
+            ].map((item) => (
+              <li key={item.t} className="rounded-[12px] bg-panel p-5">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="font-semibold">{item.t}</p>
+                  {item.info ? <Info id={item.info} className="-my-2 -mr-2" /> : null}
+                </div>
+                <p className="mt-2 text-muted">{item.b}</p>
+              </li>
+            ))}
+          </ul>
+          <Link href="/safety" className="mt-3 inline-flex min-h-11 items-center gap-1 font-medium text-accent">
+            Read the full safety page <ArrowRight aria-hidden="true" size={16} />
+          </Link>
+        </>
+      ),
+    },
+  ];
+
   return (
     <>
-      {/* 1. Hero */}
+      {/* 1. Hero: what it is, the one number that matters, and two ways in */}
       <section aria-labelledby="hero-title" className="overflow-hidden bg-surface">
-        <div className="mx-auto max-w-[1200px] px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
-          <h1 id="hero-title" className="text-[clamp(2rem,8vw,6rem)] font-semibold leading-[0.98] tracking-[-0.035em]">
+        <div className="mx-auto max-w-[1200px] px-4 pb-12 pt-8 sm:px-6 sm:pt-12 lg:pb-16">
+          <h1 id="hero-title" className="max-w-[18ch] text-[clamp(2rem,6.2vw,4.75rem)] font-semibold leading-[1] tracking-[-0.035em]">
             Find the barbershops of every community.
           </h1>
-          <div className="mt-10 grid items-start gap-12 lg:mt-14 lg:grid-cols-[0.85fr_1.15fr] [&>*]:min-w-0">
+          <div className="mt-8 grid items-start gap-10 lg:grid-cols-[0.85fr_1.15fr] [&>*]:min-w-0">
             <div>
               <p className="max-w-[46ch] text-lg sm:text-xl">
                 Anchor shows health workers where high blood pressure goes untreated, and which local places people there
                 already love and trust, so free checks happen where people actually are.
               </p>
-              <p className="mt-6 text-2xl font-semibold leading-snug tracking-[-0.01em] text-accent sm:text-[1.75rem]">
+              <p className="mt-5 text-xl font-semibold leading-snug tracking-[-0.01em] text-accent sm:text-2xl">
                 With a pharmacist in the barbershop, 5 times as many men reached a healthy blood pressure.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/app"
-                  className="press inline-flex min-h-12 items-center justify-center gap-2 rounded-[10px] bg-accent px-6 text-base font-semibold text-accent-contrast hover:opacity-90"
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a
+                  href="#try"
+                  className="press inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-[10px] bg-accent px-6 text-base font-semibold text-accent-contrast hover:opacity-90"
                 >
-                  Try the live demo <ArrowRight aria-hidden="true" size={18} />
-                </Link>
+                  Try it right here <ArrowRight aria-hidden="true" size={18} />
+                </a>
                 <Link
-                  href="#how"
-                  className="press inline-flex min-h-12 items-center justify-center rounded-[10px] bg-bg px-6 text-base font-medium hover:bg-surface-2"
+                  href="/judges"
+                  className="press inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-[10px] bg-panel px-6 text-base font-medium hover:bg-surface-2"
                 >
-                  See how it works
+                  Judge mode (3 minutes)
                 </Link>
               </div>
-              <p className="mt-6 flex max-w-[52ch] items-start text-sm text-muted">
+              <p className="mt-5 flex max-w-[52ch] items-start text-sm text-muted">
                 <span>
                   Built on Qloo&apos;s taste data, CDC public health data and a landmark study in the New England Journal of
                   Medicine. Free and open source.
@@ -285,7 +539,7 @@ export default async function Home() {
                 alt={PHOTOS.barber.alt}
                 priority
                 sizes="(min-width: 1024px) 640px, 100vw"
-                className="aspect-[4/3] w-full rounded-[16px] object-cover"
+                className="aspect-[3/2] w-full rounded-[16px] object-cover"
               />
               <div className="relative -mt-16 ml-4 mr-4 rounded-[14px] bg-bg p-4 sm:ml-8 sm:w-[22rem] lg:absolute lg:-bottom-10 lg:-left-10 lg:m-0">
                 <p className="flex items-center justify-between text-sm font-semibold">
@@ -304,95 +558,19 @@ export default async function Home() {
                     </li>
                   ))}
                 </ol>
-                <Link href="/app" className="mt-3 inline-flex min-h-9 items-center gap-1 text-sm font-medium text-accent underline underline-offset-4">
-                  Make your own plan <ArrowRight aria-hidden="true" size={14} />
-                </Link>
               </div>
             </figure>
           </div>
         </div>
       </section>
 
-      {/* 1a. Anchor in 30 seconds: the whole project in one look */}
-      <section id="overview" aria-labelledby="overview-title" className="mx-auto max-w-[1200px] px-4 pt-20 sm:px-6 sm:pt-28">
-        <h2 id="overview-title" data-reveal className="text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.06] tracking-[-0.025em]">
-          Anchor in 30 seconds
-        </h2>
-        <dl className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
-          {[
-            {
-              k: "What it is",
-              v: "A free tool that tells health workers where to hold free blood pressure checks: the local places people already trust, in the neighbourhoods that need it most.",
-              t: "A plan is a ranked list of named places, a visit schedule, owner invitations and downloads.",
-              info: "overview-what" as InfoId,
-              href: "#try",
-              cta: "Try it right here",
-            },
-            {
-              k: "Why it matters",
-              v: "Half of US adults have high blood pressure and most do not have it under control. Taking checks to barbershops worked brilliantly in one study, but it never spread.",
-              t: "The missing step was knowing which places each community trusts. That is what Anchor finds.",
-              info: "overview-why" as InfoId,
-              href: "#problem",
-              cta: "See the research",
-            },
-            {
-              k: "How it works",
-              v: "CDC data shows where the need is. Qloo's taste data shows which places each age group loves there. Anchor checks every place and ranks them with a published formula.",
-              t: "Each step is shown as it runs and recorded, so anyone can check where an answer came from.",
-              info: "overview-how" as InfoId,
-              href: "#how",
-              cta: "See the steps",
-            },
-          ].map((x, i) => (
-            <div key={x.k} data-reveal style={delay(i * 80)}>
-              <dt className="flex items-center text-xl font-semibold text-accent">
-                {x.k}
-                <Info id={x.info} className="-my-2" />
-              </dt>
-              <dd className="mt-2 text-lg">{x.v}</dd>
-              <dd className="mt-2 text-muted">{x.t}</dd>
-              <dd className="mt-3">
-                <a href={x.href} className="inline-flex min-h-11 items-center gap-1 font-medium text-accent underline underline-offset-4">
-                  {x.cta} <ArrowRight aria-hidden="true" size={16} />
-                </a>
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <nav aria-label="Jump to" data-reveal className="mt-12 rounded-[16px] bg-panel p-5 sm:p-6">
-          <p className="font-semibold">Where to go next</p>
-          <ul className="mt-3 flex flex-wrap gap-2">
-            {[
-              ["#try", "Try it right here (1 minute)"],
-              ["/judges", "Judge mode: everything in 3 minutes"],
-              ["#proof", "The proof, measured"],
-              ["#service", "Use it as a service (free API key)"],
-              ["/app", "The full app"],
-              ["#faq", "Questions"],
-            ].map(([href, label]) => (
-              <li key={href}>
-                <a href={href} className="press inline-flex min-h-11 items-center rounded-full bg-bg px-4 text-sm font-medium hover:bg-surface-2">
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-4 flex flex-wrap items-center text-sm text-muted">
-            New here? Every <span className="mx-1 font-semibold text-text">i</span> button explains one thing in plain words: hover it, tap it or press Enter. Want the formulas and API calls? Switch to
-            <span className="mx-1 font-semibold text-text">Technical</span> at the top of the page.
-            <Info id="simple-technical" className="-my-2" />
-          </p>
-        </nav>
-      </section>
-
-      {/* 1b. Impact band: the strongest numbers, right under the hero */}
+      {/* 1b. The strongest numbers, in one row */}
       <section aria-label="Impact in numbers" className="bg-panel">
-        <ul className="mx-auto grid max-w-[1200px] gap-x-8 gap-y-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+        <ul className="mx-auto grid max-w-[1200px] grid-cols-2 gap-x-6 gap-y-6 px-4 py-8 sm:px-6 lg:grid-cols-4">
           {IMPACT_BAND.map((s, i) => (
             <li key={s.info} data-reveal style={delay(i * 70)} className="flex flex-col">
               <div className="flex items-start justify-between gap-2">
-                <p className="tabular text-4xl font-semibold tracking-[-0.02em] text-accent sm:text-5xl">{s.big}</p>
+                <p className="tabular text-3xl font-semibold tracking-[-0.02em] text-accent sm:text-4xl">{s.big}</p>
                 <Info id={s.info} className="-mr-3 -mt-2" />
               </div>
               <p className="mt-1 font-medium">{s.label}</p>
@@ -402,461 +580,190 @@ export default async function Home() {
         </ul>
       </section>
 
-      {/* 1c. The one live thing: a real plan on the landing page */}
-      <Section
-        id="try"
-        title="Try it right here"
-        intro="Pick who and where. Anchor finds the neighbourhoods with the most untreated high blood pressure, then the places that group already goes to, and shows each step as it runs. No sign-up."
-      >
-        <QuickTry />
-      </Section>
-
-      {/* 2. Problem */}
-      <Section
-        id="problem"
-        title="Medicine works. It is not reaching people."
-        intro="High blood pressure usually has no symptoms, so people who feel fine do not come in. Care has to go to them."
-      >
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1fr]">
-          <figure>
-            <Image
-              src={PHOTOS.cuff.src}
-              width={PHOTOS.cuff.width}
-              height={PHOTOS.cuff.height}
-              alt={PHOTOS.cuff.alt}
-              sizes="(min-width: 1024px) 560px, 100vw"
-              className="aspect-[4/3] w-full rounded-[16px] object-cover object-bottom"
-            />
-            <figcaption className="mt-3 text-sm text-muted">A check takes about five minutes and needs no appointment.</figcaption>
-          </figure>
-          <dl className="space-y-8">
-            {[
-              { value: "120 million", meaning: "US adults with high blood pressure, about half of all adults.", info: "stat-120m" as InfoId },
-              { value: "1 in 4", meaning: "of them have it under control.", info: "stat-1in4" as InfoId },
-              { value: "680,179", meaning: "deaths in 2024 where high blood pressure was a cause.", info: "stat-deaths" as InfoId },
-            ].map((x) => (
-              <div key={x.value}>
-                <dt className="flex items-center">
-                  <span className="tabular text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">{x.value}</span>
-                  <Info id={x.info} className="ml-1" />
-                </dt>
-                <dd className="mt-1 max-w-[40ch] text-lg">{x.meaning}</dd>
-              </div>
-            ))}
-            <p className="text-sm text-muted">All three figures: Centers for Disease Control and Prevention.</p>
-          </dl>
-        </div>
-      </Section>
-
-      {/* 3. Research */}
-      <Section id="study" title="When care went to the barbershop">
-        <article className="grid gap-8 rounded-[16px] bg-panel p-6 sm:p-10 lg:grid-cols-[1fr_auto_auto]">
-          <dl className="grid gap-5 text-[1.0625rem] sm:grid-cols-2">
-            <div>
-              <dt className="font-semibold">The question</dt>
-              <dd className="mt-1 text-muted">Can barbershops help men get high blood pressure under control?</dd>
-            </div>
-            <div>
-              <dt className="font-semibold">What they did</dt>
-              <dd className="mt-1 text-muted">
-                52 barbershops in Los Angeles were split into two groups by chance. In one group, barbers encouraged
-                customers to meet a pharmacist right there in the shop.
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold">What it means for Anchor</dt>
-              <dd className="mt-1 text-muted">
-                Going to trusted places works. But every community has its own trusted places, and nobody has a map of
-                them. Anchor makes that map.
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold">The study</dt>
-              <dd className="mt-1 text-muted">
-                Victor et al., New England Journal of Medicine, 2018.{" "}
-                <a className="text-accent underline underline-offset-4" href={REFERENCES[0].href}>
-                  Read it
-                </a>
-              </dd>
-            </div>
-          </dl>
-          <div className="order-first flex flex-col justify-center rounded-[12px] bg-accent-soft p-6 text-center lg:order-none lg:w-72">
-            <p className="tabular text-5xl font-semibold text-accent">63.6%</p>
-            <p className="text-sm">of men reached a healthy blood pressure with a pharmacist in the barbershop</p>
-            <p className="tabular mt-4 text-3xl font-semibold">11.7%</p>
-            <p className="text-sm text-muted">with the usual advice</p>
-            <div className="mt-2 flex justify-center">
-              <Info id="study-card" />
-            </div>
-          </div>
-          <figure className="hidden w-44 lg:block">
-            <Image
-              src={PHOTOS.pole.src}
-              width={PHOTOS.pole.width}
-              height={PHOTOS.pole.height}
-              alt={PHOTOS.pole.alt}
-              sizes="176px"
-              className="h-full max-h-80 w-full rounded-[12px] object-cover object-[50%_45%]"
-            />
-          </figure>
-        </article>
-      </Section>
-
-      {/* 3b. Impact */}
-      <Section
-        id="impact"
-        title="A proven fix, stuck in one city"
-        intro="Anchor tells you where to take it next."
-      >
-        <ol className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {IMPACT_CHAIN.map((c, i) => (
-            <li key={c.title} data-reveal style={delay(i * 70)} className="flex flex-col rounded-[12px] bg-panel p-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">{c.title}</h3>
-                <Info id={c.info} className="-my-2 -mr-2" />
-              </div>
-              <p className="tabular mt-3 text-3xl font-semibold text-accent">{c.big}</p>
-              <p className="mt-2 flex-1 text-muted">{c.body}</p>
-            </li>
-          ))}
-        </ol>
-
-        <div className="mt-8 overflow-hidden rounded-[12px] border border-border">
-          <table className="w-full border-collapse text-left">
-            <caption className="bg-surface-2 px-4 py-3 text-left font-semibold">
-              <span className="inline-flex flex-wrap items-center">
-                If the barbershop study&apos;s blood pressure drop lasted over time (estimate)
-                <Info id="impact-strokes" />
-              </span>
-            </caption>
-            <thead className="bg-surface text-sm text-muted">
-              <tr>
-                <th scope="col" className="px-4 py-2 font-medium">Outcome</th>
-                <th scope="col" className="px-4 py-2 font-medium">Expected change</th>
-              </tr>
-            </thead>
-            <tbody className="tabular divide-y divide-border bg-surface">
-              {OUTCOMES.map((o) => (
-                <tr key={o.outcome}>
-                  <th scope="row" className="px-4 py-3 font-normal">{o.outcome}</th>
-                  <td className="px-4 py-3 font-semibold">{o.change}</td>
-                </tr>
+      {/* 2. What, why, how on the left; the live thing on the right, so reading and doing sit together */}
+      <section id="overview" aria-labelledby="overview-title" className="mx-auto max-w-[1200px] scroll-mt-20 px-4 pt-14 sm:px-6 sm:pt-20">
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12 [&>*]:min-w-0">
+          <div>
+            <h2 id="overview-title" data-reveal className={h2}>
+              Anchor in 30 seconds
+            </h2>
+            <dl className="mt-6 space-y-6">
+              {[
+                {
+                  k: "What it is",
+                  v: "A free tool that tells health workers where to hold free blood pressure checks: trusted local places, in the neighbourhoods that need them most. A plan names the places and adds a visit schedule, owner invitations and downloads.",
+                  info: "overview-what" as InfoId,
+                  href: "/app",
+                  cta: "Open the full app",
+                },
+                {
+                  k: "Why it matters",
+                  v: "Half of US adults have high blood pressure, and only 1 in 4 of them has it under control. Checks in barbershops worked brilliantly in one study but never spread, because nobody knew which places each community trusts.",
+                  info: "overview-why" as InfoId,
+                  href: "#research",
+                  cta: "See the research",
+                },
+                {
+                  k: "How it works",
+                  v: "CDC data shows where the need is. Qloo's taste data shows which places each age group loves there. Anchor checks every place, ranks them with a published formula, and shows each step as it runs.",
+                  info: "overview-how" as InfoId,
+                  href: "#how",
+                  cta: "See the steps",
+                },
+              ].map((x, i) => (
+                <div key={x.k} data-reveal style={delay(i * 80)}>
+                  <dt className="flex items-center text-lg font-semibold text-accent">
+                    {x.k}
+                    <Info id={x.info} className="-my-2" />
+                  </dt>
+                  <dd className="mt-1">{x.v}</dd>
+                  <dd>
+                    <a href={x.href} className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-accent underline underline-offset-4">
+                      {x.cta} <ArrowRight aria-hidden="true" size={14} />
+                    </a>
+                  </dd>
+                </div>
               ))}
-            </tbody>
-          </table>
-          <p className="max-w-[90ch] bg-surface px-4 pb-4 pt-2 text-sm text-muted">
-            How we got these: the 21.6-point drop measured in the barbershop study, combined with a review of 123 trials
-            and 613,815 people that measured what each 10-point drop prevents (Ettehad et al., The Lancet, 2016). These
-            are estimates, not results from Anchor. Anchor&apos;s part is getting the programme to the right places.
-          </p>
-        </div>
-      </Section>
-
-      {/* 3c. Voices from the field (published research) */}
-      <Section
-        id="voices"
-        title="What people in the field told researchers"
-        intro="From published studies, quoted exactly and cited. We read these before designing Anchor."
-      >
-        <ul className="grid gap-5 md:grid-cols-3">
-          {VOICES.map((v) => (
-            <li key={v.source} className="flex flex-col rounded-[12px] bg-panel p-6">
-              <p className="text-sm font-semibold text-muted">{v.who}</p>
-              {v.quote ? <blockquote className="mt-3 text-xl font-medium leading-snug text-accent">&ldquo;{v.quote}&rdquo;</blockquote> : null}
-              <p className="mt-3 flex-1 text-muted">{v.finding}</p>
-              <a href={v.href} className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-accent underline underline-offset-4">
-                {v.source}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <figure className="mx-auto mt-24 max-w-[1200px] px-4 sm:mt-36 sm:px-6" data-reveal>
-        <Image
-          src={PHOTOS.interior.src}
-          width={PHOTOS.interior.width}
-          height={PHOTOS.interior.height}
-          alt={PHOTOS.interior.alt}
-          sizes="(min-width: 1200px) 1152px, 100vw"
-          className="aspect-[21/9] w-full rounded-[16px] object-cover"
-        />
-        <figcaption className="mt-3 text-sm text-muted">
-          Barbershops have long been places where neighbours wait, talk and trust each other. That waiting time is when a check fits in.
-        </figcaption>
-      </figure>
-
-      {/* 4. How it works */}
-      <Section id="how" title="How Anchor builds a plan">
-        <ol className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((step, i) => (
-            <li key={step.title} data-reveal style={delay(i * 70)} className="rounded-[12px] bg-panel p-6">
-              <div className="flex items-start justify-between gap-2">
-                <h3 className="text-xl font-semibold">{step.title}</h3>
-                <Info id={step.info} className="-mr-2 -mt-2" />
-              </div>
-              <p className="mt-2 text-muted">{step.body}</p>
-            </li>
-          ))}
-        </ol>
-      </Section>
-
-      {/* 5. Why Qloo */}
-      <Section
-        id="why-qloo"
-        title="Why Qloo, and not just AI"
-        intro={
-          <p className="flex flex-wrap items-center">
-            &ldquo;Where should we hold free blood pressure checks for men aged 35 to 54 in South Los Angeles?&rdquo;
-            <Info id="why-qloo" />
-          </p>
-        }
-      >
-        <div className="overflow-hidden rounded-[12px] bg-panel">
-          <table className="w-full border-collapse text-left">
-            <caption className="sr-only">How an AI chatbot alone compares with Anchor on the same request</caption>
-            <thead className="bg-surface-2">
-              <tr>
-                <th scope="col" className="w-1/2 p-4 font-semibold">AI alone</th>
-                <th scope="col" className="w-1/2 p-4 font-semibold text-accent">Anchor with Qloo</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {compare.map((row) => (
-                <tr key={row.anchor}>
-                  <td className="p-4 align-top text-muted">{row.aiAlone}</td>
-                  <td className="p-4 align-top">{row.anchor}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-3 text-sm text-muted">
-          Measured: the same model Anchor&apos;s agent uses, asked the same question with no tools, across {results.requests} requests.{" "}
-          <Link href="/proof" className="text-accent underline underline-offset-4">See every answer and the method</Link>
-        </p>
-      </Section>
-
-      {/* 6. See it work: real need data */}
-      <Section
-        id="example"
-        title="Where the need is, from real CDC data"
-        intro={
-          <p>
-            Across {fmt.format(summary.tracts)} neighbourhoods, CDC estimates point to about{" "}
-            <strong className="text-text">{fmt.format(summary.estUntreatedAdults)}</strong> adults with high blood
-            pressure who are not taking medicine for it. Anchor grouped the highest-need fifth into{" "}
-            {fmt.format(summary.zones)} zones, home to about {fmt.format(summary.zoneEstUntreatedAdults)} of them.
-          </p>
-        }
-      >
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr] [&>*]:min-w-0">
-          <figure className="overflow-hidden rounded-[16px] bg-panel">
-            <NeedMap focus={focus} titleId="need-map-title" descId="need-map-desc" />
-            <figcaption className="p-4 text-sm text-muted">
-              <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-                <span id="need-map-title" className="font-medium text-text">
-                  Central and South Los Angeles: where high blood pressure most often goes untreated
-                </span>
-                <NeedLegend />
-              </div>
-              <span id="need-map-desc">
-                Blue areas are neighbourhoods in the county&apos;s highest-need fifth. Numbers mark the 10 zones with the most
-                adults who have high blood pressure and no medicine.
-              </span>
-            </figcaption>
-          </figure>
-          <div className="rounded-[12px] bg-panel">
-            <table className="w-full text-left text-[0.9375rem]">
-              <caption className="flex flex-wrap items-center justify-between gap-x-3 px-3 pt-3 text-left font-semibold sm:px-4">
-                Top 10 zones
-                <span className="flex items-center text-sm font-normal text-muted">
-                  What is a zone? <Info id="zones" />
-                </span>
-              </caption>
-              <thead>
-                <tr className="border-b border-border text-sm text-muted">
-                  <th scope="col" className="px-3 py-2 sm:px-4 font-medium">Rank</th>
-                  <th scope="col" className="px-3 py-2 sm:px-4 font-medium">
-                    <span className="inline-flex items-center">
-                      Untreated adults <Info id="untreated" />
-                    </span>
-                  </th>
-                  <th scope="col" className="px-3 py-2 sm:px-4 font-medium">Area</th>
-                </tr>
-              </thead>
-              <tbody className="tabular">
-                {top.map((z, i) => (
-                  <tr key={z.zoneId} className="border-b border-border last:border-0">
-                    <td className="px-3 py-2 sm:px-4">{i + 1}</td>
-                    <td className="px-3 py-2 sm:px-4">about {fmt.format(z.estUntreatedAdults)}</td>
-                    <td className="px-3 py-2 sm:px-4">{z.areaKm2} sq km</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="px-4 py-3 text-sm text-muted">
-              Next, Anchor asks Qloo which places each audience loves inside these zones.{" "}
-              <Link href="/app" className="text-accent underline underline-offset-4">Try it live</Link>
+            </dl>
+            <p className="mt-2 text-sm text-muted">
+              New here? Each <span className="mx-1 font-semibold text-text">i</span> button explains one thing in plain words:
+              hover it, tap it or press Enter. For the formulas and API calls, switch to
+              <span className="mx-1 font-semibold text-text">Technical</span> at the top.
+              <Info id="simple-technical" className="-my-3 align-middle" />
             </p>
-            <div className="layer-technical border-t border-border px-4 py-3 font-mono text-[0.8125rem] text-muted">
-              {summary.method}. Source: {summary.source}. Largest zone outline: {summary.maxZoneWktBytes} bytes of WKT.
+          </div>
+          <div id="try" className="scroll-mt-20">
+            <h2 data-reveal className={h2}>
+              Try it right here
+            </h2>
+            <p className="mt-3 max-w-[60ch] text-muted">
+              Pick who and where. Anchor finds the neighbourhoods with the most untreated high blood pressure, then the places
+              that group already goes to. No sign-up; about 8 seconds.
+            </p>
+            <div className="mt-5">
+              <QuickTry
+                placeholder={
+                  <figure>
+                    <Image
+                      src={PHOTOS.cuff.src}
+                      width={PHOTOS.cuff.width}
+                      height={PHOTOS.cuff.height}
+                      alt={PHOTOS.cuff.alt}
+                      sizes="(min-width: 1024px) 640px, 100vw"
+                      className="aspect-[2/1] w-full rounded-[12px] object-cover object-bottom"
+                    />
+                    <figcaption className="mt-2 text-sm text-muted">
+                      What a plan leads to: a free check that takes about five minutes, with no appointment.
+                    </figcaption>
+                  </figure>
+                }
+              />
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* 7. Proof */}
+      {/* 3. Everything else, one tab at a time */}
       <Section
-        id="proof"
-        title="Tested against the obvious alternatives"
-        intro={`Measured on ${results.requests} plan requests in Los Angeles County, using only public data. Rerun it yourself with one command.`}
+        id="details"
+        title="The research, the method and the proof"
+        intro="Pick a tab. Each takes under a minute to read, and links to the full page if you want more."
       >
-        <div className="mb-6 grid gap-4 sm:grid-cols-3">
-          {[
-            { big: pct(sys.anchor.unsuitableRate), label: "bars or liquor stores in Anchor's plans", sub: `A search of local businesses: ${pct(sys.mapSearchAny.unsuitableRate)}` },
-            { big: `${results.policy.targeting.passed} of ${results.policy.targeting.total}`, label: "race or religion targeting requests planned by need instead", sub: `${results.policy.controls.passed} of ${results.policy.controls.total} look-alike ordinary requests left alone` },
-            { big: pct(sys.anchor.licensedRate), label: "of places confirmed in a city licence or a Qloo listing", sub: `AI alone: ${pct(sys.aiOnly.licensedRate)} could be confirmed` },
-          ].map((c) => (
-            <div key={c.label} className="flex gap-3 rounded-[12px] bg-panel p-5">
-              <ShieldCheck aria-hidden="true" className="mt-1 shrink-0 text-success" />
-              <div>
-                <p className="tabular text-2xl font-semibold">{c.big}</p>
-                <p>{c.label}</p>
-                <p className="mt-1 text-sm text-muted">{c.sub}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="overflow-x-auto rounded-[12px] bg-panel">
-          <table className="w-full min-w-[820px] border-collapse text-left">
-            <caption className="sr-only">Anchor compared with AI alone, Qloo alone and a map search</caption>
-            <thead className="bg-surface-2 text-sm">
-              <tr>
-                <th scope="col" className="p-4 font-semibold">Measure</th>
-                <th scope="col" className="p-4 font-semibold text-accent">Anchor</th>
-                <th scope="col" className="p-4 font-semibold">AI alone (same model, no data)</th>
-                <th scope="col" className="p-4 font-semibold">Qloo alone, without need data</th>
-                <th scope="col" className="p-4 font-semibold">
-                  <span className="inline-flex items-center">
-                    Map search for barbershops <Info id="proof-baselines" />
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="tabular divide-y divide-border bg-surface">
-              {proofRows.map((row) => (
-                <tr key={row.label}>
-                  <th scope="row" className="p-4 font-normal">{row.label}</th>
-                  {row.cells.map((c, i) => (
-                    <td key={i} className={`p-4 ${i === 0 ? "font-semibold" : "text-muted"}`}>{c}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-3 max-w-[80ch] text-sm text-muted">
-          AI alone is the same model Anchor&apos;s agent uses, asked the same question with no tools or data. It mostly names famous churches, parks and libraries, and gives every audience a similar list.{" "}
-          <Link href="/proof" className="text-accent underline underline-offset-4">See the full method, every test and the honesty notes</Link>
-        </p>
+        <DeepDive panels={learn} />
       </Section>
 
-      {/* 8. Who it is for */}
-      <Section id="who" title="Who it is for">
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {AUDIENCES.map((a) => (
-            <div key={a.title} className="flex flex-col rounded-[12px] bg-panel p-6">
-              <h3 className="text-xl font-semibold">{a.title}</h3>
-              <p className="mt-2 flex-1 text-muted">{a.body}</p>
-              <Link href={a.href} className="mt-4 inline-flex min-h-11 items-center gap-1 font-medium text-accent">
-                {a.cta} <ArrowRight aria-hidden="true" size={16} />
-              </Link>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* 9. Use it your way */}
+      {/* 4. Who it is for, and every way to use it */}
       <Section
         id="ways"
-        title="Use it as an app, an API or an AI tool"
-        intro="Not a developer? You only need the web app. Building something? Create a free key below and call Anchor from your own software."
+        title="Use it your way"
+        intro="Not a developer? You only need the web app. Building something? Get a free key and call Anchor from your own software."
       >
-        <div id="service" className="mb-8 scroll-mt-24 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <h3 className="flex items-center text-2xl font-semibold">
-              Use Anchor as a service <Info id="use-service" />
-            </h3>
-            <p className="mt-2 text-lg">
-              Get a free API key in one click. Send who and where; get back a ranked plan as data, ready for your dashboard, spreadsheet or app.
-            </p>
-            <ul className="mt-4 space-y-2 text-muted">
-              <li>No sign-up. The key is shown once and never stored.</li>
-              <li>Try without a key: use the public demo key <code className="font-mono text-text">anc_demo</code>.</li>
-              <li>
-                Full reference:{" "}
-                <Link href="/developers" className="text-accent underline underline-offset-4">developer docs</Link> and the{" "}
-                <a href="/api/v1/openapi.json" className="text-accent underline underline-offset-4">OpenAPI spec</a>.
-              </li>
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12 [&>*]:min-w-0">
+          <div id="who" className="scroll-mt-20">
+            <h3 className="text-xl font-semibold">Who it is for</h3>
+            <ul className="mt-4 space-y-5">
+              {AUDIENCES.map((a) => (
+                <li key={a.title}>
+                  <p className="font-semibold">{a.title}</p>
+                  <p className="mt-1 text-muted">{a.body}</p>
+                  <Link href={a.href} className="mt-1 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-accent">
+                    {a.cta} <ArrowRight aria-hidden="true" size={14} />
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          <CreateKey />
+          <div id="service" className="scroll-mt-20">
+            <h3 className="flex items-center text-xl font-semibold">
+              Use Anchor as a service <Info id="use-service" />
+            </h3>
+            <p className="mt-2">
+              Get a free API key in one click. Send who and where; get back a ranked plan as data, ready for your dashboard,
+              spreadsheet or app. No sign-up, and the key is never stored. No key at all? Use the demo key{" "}
+              <code className="font-mono">anc_demo</code>.
+            </p>
+            <div className="mt-4">
+              <CreateKey />
+            </div>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {WAYS.filter((w) => w.info).map((w) => (
+                <li key={w.title} className="rounded-[12px] bg-panel p-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold">{w.title}</h4>
+                    {w.info ? <Info id={w.info} className="-my-2 -mr-2" /> : null}
+                  </div>
+                  <p className="mt-1 text-muted">{w.simple}</p>
+                  <p className="layer-technical mt-2 rounded-[8px] bg-bg p-2.5 text-sm">{w.technical}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-sm text-muted">
+              Full reference: the <Link href="/developers" className="text-accent underline underline-offset-4">developer docs</Link> and
+              the <a href="/api/v1/openapi.json" className="text-accent underline underline-offset-4">OpenAPI spec</a>.
+            </p>
+          </div>
         </div>
-        <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {WAYS.map((w) => (
-            <li key={w.title} className="rounded-[12px] bg-panel p-5">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold">{w.title}</h3>
-                {w.info ? <Info id={w.info} className="-my-2 -mr-2" /> : null}
-              </div>
-              <p className="mt-2 text-muted">{w.simple}</p>
-              <p className="layer-technical mt-3 rounded-[8px] bg-bg p-3 text-sm">{w.technical}</p>
-            </li>
-          ))}
-        </ul>
       </Section>
 
-      {/* 10. Safety and limits */}
-      <Section id="safety" title="What Anchor does and does not do">
-        <ul className="grid gap-4 md:grid-cols-2">
-          {[
-            { t: "It never targets people by race, ethnicity or religion.", b: "It plans by neighbourhood need, age and gender only. We test this with 20 tricky requests, plus 5 ordinary look-alikes it must leave alone, and publish the result.", info: "race-policy" as InfoId },
-            { t: "It uses no personal data.", b: "No patient records, no names, no tracking." },
-            { t: "It does not give medical advice.", b: "Health wording comes from public health sources, and a person must review every flyer before it is shared." },
-            { t: "Its numbers are estimates.", b: "CDC neighbourhood figures come from a national survey and statistical models. Qloo shows what groups of people love, not how many walk through a door.", info: "estimates" as InfoId },
-          ].map((item) => (
-            <li key={item.t} className="rounded-[12px] bg-panel p-5">
-              <div className="flex items-start justify-between gap-2">
-                <p className="font-semibold">{item.t}</p>
-                {item.info ? <Info id={item.info} className="-my-2 -mr-2" /> : null}
-              </div>
-              <p className="mt-2 text-muted">{item.b}</p>
-            </li>
-          ))}
-        </ul>
-        <Link href="/safety" className="mt-4 inline-flex min-h-11 items-center gap-1 font-medium text-accent">
-          Read the full safety page <ArrowRight aria-hidden="true" size={16} />
-        </Link>
-      </Section>
-
-      {/* 11. FAQ */}
+      {/* 5. Questions, with every source one click away */}
       <Section id="faq" title="Questions">
-        <Faq items={FAQ} />
-      </Section>
-
-      {/* 12. References */}
-      <Section id="references" title="Sources">
-        <ol className="list-decimal space-y-2 pl-6 text-muted">
-          {REFERENCES.map((r) => (
-            <li key={r.id}>
-              {r.text}{" "}
-              <a href={r.href} className="break-all text-accent underline underline-offset-4">
-                {r.href.replace("https://", "")}
-              </a>
-            </li>
-          ))}
-        </ol>
+        <div className="grid gap-10 pb-6 lg:grid-cols-[1.45fr_0.55fr] lg:gap-12 [&>*]:min-w-0">
+          <Faq items={FAQ} />
+          <div id="references" className="scroll-mt-20 space-y-4">
+            <div className="rounded-[12px] bg-panel p-5">
+              <h3 className="font-semibold">Still unsure?</h3>
+              <ul className="mt-2 space-y-1">
+                {[
+                  ["/judges", "Judge mode: everything in 3 minutes"],
+                  ["/glossary", "Glossary of every term"],
+                  ["/how-it-works", "The full method"],
+                ].map(([href, label]) => (
+                  <li key={href}>
+                    <Link href={href} className="inline-flex min-h-11 items-center gap-1 font-medium text-accent">
+                      {label} <ArrowRight aria-hidden="true" size={14} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <details className="group rounded-[12px] bg-panel">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-5 font-semibold [&::-webkit-details-marker]:hidden">
+                All {REFERENCES.length} sources
+                <ArrowRight aria-hidden="true" size={16} className="shrink-0 text-muted transition-transform duration-200 ease-[var(--ease-out)] group-open:rotate-90" />
+              </summary>
+              <ol className="space-y-2 px-5 pb-5">
+                {REFERENCES.map((r) => (
+                  <li key={r.id}>
+                    <a href={r.href} className="text-accent underline underline-offset-4">
+                      {r.text.split(". ").slice(0, 2).join(". ")}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </details>
+            <p className="text-muted">Every number on this page comes from a cited source.</p>
+          </div>
+        </div>
       </Section>
     </>
   );

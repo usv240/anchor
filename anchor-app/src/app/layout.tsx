@@ -22,17 +22,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fbfbfa" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1116" },
-  ],
+  themeColor: "#fbfbfa",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // The inline script sets data-theme and data-layer before paint, so the
+    // Light is the default. The inline script applies a saved choice (dark, or
+    // match the device) and the layer before paint, so the
     // server markup and the DOM can differ on <html> attributes only.
-    <html lang="en" data-layer="simple" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" data-theme="light" data-layer="simple" className={inter.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: PREFS_INLINE_SCRIPT }} />
       </head>

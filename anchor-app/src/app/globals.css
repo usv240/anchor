@@ -2,7 +2,8 @@
 
 /*
   Design tokens. Source of truth: shared/DESIGN_SYSTEM.md, section 7.
-  Theme order: an explicit data-theme on <html> wins; otherwise the system setting.
+  Theme order: light by default (data-theme="light" on <html>); a saved dark
+  choice sets data-theme="dark"; "match my device" removes it, so the system setting applies.
   Contrast targets: body text 7:1 or better, UI text 4.5:1 or better, in both themes.
   These pairs are checked by tests/contrast.test.ts.
 */

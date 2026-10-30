@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { PHOTOS } from "@/content/photos";
 import { REFERENCES, VOICES } from "@/content/landing";
 
 export const metadata: Metadata = { title: "Research" };
@@ -37,6 +39,17 @@ export default function ResearchPage() {
         ))}
       </dl>
       <p className="mt-3 text-sm text-muted">Source: CDC, High Blood Pressure Facts.</p>
+      <figure className="mt-6">
+        <Image
+          src={PHOTOS.cuff.src}
+          width={PHOTOS.cuff.width}
+          height={PHOTOS.cuff.height}
+          alt={PHOTOS.cuff.alt}
+          sizes="(min-width: 860px) 812px, 100vw"
+          className="aspect-[21/9] w-full rounded-[16px] object-cover object-bottom"
+        />
+        <figcaption className="mt-2 text-sm text-muted">A check takes about five minutes and needs no appointment.</figcaption>
+      </figure>
 
       <h2 id="study" className="mt-12 scroll-mt-24 text-2xl font-semibold">The key study: health care in barbershops</h2>
       <div className="mt-4 space-y-3 text-[1.0625rem]">
@@ -108,6 +121,20 @@ export default function ResearchPage() {
           Works Clearinghouse. Anchor&apos;s reading corner is a small add-on; blood pressure stays the main goal.
         </p>
       </div>
+
+      <figure className="mt-12">
+        <Image
+          src={PHOTOS.interior.src}
+          width={PHOTOS.interior.width}
+          height={PHOTOS.interior.height}
+          alt={PHOTOS.interior.alt}
+          sizes="(min-width: 860px) 812px, 100vw"
+          className="aspect-[21/9] w-full rounded-[16px] object-cover"
+        />
+        <figcaption className="mt-2 text-sm text-muted">
+          Barbershops have long been places where neighbours wait, talk and trust each other. That waiting time is when a check fits in.
+        </figcaption>
+      </figure>
 
       <h2 id="voices" className="mt-12 scroll-mt-24 text-2xl font-semibold">Voices from the field</h2>
       <p className="mt-4 text-[1.0625rem]">

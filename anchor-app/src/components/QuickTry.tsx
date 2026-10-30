@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Info } from "@/components/Info";
@@ -21,7 +21,7 @@ const PLACES = [
  * real plan right here, showing each step as it runs. Same API as the app
  * (POST /api/v1/plans, basic planner for speed); the full plan opens in the app.
  */
-export function QuickTry() {
+export function QuickTry({ placeholder }: { placeholder?: ReactNode }) {
   const [who, setWho] = useState(0);
   const [where, setWhere] = useState(0);
   const [step, setStep] = useState<string | null>(null);
@@ -68,7 +68,7 @@ export function QuickTry() {
   const chip = "press min-h-11 rounded-full px-4 text-sm font-medium aria-pressed:bg-accent aria-pressed:text-accent-contrast bg-bg hover:bg-surface-2";
 
   return (
-    <div className="rounded-[16px] bg-panel p-5 sm:p-8">
+    <div className="rounded-[16px] bg-panel p-5 sm:p-6">
       <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
         <div className="space-y-4">
           <div>
@@ -108,6 +108,7 @@ export function QuickTry() {
       </div>
 
       <div aria-live="polite" className="mt-6">
+        {!busy && !plan && !error ? placeholder : null}
         {busy ? <p className="text-muted">{step}&hellip;</p> : null}
         {error ? <p role="alert" className="text-danger">{error}</p> : null}
         {plan ? (

@@ -1,5 +1,5 @@
 /**
- * User preferences: theme (system, light, dark) and explanation layer
+ * User preferences: theme (light by default, dark, or match the device) and explanation layer
  * (simple, technical). Stored in localStorage and mirrored as attributes on
  * <html> so CSS can react before React hydrates (no flash).
  */
@@ -14,7 +14,7 @@ export type Layer = "simple" | "technical";
  * Runs synchronously in <head> before first paint. Kept tiny and defensive:
  * localStorage can throw in some privacy modes.
  */
-export const PREFS_INLINE_SCRIPT = `(function(){try{var d=document.documentElement;var t=localStorage.getItem("${THEME_KEY}");if(t==="light"||t==="dark"){d.setAttribute("data-theme",t)}var l=localStorage.getItem("${LAYER_KEY}");d.setAttribute("data-layer",l==="technical"?"technical":"simple")}catch(e){}})();`;
+export const PREFS_INLINE_SCRIPT = `(function(){try{var d=document.documentElement;var t=localStorage.getItem("${THEME_KEY}");if(t==="light"||t==="dark"){d.setAttribute("data-theme",t)}else if(t==="system"){d.removeAttribute("data-theme")}var l=localStorage.getItem("${LAYER_KEY}");d.setAttribute("data-layer",l==="technical"?"technical":"simple")}catch(e){}})();`;
 
 const listeners = new Set<() => void>();
 
@@ -39,11 +39,7 @@ export function readLayer(): Layer {
 export function setTheme(theme: Theme): void {
   const root = document.documentElement;
   try {
-    if (theme === "system") {
-      localStorage.removeItem(THEME_KEY);
-    } else {
-      localStorage.setItem(THEME_KEY, theme);
-    }
+    localStorage.setItem(THEME_KEY, theme);
   } catch {
     // Preference still applies for this page view.
   }
