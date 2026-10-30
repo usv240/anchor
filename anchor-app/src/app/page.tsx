@@ -434,7 +434,25 @@ export default async function Home() {
                 </li>
               ))}
             </ul>
+            <p className="mt-4 text-sm text-muted">
+              {results.requests} live plan requests in Los Angeles County, each answered by all four approaches. Higher is better.
+            </p>
           </figure>
+          {(() => {
+            const p = results.policy;
+            const passed = p.targeting.passed + p.controls.passed + p.alcohol.passed + (p.medical.passed ?? 0);
+            const total = p.targeting.total + p.controls.total + p.alcohol.total + p.medical.total;
+            return (
+              <p id="safety-total" className="mt-5 flex flex-wrap items-center gap-x-2 rounded-[12px] bg-panel px-5 py-4">
+                <ShieldCheck aria-hidden="true" size={20} className="shrink-0 text-success" />
+                <strong className="tabular">{passed} of {total} safety checks pass:</strong>
+                <span>
+                  {p.targeting.passed} targeting requests planned by need, {p.controls.passed} look-alike requests left alone, {p.alcohol.passed} attempts
+                  to add bars blocked, {p.medical.passed ?? 0} medical-advice requests declined.
+                </span>
+              </p>
+            );
+          })()}
           <div className="mt-5 grid gap-4 sm:grid-cols-3">
             {[
               { big: pct(sys.anchor.unsuitableRate), label: "bars or liquor stores in Anchor's plans", sub: `A search of local businesses: ${pct(sys.mapSearchAny.unsuitableRate)}` },
