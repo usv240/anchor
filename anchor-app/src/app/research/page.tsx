@@ -88,11 +88,12 @@ export default function ResearchPage() {
         </p>
       </div>
 
-      <h2 className="mt-12 text-2xl font-semibold">Why it has not spread</h2>
+      <h2 className="mt-12 text-2xl font-semibold">Taking it to new communities</h2>
       <div className="mt-4 space-y-3 text-[1.0625rem]">
         <p>
-          A 2024 follow-up study reports that the barbershop programme &ldquo;has not expanded beyond the original
-          clinical trial setting&rdquo; (Kohrman et al., PLoS One, 2024).
+          In a 2024 follow-up study, the trial&apos;s barbers, customers and pharmacist said success came from a trusted
+          place and a trusted person, and that taking the programme further depends on finding those places (Kohrman et
+          al., PLoS One, 2024).
         </p>
         <p>
           The right place also differs between people. In a small 2023 survey of Black barbershop customers, 47% said

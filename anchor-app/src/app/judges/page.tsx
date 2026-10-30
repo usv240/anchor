@@ -36,7 +36,7 @@ export default async function JudgesPage() {
         <li className="rounded-[12px] bg-panel p-6">
           <p className="text-sm font-semibold text-accent">30 seconds: what it is</p>
           <p className="mt-2 text-[1.0625rem]">
-            When pharmacists met men in their barbershops, 63.6% got their blood pressure under control, against 11.7% with usual care (New England Journal of Medicine, 2018). The programme never spread. Anchor finds
+            When pharmacists met men in their barbershops, 63.6% got their blood pressure under control, against 11.7% with usual care (New England Journal of Medicine, 2018). Taking it to new communities starts with finding the places each one trusts. Anchor finds
             where it should go next: the neighbourhoods with the most untreated high blood pressure (CDC data) and the local places people there love (Qloo).
           </p>
         </li>
