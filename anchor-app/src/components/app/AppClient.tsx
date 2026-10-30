@@ -66,9 +66,10 @@ const CATEGORIES = ["Barbershop", "Beauty salon", "Nail salon", "Laundromat", "R
 const DAY_LABEL: Record<Day, string> = { monday: "Mon", tuesday: "Tue", wednesday: "Wed", thursday: "Thu", friday: "Fri", saturday: "Sat", sunday: "Sun" };
 const fmt = new Intl.NumberFormat("en-US");
 
-export function AppClient() {
+/** modes: what the server runs, written into the page so it shows before any script runs; the health check then confirms it. */
+export function AppClient({ modes }: { modes?: Health["modes"] }) {
   const [form, setForm] = useState<Form>(DEFAULT_FORM);
-  const [health, setHealth] = useState<Health | null>(null);
+  const [health, setHealth] = useState<Health | null>(modes ? { modes } : null);
   const [status, setStatus] = useState<"idle" | "running" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [steps, setSteps] = useState<StepView[]>([]);
@@ -152,7 +153,7 @@ export function AppClient() {
     fetch("/api/v1/health")
       .then((r) => r.json())
       .then(setHealth)
-      .catch(() => setHealth(null));
+      .catch(() => undefined);
     const params = new URLSearchParams(window.location.search);
     const id = params.get("plan");
     const settings = readSettings(params.get("r"));
