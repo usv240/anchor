@@ -68,11 +68,11 @@ We also tested the rest of the API and recorded why each part is left out. Inter
   - 5 attempts to get bars into a plan fail.
   - 5 requests for medical advice are declined by the AI agent and checked by a separate AI judge.
 - **Honesty notes are published.** The targeting guard was fixed after its first run missed one prompt. The medical word check was too strict on its first run and was fixed in the open.
-- **What the data cannot tell you:**
+- **How to read the data:**
   - CDC figures are model-based estimates.
   - Qloo affinity shows what a group likes, not how many people visit.
   - City registers miss some businesses.
-  - The health effect comes from the programme, not from Anchor.
+  - Health results come from the programme delivered at each place; Anchor finds the places.
 - **No personal data.** Anchor plans by neighbourhood, age group and gender, never individuals. Sole traders listed under their own name are removed from venue lists. It is not medical advice.
 
 ## How we built it
@@ -88,7 +88,7 @@ We also tested the rest of the API and recorded why each part is left out. Inter
 
 - **More counties.** Each one needs only an open business register.
 - **Follow-up visits.** Track checks and referrals per venue.
-- **A pilot.** Run it with a county health department and measure reach.
+- **County partnerships.** Run it with health departments and measure reach.
 
 ## References
 

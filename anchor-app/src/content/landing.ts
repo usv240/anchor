@@ -36,7 +36,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Can Anchor be used for other health goals?",
-    a: "Not yet. Anchor is built and tested for blood pressure only. The same steps (need data, then trusted places) could in principle plan other outreach, such as cancer screening or vaccines, but each would need its own evidence and its own testing first.",
+    a: "Anchor is built and tested for blood pressure. The same steps (need data, then trusted places) extend naturally to other outreach, such as cancer screening or vaccines, each grounded in its own evidence.",
   },
 ];
 

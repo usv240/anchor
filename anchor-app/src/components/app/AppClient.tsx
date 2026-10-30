@@ -782,7 +782,7 @@ function VenueDetail({ plan, venueId }: { plan: Plan; venueId: string }) {
         <ul className="space-y-2 text-sm">
           <li className="flex items-center gap-2">
             <ShieldCheck aria-hidden="true" size={18} className="text-success" />
-            <span>{v.verification.status === "qloo_only" ? "From Qloo, not yet matched to a city record" : `Verified: ${v.verification.source.charAt(0).toLowerCase()}${v.verification.source.slice(1)}`}</span>
+            <span>{v.verification.status === "qloo_only" ? "Listed by Qloo" : `Verified: ${v.verification.source.charAt(0).toLowerCase()}${v.verification.source.slice(1)}`}</span>
             <Info id="verified" className="-my-2" />
           </li>
           {v.yearsInBusiness !== null ? (

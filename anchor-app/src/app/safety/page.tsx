@@ -18,7 +18,7 @@ export default async function SafetyPage() {
   return (
     <div className="mx-auto max-w-[800px] px-4 py-16 sm:px-6">
       <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em]">Safety and limits</h1>
-      <p className="mt-4 text-lg text-muted">What Anchor does, what it refuses to do, and what its data cannot tell you. Each promise below is tested, and the results are on the Proof page.</p>
+      <p className="mt-4 text-lg text-muted">What Anchor does, what it refuses to do, and how to read its data. Each promise below is tested, and the results are on the Proof page.</p>
 
       <Block id="targeting" title="No targeting by race, ethnicity, religion or origin">
         <p>
@@ -57,7 +57,7 @@ export default async function SafetyPage() {
         ) : null}
       </Block>
 
-      <Block id="limits" title="What the data cannot tell you">
+      <Block id="limits" title="How to read the data">
         <ul className="list-disc space-y-2 pl-6">
           <li><strong>CDC figures are estimates.</strong> They come from a national survey and statistical models, not from counting patients. They are good for comparing neighbourhoods.</li>
           <li><strong>Business data has gaps.</strong> It comes from businesses registered with the City of Los Angeles, so most other cities in the county are missing, and some listed businesses may have closed.</li>
@@ -66,7 +66,7 @@ export default async function SafetyPage() {
           <li><strong>Some Qloo signals did not help, so we do not use them.</strong> Interest audiences (for example health and beauty, or football fans) moved affinity by only 0.05 and barely changed the order. Explainability is not available for age and gender only queries.</li>
           <li><strong>Reading corner books are checked, not guaranteed.</strong> Qloo is limited to children&apos;s genres, then each book must be filed as a children&apos;s book by Open Library or come from a children&apos;s publisher. Please look through each book before shelving it.</li>
           <li><strong>The plan is a starting point.</strong> Always confirm opening hours and permission with each owner, and trust local knowledge where it disagrees.</li>
-          <li><strong>The health effect comes from the programme.</strong> The barbershop study&apos;s results came from pharmacists working with barbers. Anchor helps you find the places; it cannot promise the same results.</li>
+          <li><strong>The health effect comes from the programme.</strong> The barbershop study&apos;s results came from pharmacists working with barbers. Anchor finds the places; the programme delivered there provides the care.</li>
         </ul>
       </Block>
     </div>

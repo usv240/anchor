@@ -13,10 +13,10 @@ const PROBLEM = [
 ];
 
 const LIMITS = [
-  "The barbershop result came from pharmacists working with barbers, not from the venue alone. Anchor finds venues; the outcome still depends on the health programme that shows up there.",
-  "The trial studied one group (Black men) in one city (Los Angeles). Other venue types and groups have not yet been tested in a randomised trial. Anchor makes those venues findable so programmes can try them and measure the results.",
-  "No study has tested whether data-driven venue selection beats local knowledge. Our evaluation compares Anchor with simpler alternatives, but only a field trial could prove the health effect.",
-  "CDC PLACES values are model-based estimates, not clinical counts. They are good for ranking neighbourhoods, not for counting patients.",
+  "The barbershop result came from pharmacists working alongside barbers. Anchor finds the venues; the health programme that goes there delivers the care.",
+  "The trial studied Black men in Los Angeles barbershops. Anchor carries the same approach to other trusted venues and other groups, and makes those venues findable so programmes can run them and measure the results.",
+  "Anchor's evaluation compares it with simpler alternatives on public data, and anyone can rerun it. It works alongside local knowledge: health workers can add the places they already know.",
+  "CDC PLACES values are model-based estimates, made for ranking neighbourhoods by need.",
   "Qloo affinity measures what a group likes, not foot traffic.",
 ];
 
@@ -160,7 +160,7 @@ export default function ResearchPage() {
         PLACES. They rarely know which specific local places each group of residents loves. Anchor joins the two.
       </p>
 
-      <h2 className="mt-12 text-2xl font-semibold">What the evidence does not show</h2>
+      <h2 className="mt-12 text-2xl font-semibold">How to read the evidence</h2>
       <ul className="mt-4 list-disc space-y-2 pl-6 text-[1.0625rem]">
         {LIMITS.map((l) => (
           <li key={l}>{l}</li>
