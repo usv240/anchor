@@ -425,7 +425,7 @@ function Settings({
           <Field
             label="Your request in your own words"
             info="opt-prompt"
-            hint={claudeOn === null ? "Checked for policy, then read by the planner." : claudeOn ? "The Claude agent will read this." : "The Claude agent is off on this server, so this note is checked for policy but not read by a model."}
+            hint={claudeOn === null ? "Checked for policy, then read by the planner." : claudeOn ? "The Claude agent will read this." : "Checked for policy, then used by the basic planner."}
           >
             <textarea
               value={form.prompt}
@@ -729,7 +729,7 @@ function VenueDetail({ plan, venueId }: { plan: Plan; venueId: string }) {
       setTraceError(true);
     }
   };
-  const cited = trace?.filter((r) => v.citations.includes(r.id)) ?? [];
+  const cited = trace?.filter((r) => r.tool === "agent.claude" || v.citations.includes(r.id)) ?? [];
   const rows: [string, string, string][] = [
     ["Need", v.scores.need.toFixed(2), "How high the need is in this zone (0 to 1)"],
     ["Trust", v.scores.trust === null ? "Not available" : v.scores.trust.toFixed(2), v.scores.trust === null ? "Turns on with Qloo" : "How much this group loves the place (Qloo)"],
@@ -846,7 +846,7 @@ function VenueDetail({ plan, venueId }: { plan: Plan; venueId: string }) {
       <div className="mt-4 border-t border-border pt-4">
         <div className="flex flex-wrap items-center gap-2">
           <button type="button" onClick={showEvidence} className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border border-border px-4 text-sm font-medium hover:bg-surface-2">
-            Show evidence ({v.citations.length} records)
+            Show evidence ({v.citations.length + (plan.mode.planner === "claude" ? 1 : 0)} records)
           </button>
           <Info id="evidence" className="-my-2" />
         </div>

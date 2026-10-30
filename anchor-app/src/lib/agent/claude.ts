@@ -155,10 +155,14 @@ export async function runClaudeAgent(
   let summary: string | undefined;
   let days = request.options.preferredDays;
   let finished = false;
+  // Which tools the model chose, in order: recorded in the evidence log as proof the agent ran.
+  const chosen: string[] = [];
+  let turns = 0;
 
   try {
     b.step("agent", "Claude is planning", "running");
     for (let turn = 0; turn < MAX_TURNS && !finished; turn++) {
+      turns = turn + 1;
       const res = await deps.client.beta.messages.create({
         model: AGENT_MODEL,
         max_tokens: 16000,
@@ -183,6 +187,7 @@ export async function runClaudeAgent(
       const results: Anthropic.Beta.Messages.BetaToolResultBlockParam[] = [];
       for (const call of calls) {
         const name = call.name as ToolName;
+        chosen.push(call.name);
         const schema = Inputs[name];
         const parsed = schema ? schema.safeParse(call.input) : null;
         if (!parsed || !parsed.success) {
@@ -205,6 +210,12 @@ export async function runClaudeAgent(
       messages.push({ role: "user", content: results });
     }
     b.step("agent", "Claude is planning", "done", finished ? "Plan finished by Claude" : "Claude stopped early; finishing with the standard steps");
+    b.ledger.append({
+      tool: "agent.claude",
+      request: { model: AGENT_MODEL, turns, tools: chosen },
+      responseBody: JSON.stringify({ finished, summary: summary ?? null }),
+      summary: `Planned by the Claude agent (${AGENT_MODEL}) in ${turns} turns. It called ${chosen.length} tools: ${chosen.join(", ")}.`,
+    });
   } catch (err) {
     // Model unavailable or declined: the basic planner produces the plan instead.
     b.step("agent", "Claude is planning", "error", `${(err as Error).message}. Using the basic planner instead.`);

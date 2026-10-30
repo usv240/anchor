@@ -110,7 +110,7 @@ export function AudienceCompare() {
           <p className="mt-4 text-lg font-semibold">
             {qloo
               ? `${shared} of ${loved(plans[0]).length} Qloo places shared. CDC data says where; Qloo says which places each group calls its own.`
-              : "Qloo is off on this server, so both lists come from business licences only."}
+              : "Both lists here come from business licences, ranked by need."}
           </p>
         ) : null}
       </div>

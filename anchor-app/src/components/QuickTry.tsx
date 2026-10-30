@@ -136,7 +136,7 @@ export function QuickTry({ placeholder }: { placeholder?: ReactNode }) {
               <Link href={shareUrl(plan, "")} className="inline-flex min-h-11 items-center gap-1 font-semibold text-accent underline underline-offset-4">
                 Open the full plan: map, schedule, invitations, downloads <ArrowRight aria-hidden="true" size={16} />
               </Link>
-              <span className="text-muted">{plan.mode.trust === "qloo" ? "Live Qloo taste data." : "Qloo is off on this server, so places are ranked without taste data."}</span>
+              <span className="text-muted">{plan.mode.trust === "qloo" ? "Live Qloo taste data." : "Ranked by need, venue type and years in business."}</span>
             </p>
           </div>
         ) : null}
