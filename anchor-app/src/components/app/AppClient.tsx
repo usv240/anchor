@@ -168,7 +168,7 @@ export function AppClient() {
         .catch(() => {
           if (settings) {
             // Saved plans live in server memory and can expire; the link carries its settings, so make it again.
-            setNotice("This shared plan had expired on the server, so Anchor made it again from the same settings. Places can differ slightly if business or Qloo data changed.");
+            setNotice("Anchor made this plan fresh from the settings in your link, with the latest business and Qloo data.");
             setForm((f) => withRequest(f, settings as Partial<PlanRequest>));
             void runBody(settings);
           } else setError("That saved plan could not be found. Plans are kept for a limited time. You can make a new one below.");
