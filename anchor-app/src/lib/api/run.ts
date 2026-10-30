@@ -36,7 +36,9 @@ export async function runPlan(
       : await runBasicPlanner(request, { trust, ledger, emit: opts.emit });
 
   // Save the ledger of the builder that produced the plan (a fallback uses its own).
-  await savePlan(plan, builder.ledger.toJSON());
+  const records = builder.ledger.toJSON();
+  await savePlan(plan, records);
+  opts.emit({ type: "trace", planId: plan.planId, records });
   return plan;
 }
 

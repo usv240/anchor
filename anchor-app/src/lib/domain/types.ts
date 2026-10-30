@@ -175,4 +175,6 @@ export type StepStatus = "running" | "done" | "skipped" | "error";
 export type PlanEvent =
   | { type: "step"; id: string; label: string; status: StepStatus; detail?: string }
   | { type: "plan"; plan: Plan }
+  /** The plan's evidence log, sent with it so the browser never has to fetch it from a server that may not hold it. */
+  | { type: "trace"; planId: string; records: import("@/lib/trace/ledger").TraceRecord[] }
   | { type: "error"; message: string };

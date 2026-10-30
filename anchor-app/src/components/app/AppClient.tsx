@@ -70,6 +70,7 @@ const fmt = new Intl.NumberFormat("en-US");
 export function AppClient({ modes }: { modes?: Health["modes"] }) {
   const [form, setForm] = useState<Form>(DEFAULT_FORM);
   const [health, setHealth] = useState<Health | null>(modes ? { modes } : null);
+  const [records, setRecords] = useState<{ planId: string; records: TraceRecord[] } | null>(null);
   const [status, setStatus] = useState<"idle" | "running" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [steps, setSteps] = useState<StepView[]>([]);
@@ -116,6 +117,8 @@ export function AppClient({ modes }: { modes?: Health["modes"] }) {
               const next: StepView = { id: e.id, label: e.label, status: e.status, detail: e.detail ?? prev[i]?.detail };
               return i >= 0 ? prev.map((s, k) => (k === i ? next : s)) : [...prev, next];
             });
+          } else if (e.type === "trace") {
+            setRecords({ planId: e.planId, records: e.records });
           } else if (e.type === "plan") {
             setPlan(e.plan);
             setSelectedId(e.plan.venues[0]?.id ?? null);
@@ -229,7 +232,7 @@ export function AppClient({ modes }: { modes?: Health["modes"] }) {
                 </div>
               </div>
               <div ref={detailRef} className="scroll-mt-20">
-                {selected ? <VenueDetail plan={plan} venueId={selected.id} /> : null}
+                {selected ? <VenueDetail plan={plan} venueId={selected.id} records={records?.planId === plan.planId ? records.records : null} /> : null}
               </div>
               <Exports plan={plan} />
               <Removed plan={plan} />
@@ -714,13 +717,17 @@ function VenueList({ plan, selectedId, onSelect }: { plan: Plan; selectedId: str
   );
 }
 
-function VenueDetail({ plan, venueId }: { plan: Plan; venueId: string }) {
+function VenueDetail({ plan, venueId, records }: { plan: Plan; venueId: string; records: TraceRecord[] | null }) {
   const v = plan.venues.find((x) => x.id === venueId)!;
   const visit = plan.visits.find((x) => x.venueId === venueId);
   const [trace, setTrace] = useState<TraceRecord[] | null>(null);
   const [traceError, setTraceError] = useState(false);
   const showEvidence = async () => {
     setTraceError(false);
+    if (records) {
+      setTrace(records);
+      return;
+    }
     try {
       const r = await fetch(`/api/v1/plans/${plan.planId}/trace`);
       if (!r.ok) throw new Error();
