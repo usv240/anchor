@@ -959,7 +959,7 @@ function Limits({ plan }: { plan: Plan }) {
   return (
     <section aria-labelledby="limits-title" className="rounded-[12px] border border-border bg-surface p-5">
       <h2 id="limits-title" className="font-semibold">
-        What this plan does not tell you
+        How to read this plan
       </h2>
       <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
         {plan.limits.map((l) => (

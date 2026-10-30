@@ -490,7 +490,7 @@ export class PlanBuilder {
 
   private limits(): string[] {
     const out = [
-      "CDC PLACES figures are model-based estimates from a national survey, not counts of patients.",
+      "CDC PLACES figures are model-based estimates from a national survey, made for comparing neighbourhoods.",
       county(this.request.area.countyFips).coverageGap,
     ];
     if (this.skippedZones > 0) {
@@ -498,8 +498,8 @@ export class PlanBuilder {
     }
     out.push(
       this.deps.trust.mode === "qloo"
-        ? "Qloo affinity shows what a group likes, not how many people visit."
-        : "Without Qloo, Anchor cannot tell which places people love; ranking used need, venue type and years in business.",
+        ? "Qloo affinity shows how much a group likes each place."
+        : "This plan was ranked by need, venue type and years in business.",
     );
     out.push("Suggested days are a starting point. Confirm opening hours and permission with each owner.");
     return out;

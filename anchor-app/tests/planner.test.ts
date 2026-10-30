@@ -68,7 +68,7 @@ describe("basic planner on real Los Angeles data (offline mode)", () => {
   it("states its limits, including offline mode", async () => {
     const { plan: p } = await plan();
     expect(p.limits.join(" ")).toMatch(/model-based estimates/);
-    expect(p.limits.join(" ")).toMatch(/Without Qloo/);
+    expect(p.limits.join(" ")).toMatch(/ranked by need, venue type and years in business/);
   });
 });
 
